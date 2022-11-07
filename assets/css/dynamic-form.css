@@ -1,0 +1,48 @@
+.wrapper {
+width: 400px;
+margin: 40px auto;
+padding: 10px;
+border-radius: 5px;
+background: white;
+box-shadow: 0px 10px 40px 0px rgba(47,47,47,.1);
+}
+
+.survey_options{
+padding: 10px;
+/* margin-left: 53px; */
+margin: 10px auto;
+display: inline;
+border-radius: 5px;
+border: 1px solid lightgrey;
+background: none;
+width: 274px;
+color: black;
+}
+
+input[type="text"]:focus {
+outline: none;
+}
+
+.controls {
+width: 294px;
+margin: 15px auto;
+}
+
+#remove_fields {
+float: right;
+}
+.controls a i{
+margin-right: 5px;
+}
+
+a {
+color: rgb(35, 60, 162);
+text-decoration: none;
+}
+
+h3 {
+text-align: center;
+color: #232c3d;
+font-weight: 300px;
+padding-top: 20px;
+}
