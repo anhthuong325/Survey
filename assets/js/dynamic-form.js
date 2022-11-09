@@ -1,24 +1,17 @@
-var survey_options = document.getElementById('survey_options');
-var add_more_fields = document.getElementById('add_more_fields');
-var remove_fields = document.getElementById('remove_fields');
+var countre=1;
+function add_more_field(){
+    countre+=1;
+    html='<div class="row" id="row'+countre+'">\
+            <div class="col-1">\
+                <input type="radio" name="survey_options'+countre+'" class="form-control" style = "width: 20px; height: 30px;">\
+            </div>\
+            <div class="col-5">\
+                <input type="text" name="survey_options_name'+countre+'" class="form-control" size="22" placeholder="Nhập lựa chọn thích hợp">\
+            </div>\
+        </div>'
+    var form = document.getElementById('option-form')
+    form.innerHTML+=html
 
-    add_more_fields.onclick = function(){
-    var newField1 = document.createElement('input1');
-        newField1.setAttribute('type','checkbox');
-        newField1.setAttribute('name','survey_options[]');
-        newField1.setAttribute('class','survey_options');
-        newField1.setAttribute('siz',50);
-    var newField2 = document.createElement('input2');
-        newField2.setAttribute('type','text');
-        newField2.setAttribute('name','survey_options[]');
-        newField2.setAttribute('class','survey_options');
-        newField2.setAttribute('siz',22);
-    survey_options.appendChild(newField1, newField2);
-    }
-
-    remove_fields.onclick = function(){
-    var input_tags = survey_options.getElementsByTagName('input1','input2');
-        if(input_tags.length > 2) {
-            survey_options.removeChild(input_tags[(input_tags.length) - 1]);
-        }
-    }
+    // #tomorrow pop-up enter link survey indexpage
+    // how to select only one radio
+}
