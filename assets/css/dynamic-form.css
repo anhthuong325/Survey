@@ -1,0 +1,49 @@
+.wrapper {
+    width: 800px;
+    margin: 40px auto;
+    padding: 10px;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0px 10px 40px 0px rgba(47,47,47,.1);
+}
+.survey_question{
+display: flex;
+padding: 10px;
+/* margin-left: 53px; */
+margin: 10px auto;
+display: inline;
+border-radius: 5px;
+border: 2px inset rgb(254, 254, 255);
+background: none;
+width: 80%;
+color: black;
+background-color: white;
+}
+
+input[type="text"]:focus {
+outline: none;
+}
+
+.controls {
+width: 294px;
+margin: 15px auto;
+}
+
+#remove_fields {
+float: right;
+}
+.controls a i{
+margin-right: 5px;
+}
+
+a {
+color: rgb(35, 60, 162);
+text-decoration: none;
+}
+
+h3 {
+text-align: center;
+color: #232c3d;
+font-weight: 300px;
+padding-top: 20px;
+}

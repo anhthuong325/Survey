@@ -11,7 +11,7 @@ if(isset($_POST['userName']) && isset($_POST['password'])){
     $stmt->setFetchMode(PDO::FETCH_ASSOC);
     $users = $stmt->fetchAll();
     if($users){
-        header("Location: index.php");
+        header("Location: admin.php");
     }
     if(!$users ) {
         $error = "User name hoặc password bạn nhập không đúng!";
@@ -22,20 +22,20 @@ if(isset($_POST['userName']) && isset($_POST['password'])){
 <head>
     <title>Login</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
 
-    <script type="text/javascript" src="assets/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/js/jquery.slim.min.js"></script>
-    <script type="text/javascript" src="assets/js/popper.min.js"></script>
+    <script type="text/javascript" src="./assets/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery.slim.min.js"></script>
+    <script type="text/javascript" src="./assets/js/popper.min.js"></script>
 </head>
 <body>
 <div class="login-form" >
     <form action="" method="post">
         <div class="form-group">
             <label for="exampleInputEmail1">User name</label>
-            <input type="text" name="userName" class="form-control" id="exampleInputEmail1">
+            <input type="text" name="userName" class="form-control" id="exampleInputEmail1" placeholder="Username">
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
