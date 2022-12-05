@@ -1,0 +1,159 @@
+/* main componenets */
+
+.logo {
+    width: 40px;
+    margin-right: 5px;
+}
+
+.main-container {
+    padding: 60px 15px;
+}
+
+.title {
+    width: 100%;
+    border-bottom: 2px solid #C7C7C7;
+    text-align: center;
+    background: #0072C6;
+    padding: 8px;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    color: #fff;
+}
+
+input[type="month"] {
+    border: 1px solid #ced4da;
+    padding-bottom: 3px;
+    border-radius: 5px;
+    font-size: 12px;
+    padding-top: 1px;
+    line-height: 23px;
+}
+
+td.table-no-record {
+    text-align: center;
+    height: 100px;
+    font-style: italic;
+    font-size: 0.8em;
+    vertical-align: middle;;
+}
+
+.hour-col{
+    max-width: 50px;
+    min-width: 40px;
+}
+
+.sn-col{
+    width: 20px;
+}
+
+.col-total-h {
+    background: #eee;
+    font-weight: bold;
+}
+
+.col-total-d {
+    background: #28a745;
+    color: #fff;
+    font-weight: bold;
+}
+
+.table-timesheet tr td,
+.table-timesheet tr th {
+    padding: 0.15rem 0.11rem;
+}
+
+/*login page*/
+
+.container-login100 {
+    width: 100%;
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background: #ccc;
+}
+
+.wrap-login100 {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    min-width: 400px;
+}
+
+.img-logo {
+    width: 50px;
+    height: 50px;
+    padding-right: 5px;
+}
+
+.sticky th {
+    position: sticky;
+    top: 66px; 
+    background: #fff;
+    font-size: 16px;
+}
+
+.table td, .table thead th {
+    vertical-align: middle;
+}
+
+.border-less td, .border-less thead th {
+    border: none;
+    font-weight: normal;
+}
+
+.scrollbar {
+    cursor: all-scroll;
+    overflow-x: hidden;
+    display: flex;
+    width: calc(100vw - 650px);
+}
+
+/* overwrite pagination style */
+.page-item.active .page-link {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    width: 30px;
+    text-align: center;
+}
+
+/* overwrite select-2 css */
+span.select2-selection {
+    height: 37px !important;
+    padding-top: 4px;
+}
+
+.employees-select span.select2-selection {
+    height: 30px !important;
+    padding-top: 0;
+}
+.shadow-select span.select2-selection {
+    height: 30px !important;
+    padding-top: 0;
+}
+.select-account span.select2-selection{
+    height: 30px !important;
+    padding-top: 0;
+}
+
+.select2-results li {
+    font-size: 0.7em !important;
+}
+
+.dropdown-item.active, 
+.dropdown-item:active {
+    background: #28a745!important;
+}
