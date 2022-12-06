@@ -39,7 +39,7 @@
                     
                     <div class="controls">
                         <a href="#" onclick="add_more_field()"><i class="fa fa-plus"></i>Thêm tùy chọn</a>
-                        <a href="#" id="remove_fields"><i class="fa fa-plus"></i>Xóa tùy chọn</a>
+                        <a href="#" onclick="remove_fields()"><i class="fa fa-plus"></i>Xóa tùy chọn</a>
                     </div>
                 </div>
             </div>
