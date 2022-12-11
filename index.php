@@ -9,11 +9,13 @@ if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN, UserType::STUDENT))) {
 $tabs = array(
     array(
         'title'=>"Topics",
-        'icon'=>'<i class="fa fa-book" aria-hidden="true"></i>'
+        'icon'=>'<i class="fa fa-book" aria-hidden="true"></i>',
+        'name'=>"Chủ đề"
     ),
     array(
         'title'=>"Questions",
-        'icon'=>'<i class="fa fa-question" aria-hidden="true"></i>'
+        'icon'=>'<i class="fa fa-question" aria-hidden="true"></i>',
+        'name'=>'Câu hỏi'
     )
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
@@ -46,7 +48,7 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
                     <?php foreach ($tabs as $tab) { ?>
                         <li class="nav-item">
                             <a class="nav-link <?php echo $tab['title'] == $current_tab ? 'active' : ''; ?>" href="?tab=<?php echo $tab['title']; ?>">
-                                <?php echo $tab['icon']."  ".$tab['title']; ?>
+                                <?php echo $tab['icon']."  ".$tab['name']; ?>
                             </a>
                         </li>
                     <?php } ?>
