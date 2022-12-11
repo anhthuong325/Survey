@@ -30,12 +30,12 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi'])){
         <div class="alert alert-success" role="alert" id="notifySaveQuestion">
             <?php echo $notifySuccess; ?>
         </div>
-    <? } ?>
+    <?php } ?>
     <?php if(isset($notifyFalse)){ ?>
         <div class="alert alert-danger" role="alert" id="notifySaveQuestion">
             <?php echo $notifyFalse; ?>
         </div>
-    <? } ?>
+    <?php } ?>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2"><i class="fa fa-question-circle-o" aria-hidden="true"></i> Create Question Form</h1>
         <form id="formCreateQuestion" method="get" action="">
@@ -44,7 +44,7 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi'])){
                     <option value="" selected>Chọn chủ đề</option>
                     <?php foreach ($arrChuDe as $row){ ?>
                         <option value="<?php echo $row['id']; ?>" <?php if(isset($_GET['idChuDe']) && $_GET['idChuDe'] == $row['id']){ echo "selected"; } ?>><?php echo $row['ten_chu_de']; ?></option>
-                    <?php }?>
+                    <?php } ?>
                 </select>
             </div>
         </form>
@@ -74,7 +74,7 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi'])){
                                         <td><?php echo $row['noiDung']; ?></td>
                                         <td><?php echo $row['loaiCauTraLoi'] == 1 ? "Trắc nghiệm" : "Nhập câu trả lời"; ?></td>
                                     </tr>
-                            <?php } }?>
+                            <?php } } ?>
                             </tbody>
                         </table>
                     </div>
