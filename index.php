@@ -6,11 +6,22 @@ if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN, UserType::STUDENT))) {
   header("Location: login.php");
   die();
 }
+$tabs = array(
+    array(
+        'title'=>"Topics",
+        'icon'=>'<i class="fa fa-book" aria-hidden="true"></i>'
+    ),
+    array(
+        'title'=>"Questions",
+        'icon'=>'<i class="fa fa-question" aria-hidden="true"></i>'
+    )
+);
+$current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!--important link source from "https://bootstrapious.com/p/about-us-page"-->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -18,7 +29,6 @@ if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN, UserType::STUDENT))) {
 
     <script type="text/javascript" src="assets/js/jquery.min.js"></script>
     <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 <?php include 'views/layouts/page_header.php';?>
@@ -33,27 +43,13 @@ if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN, UserType::STUDENT))) {
                 </h6>
 
                 <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            <i class="fa fa-book" aria-hidden="true"></i> Chủ đề
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fa fa-question" aria-hidden="true"></i>
-                            Câu hỏi
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fa fa-desktop"></i> Khảo sát
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fa fa-bar-chart"></i> Thống kê phản hồi
-                        </a>
-                    </li>
+                    <?php foreach ($tabs as $tab) { ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo $tab['title'] == $current_tab ? 'active' : ''; ?>" href="?tab=<?php echo $tab['title']; ?>">
+                                <?php echo $tab['icon']."  ".$tab['title']; ?>
+                            </a>
+                        </li>
+                    <?php } ?>
                 </ul>
 
                 <h6 class="sidebar-heading">
@@ -69,7 +65,14 @@ if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN, UserType::STUDENT))) {
 
             </div>
         </aside>
-        <?php include 'views/surveys/question.php'; ?>
+        <?php
+            if($current_tab == "Topics"){
+
+            }
+            if ($current_tab == "Questions") {
+                include 'views/surveys/question.php';
+            }
+         ?>
     </div>
 </div>
 

@@ -29,9 +29,11 @@ class QuestionController
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $arrCauHoi = array();
+            $stt = 0;
             foreach ($stmt->fetchAll() as $row){
+                $stt++;
                 $arrCauHoi[] = array(
-                    'id'=>$row['id'],
+                    'id'=>$stt,
                     'noiDung'=>$row['noi_dung'],
                     'loaiCauTraLoi'=>$row['loai_cau_tra_loi']
                 );

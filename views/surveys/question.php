@@ -39,6 +39,7 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi'])){
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2"><i class="fa fa-question-circle-o" aria-hidden="true"></i> Create Question Form</h1>
         <form id="formCreateQuestion" method="get" action="">
+            <input type="hidden" id="tab" name="tab" value="Questions" />
             <div class="btn-toolbar mb-2 mb-md-0">
                 <select class="custom-select" name="idChuDe" id="idChuDe" style="width: 300px;">
                     <option value="" selected>Chọn chủ đề</option>

@@ -5,6 +5,7 @@ class DatabaseUtil {
     public static function executeQuery($query) 
     {
         $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
+        $conn->set_charset("utf8");
         $result = $conn->query($query);
         $conn->close();
         return $result;
