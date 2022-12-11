@@ -35,23 +35,18 @@ if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN, UserType::STUDENT))) {
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link active" href="#">
-                            <i class="fa fa-tachometer"></i>
-                            Dashboard - Quản lý hệ thống
+                            <i class="fa fa-book" aria-hidden="true"></i> Chủ đề
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <i class="fa fa-pencil-square-o"></i> Biểu mẫu khảo sát
+                            <i class="fa fa-question" aria-hidden="true"></i>
+                            Câu hỏi
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <i class="fa fa-desktop"></i> Khảo sát
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fa fa-table"></i> Câu hỏi
                         </a>
                     </li>
                     <li class="nav-item">

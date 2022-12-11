@@ -42,7 +42,7 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi'])){
             <div class="btn-toolbar mb-2 mb-md-0">
                 <select class="custom-select" name="idChuDe" id="idChuDe" style="width: 300px;">
                     <option value="" selected>Chọn chủ đề</option>
-                    <?php foreach ($arrChuDe as $row){ ?>
+                    <?php foreach ($arrChuDe as $row) { ?>
                         <option value="<?php echo $row['id']; ?>" <?php if(isset($_GET['idChuDe']) && $_GET['idChuDe'] == $row['id']){ echo "selected"; } ?>><?php echo $row['ten_chu_de']; ?></option>
                     <?php } ?>
                 </select>
