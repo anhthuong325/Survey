@@ -13,7 +13,7 @@ if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN, UserType::STUDENT))) {
     <!--important link source from "https://bootstrapious.com/p/about-us-page"-->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/main2.css">    
+    <link rel="stylesheet" href="assets/css/main.css">    
 
     <link rel="home" href="https://mazipan.github.io/bootstrap4-admin-dashboard-template/">
     <link rel="icon" type="image/png" sizes="16x16" href="https://mazipan.github.io/favicon/favicon-16x16.png">
