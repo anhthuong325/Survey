@@ -16,6 +16,11 @@ $tabs = array(
         'title'=>"Questions",
         'icon'=>'<i class="fa fa-question" aria-hidden="true"></i>',
         'name'=>'Câu hỏi'
+    ),
+    array(
+        'title'=>"SurveyForms",
+        'icon'=>'<i class="fa fa-pencil-square-o"></i>',
+        'name'=>'Mẫu khảo sát'
     )
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
