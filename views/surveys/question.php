@@ -37,11 +37,11 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi'])){
         </div>
     <?php } ?>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2"><i class="fa fa-question-circle-o" aria-hidden="true"></i> Create Question Form</h1>
+        <h1 class="h2"><i class="fa fa-question-circle-o" aria-hidden="true"></i> Tạo câu hỏi</h1>
         <form id="formCreateQuestion" method="get" action="">
             <input type="hidden" id="tab" name="tab" value="Questions" />
             <div class="btn-toolbar mb-2 mb-md-0">
-                <select class="custom-select" name="idChuDe" id="idChuDe" style="width: 300px;">
+                <select class="custom-select" name="idChuDe" id="idChuDe" style="width: 300px; height: 50px; border-color: blue; border-width: medium;">
                     <option value="" selected>Chọn chủ đề</option>
                     <?php foreach ($arrChuDe as $row) { ?>
                         <option value="<?php echo $row['id']; ?>" <?php if(isset($_GET['idChuDe']) && $_GET['idChuDe'] == $row['id']){ echo "selected"; } ?>><?php echo $row['ten_chu_de']; ?></option>
@@ -96,7 +96,7 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi'])){
                                 <div class="form-group col-md-1 ml-3">
                                     <label for="inputState" style="width: 150px;">Câu trả lời:</label>
                                     <select id="inputState"name="loaiCauTraLoi" class="form-control" style="width: 150px;">
-                                        <option value="0" selected>Choose...</option>
+                                        <option value="0" selected>Lựa chọn...</option>
                                         <option value="1">Trắc nghiệm</option>
                                         <option value="2">Nhập trả lời</option>
                                     </select>
@@ -105,7 +105,7 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi'])){
                             <div class="form-row">
                                 <div class="col-sm-10">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-send"></i> Submit
+                                        <i class="fa fa-send"></i> Gửi đi
                                     </button>
                                 </div>
                             </div>

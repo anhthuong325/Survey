@@ -27,7 +27,7 @@ if(isset($_POST['contentTopic'])){
     <?php } ?>
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2"><i class="fa fa-crosshairs" aria-hidden="true"></i> Create Topic Form</h1>
+        <h1 class="h2"><i class="fa fa-crosshairs" aria-hidden="true"></i> Tạo chủ đề</h1>
     </div>
 
     <div class="row" >
@@ -41,13 +41,13 @@ if(isset($_POST['contentTopic'])){
                         <thead class="thead bg-primary text-white">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col" style="width: 70%;">   Title</th>
-                            <th scope="col">Created by</th>
+                            <th scope="col" style="width: 70%;">   Tên chủ đề</th>
+                            <th scope="col">Người tạo</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php if(count($arrTopic)){
-                                foreach ($arrTopic as $row){ ?>
+                        <?php if(count($arrTopic)) {
+                                foreach ($arrTopic as $row) { ?>
                                     <tr>
                                         <th scope="row"><?php echo $row['id']; ?></th>
                                         <td><?php echo $row['ten_chu_de']; ?></td>
@@ -73,7 +73,7 @@ if(isset($_POST['contentTopic'])){
                         <div class="form-row">
                             <div class="col-sm-10 mt-2">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-send"></i> Submit
+                                    <i class="fa fa-send"></i> Gửi đi
                                 </button>
                             </div>
                         </div>
