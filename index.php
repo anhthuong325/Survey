@@ -69,7 +69,7 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
         </aside>
         <?php
             if($current_tab == "Topics"){
-
+                include 'views/surveys/topic.php';
             }
             if ($current_tab == "Questions") {
                 include 'views/surveys/question.php';

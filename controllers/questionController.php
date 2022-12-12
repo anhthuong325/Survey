@@ -54,4 +54,15 @@ class QuestionController
             return $e;
         }
     }
+    public static function saveTopic($tenChuDe){
+        try{
+            $query = "INSERT INTO chude(ten_chu_de)
+                        VALUES('$tenChuDe')";
+            $result = DatabaseUtil::executeQuery($query);
+
+            return $result;
+        } catch (Exception $e){
+            return $e;
+        }
+    }
 }
