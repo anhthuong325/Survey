@@ -13,7 +13,9 @@ class QuestionController
             foreach ($stmt->fetchAll() as $row){
                 $arrChuDe[] = array(
                     'id'=>$row['id'],
-                    'ten_chu_de'=>$row['ten_chu_de']
+                    'tenChuDe'=>$row['ten_chu_de'],
+                    'ngayTao'=>$row['created_at'],
+                    'nguoiTao'=>$row['created_by']
                 );
             }
             return $arrChuDe;
@@ -35,7 +37,8 @@ class QuestionController
                 $arrCauHoi[] = array(
                     'id'=>$stt,
                     'noiDung'=>$row['noi_dung'],
-                    'loaiCauTraLoi'=>$row['loai_cau_tra_loi']
+                    'loaiCauTraLoi'=>$row['loai_cau_tra_loi'],
+                    'status'=>$row['status']
                 );
             }
             return $arrCauHoi;
@@ -43,10 +46,11 @@ class QuestionController
             return $e;
         }
     }
-    public static function saveQuestion($noiDung, $idChuDe, $loaiCauHoi){
+    public static function saveQuestion($noiDung, $idChuDe, $loaiCauHoi, $status){
+        $dateTimeNow = date("Y-m-d H:i:s");
         try{
-            $query = "INSERT INTO cauhoi(noi_dung, id_chu_de, loai_cau_tra_loi)
-                        VALUES('$noiDung', '$idChuDe', '$loaiCauHoi')";
+            $query = "INSERT INTO cauhoi(noi_dung, id_chu_de, loai_cau_tra_loi, status, created_at)
+                        VALUES('$noiDung', '$idChuDe', '$loaiCauHoi', $status, '$dateTimeNow')";
             $result = DatabaseUtil::executeQuery($query);
 
             return $result;
@@ -54,10 +58,11 @@ class QuestionController
             return $e;
         }
     }
-    public static function saveTopic($tenChuDe){
+    public static function saveTopic($tenChuDe, $username){
+        $dateTimeNow = date("Y-m-d H:i:s");
         try{
-            $query = "INSERT INTO chude(ten_chu_de)
-                        VALUES('$tenChuDe')";
+            $query = "INSERT INTO chude(ten_chu_de, created_at, created_by)
+                        VALUES('$tenChuDe','$dateTimeNow','$username')";
             $result = DatabaseUtil::executeQuery($query);
 
             return $result;

@@ -4,7 +4,7 @@ include 'controllers/questionController.php';
 $arrTopic = QuestionController::getAllChuDe();
 if(isset($_POST['contentTopic'])){
     $topic = $_POST['contentTopic'];
-    $result = QuestionController::saveTopic($topic);
+    $result = QuestionController::saveTopic($topic, $_SESSION['USER_ACCOUNT']);
     if($result > 0){
         $notifySuccess = "Lưu thành công!";
     }
@@ -31,7 +31,7 @@ if(isset($_POST['contentTopic'])){
     </div>
 
     <div class="row" >
-        <div class="col-lg-6 col-md-6 col-sm-12 pr-0 mb-3">
+        <div class="col-lg-7 col-md-6 col-sm-12 pr-0 mb-3">
             <div class="card-collapsible card">
                 <div class="card-header">
                     Danh sách chủ đề <i class="fa fa-caret-down caret"></i>
@@ -41,8 +41,9 @@ if(isset($_POST['contentTopic'])){
                         <thead class="thead bg-primary text-white">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col" style="width: 70%;">   Tên chủ đề</th>
+                            <th scope="col" style="width: 60%;">Tên chủ đề</th>
                             <th scope="col">Người tạo</th>
+                            <th scope="col">Ngày tạo</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -50,8 +51,9 @@ if(isset($_POST['contentTopic'])){
                                 foreach ($arrTopic as $row) { ?>
                                     <tr>
                                         <th scope="row"><?php echo $row['id']; ?></th>
-                                        <td><?php echo $row['ten_chu_de']; ?></td>
-                                        <td><?php echo "none" ?></td>
+                                        <td><?php echo $row['tenChuDe']; ?></td>
+                                        <td><?php echo $row['nguoiTao']; ?></td>
+                                        <td><?php echo $row['ngayTao']; ?></td>
                                     </tr>
                         <?php } } ?>
                         </tbody>
@@ -59,7 +61,7 @@ if(isset($_POST['contentTopic'])){
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 pr-0 mb-3">
+        <div class="col-lg-5 col-md-6 col-sm-12 pr-0 mb-3">
             <div class="card-collapsible card">
                 <div class="card-header">
                     Tạo chủ đề <i class="fa fa-caret-down caret"></i>

@@ -89,3 +89,6 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
 <?php include 'views/layouts/page_footer.php';?>
 </body>
 </html>
+<script>
+    $('#notifySaveQuestion').delay(3000).fadeOut();
+</script>
