@@ -39,12 +39,12 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
 </head>
 <body>
 <?php include 'views/layouts/page_header.php';?>
-
 <div class="container-fluid">
     <div class="row">
         <aside class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
 
+            <div class="sidebar-sticky">
+                <?php include 'views/layouts/tagsiteadmin.php';?>
                 <h6 class="sidebar-heading">
                     <span>Danh mục chính</span>
                 </h6>
