@@ -8,39 +8,34 @@ if(isset($_GET['idChuDe'])){
     $idChuDe = $_GET['idChuDe'];
     $arrCauHoi = QuestionController::getListQuestion($_GET['idChuDe']);
 }
-$status = 0;
-if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi']) && isset($_POST['status'])){
-    $content = $_POST['contentQuestion'];
-    $loaiCauTraLoi = $_POST['loaiCauTraLoi'];
-    $status = $_POST['status'];
-    if($content != "" && $loaiCauTraLoi > 0){
-        $result = QuestionController::saveQuestion($content, $idChuDe, $loaiCauTraLoi, $status);
-        if($result){
-            $notifySuccess = "Lưu thành công!";
-        }
-    } else {
-        $notifyFalse = "Lỗi! Lưu không thành công.";
-    }
-    if(isset($_GET['idChuDe'])){
-        $arrCauHoi = QuestionController::getListQuestion($_GET['idChuDe']);
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['questionId']) && isset($_POST['topicId'])) {
+    $questionId = $_POST['questionId'];
+    $topicId = $_POST['topicId'];
+    QuestionController::removeQuestion($questionId, $topicId);
+    $_SESSION['success'] = true;
+    echo $topicId;
+    header("Location: ?tab=Questions&idChuDe=".$topicId."&action=remove");
+    die();
+    return;
 }
-
 ?>
+
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
-    <?php if(isset($notifySuccess)){ ?>
-        <div class="alert alert-success" role="alert" id="notifySaveQuestion">
-            <?php echo $notifySuccess; ?>
-        </div>
-    <?php } ?>
-    <?php if(isset($notifyFalse)){ ?>
-        <div class="alert alert-danger" role="alert" id="notifySaveQuestion">
-            <?php echo $notifyFalse; ?>
+    <?php
+    if(isset($_SESSION['success']))
+    {
+        unset($_SESSION['success']);
+        ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="removeQuestionSuccess">
+            Successfully <?php echo $_GET['action'].' question '?>!
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
         </div>
     <?php } ?>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2"><i class="fa fa-question-circle-o" aria-hidden="true"></i> Tạo câu hỏi</h1>
-        <form id="formCreateQuestion" method="get" action="">
+        <h1 class="h2"><i class="fa fa-question-circle-o" aria-hidden="true"></i> Danh sách câu hỏi</h1>
+        <form id="formListQuestion" method="get" action="">
             <input type="hidden" id="tab" name="tab" value="Questions" />
             <div class="btn-toolbar mb-2 mb-md-0">
                 <select class="custom-select" name="idChuDe" id="idChuDe" style="width: 300px; height: 50px; border-color: blue; border-width: medium;">
@@ -55,10 +50,10 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi']) && isset($
 
     <?php if(isset($_GET['idChuDe']) && $_GET['idChuDe'] != 0){ ?>
         <div class="row" >
-            <div class="col-lg-7 col-md-6 col-sm-12 pr-0 mb-3" >
+            <div class="col-lg-12 col-md-6 col-sm-12 pr-0 mb-3" >
                 <div class="card-collapsible card">
                     <div class="card-header">
-                        Danh sách câu hỏi <i class="fa fa-caret-down caret"></i>
+                        Danh sách câu hỏi  <a href="?tab=CreateQuestions">Thêm câu hỏi</a>
                     </div>
                     <div class="card-body">
                         <table class="table">
@@ -81,7 +76,17 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi']) && isset($
                                             <td><?php echo $row['noiDung']; ?></td>
                                             <td><?php echo $row['loaiCauTraLoi'] == 1 ? "Trắc nghiệm" : "Nhập câu trả lời"; ?></td>
                                             <td><?php echo $row['status'] == 1 ? "Active" : "Not active"; ?></td>
-                                            <td><a class="text-success mr-2" href="#">Remove</a><a class="text-success mr-2" href="#">Edit</a></td>
+                                            <td>
+                                                <a class="btn btn-sm btn-secondary" title="Edit" href="?tab=UpdateQuestions&idChuDe=1
+                                                &content=<?php echo $row['noiDung']; ?>
+                                                &option=<?php echo $row['loaiCauTraLoi'];?>&status=<?php echo $row['status']; ?>">
+                                                    <i class="fa fa-pencil-square-o "></i>
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-danger removeQuestion" question-id="<?php echo $row['id']; ?>"
+                                                    topic-id=<?php echo $idChuDe; ?>>
+                                                    <i class="fa fa-trash "></i>
+                                                </button>
+                                            </td>
                                         </tr>
                             <?php $count++; } } ?>
                             </tbody>
@@ -89,51 +94,45 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi']) && isset($
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 col-md-6 col-sm-12 pr-0 mb-3">
-                <div class="card-collapsible card">
-                    <div class="card-header">
-                        Nhập liệu câu hỏi <?php echo $count.":"; ?> <i class="fa fa-caret-down caret"></i>
-                    </div>
-                    <div class="card-body">
-                        <form action="" method="post">
-                            <div class="form-row">
-                                <div class="form-group col-md-9">
-                                    <label for="exampleFormControlTextarea1">Nhập nội dung câu hỏi:</label>
-                                    <textarea name="contentQuestion" class="form-control" id="exampleFormControlTextarea1" rows="6"></textarea>
-                                </div>
-                                <div class="form-group col-md-1 ml-2">
-                                    <label for="inputState" style="width: 130px;">Câu trả lời:</label>
-                                    <select id="inputState"name="loaiCauTraLoi" class="form-control" style="width: 135px;">
-                                        <option value="1" selected>Trắc nghiệm</option>
-                                        <option value="2">Nhập trả lời</option>
-                                    </select>
-                                    <br>
-                                    <label for="inputStatus" style="width: 130px;">Trạng thái:</label>
-                                    <select id="inputStatus"name="status" class="form-control" style="width: 135px;">
-                                        <option value="0">Not active</option>
-                                        <option value="1" selected>Active</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-send"></i> Gửi đi
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     <?php } ?>
 </main>
+<div class="modal fade" id="deleteQuestion" tabindex="-1" role="dialog" aria-hidden="true">
+    <form method="POST">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" value="" name="questionId" id="questionId" />
+                    <input type="hidden" value="" name="topicId" id="topicId" />
+                    Are you sure you want to remove this question ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger stretched-link">Yes, Remove</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 <script>
     $('#idChuDe').change(function() {
         submitForm();
     });
     function submitForm() {
-        document.getElementById("formCreateQuestion").submit();
+        document.getElementById("formListQuestion").submit();
     }
+    $('.removeQuestion').click(function() {
+        const questionId = $(this).attr("question-id");
+        const topicId = $(this).attr("topic-id");
+        $('#questionId').val(questionId);
+        $('#topicId').val(topicId);
+        $('#deleteQuestion').modal('show');
+    })
+    $('#removeQuestionSuccess').delay(3000).fadeOut();
 </script>

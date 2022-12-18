@@ -31,11 +31,9 @@ class QuestionController
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $arrCauHoi = array();
-            $stt = 0;
             foreach ($stmt->fetchAll() as $row){
-                $stt++;
                 $arrCauHoi[] = array(
-                    'id'=>$stt,
+                    'id'=>$row['id'],
                     'noiDung'=>$row['noi_dung'],
                     'loaiCauTraLoi'=>$row['loai_cau_tra_loi'],
                     'status'=>$row['status']
@@ -69,5 +67,10 @@ class QuestionController
         } catch (Exception $e){
             return $e;
         }
+    }
+    public static function removeQuestion($questionId, $topicId){
+        $sql = "DELETE FROM cauhoi WHERE id='$questionId' AND id_chu_de = '$topicId'";
+        $delete = DatabaseUtil::executeQueryCheck($sql);
+        return $delete;
     }
 }
