@@ -51,41 +51,66 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
 </head>
 <body>
 
-<div class="limiter">
-    <div class="container-login100">
-        <div class="wrap-login100">
-            <div class="container">
-                <h4 class="text-center" style="margin-top:20px;">
-                    <div style="font-size: 40px;">User Login</div>
-                </h4>
-                <div class="card-body">
-                    <p class="text-muted"></p>
-                    <form action="login.php" method="post">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fa fa-user-o" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            <input type="text" name="userLogin" class="form-control" placeholder="username" />
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="assets/img/symbol.png"
+                     class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+
+                <div class="d-flex align-items-center mb-3 pb-1">
+                    <img src="assets/img/brandlg.ico"
+                         class="img-fluid" alt="Sample image">
+                    <span class="h1 fw-bold mb-0">Khảo sát Đại học Phú Yên</span>
+                </div>
+
+                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Đăng nhập vào tài khoản của bạn</h5>
+
+                <form action="login.php" method="post">
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form3Example3">Tài khoản</label>
+                        <input type="text" name="userLogin" class="form-control form-control-lg"
+                               placeholder="Nhập tên tài khoản" />
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <label class="form-label" for="form3Example4">Mật khẩu</label>
+                        <input type="password" name="userPassword" class="form-control form-control-lg"
+                               placeholder="Nhập mật khẩu" />
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Checkbox -->
+                        <div class="form-check mb-0">
+                            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+                            <label class="form-check-label" for="form2Example3">
+                                Ghi nhớ
+                            </label>
                         </div>
-                        <div class="input-group mb-4">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fa fa-lock" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            <input type="password" name="userPassword" class="form-control" placeholder="password" />
-                        </div>
-                        <button type="submit" class="btn btn-success btn-block" style="font-size:1.2em;">Login</button>
+                        <a href="#!" class="text-body">Quên mật khẩu?</a>
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">Đăng nhập</button>
                         <?php if(isset($error)) { ?>
                             <div class="text-center text-danger pt-4"><?php echo $error; ?></div>
                         <?php } ?>
-                    </form>
-                </div>
+                        <p class="small fw-bold mt-2 pt-1 mb-0">Đã có tài khoản? <a href="#!"
+                                                                                          class="link-danger">Đăng ký</a></p>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>
-</div>
+    <?php include 'views/layouts/page_footer.php';?>
+</section>
+
 </body>
 </html>
