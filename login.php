@@ -101,7 +101,7 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
                         <?php if(isset($error)) { ?>
                             <div class="text-center text-danger pt-4"><?php echo $error; ?></div>
                         <?php } ?>
-                        <p class="small fw-bold mt-2 pt-1 mb-0">Đã có tài khoản? <a href="#!"
+                        <p class="small fw-bold mt-2 pt-1 mb-0">Đã có tài khoản? <a href="register.php"
                                                                                           class="link-danger">Đăng ký</a></p>
                     </div>
 
