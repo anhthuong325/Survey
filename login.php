@@ -44,6 +44,8 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
     <link rel="stylesheet" href="assets/css/main.css">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+
     <!-- JS -->
     <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/js/jquery.min.js"></script>
