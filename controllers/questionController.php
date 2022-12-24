@@ -68,6 +68,18 @@ class QuestionController
             return $e;
         }
     }
+    public static function updateQuestion($idQuestion, $noiDung, $loaiCauHoi, $status){
+        $dateTimeNow = date("Y-m-d H:i:s");
+        try{
+            $query = "UPDATE cauhoi SET noi_dung = '$noiDung', loai_cau_tra_loi = $loaiCauHoi, status = $status, updated_at = '$dateTimeNow'
+                        WHERE id = $idQuestion";
+            $result = DatabaseUtil::executeQuery($query);
+
+            return $result;
+        } catch (Exception $e){
+            return $e;
+        }
+    }
     public static function removeQuestion($questionId, $topicId){
         $sql = "DELETE FROM cauhoi WHERE id='$questionId' AND id_chu_de = '$topicId'";
         $delete = DatabaseUtil::executeQueryCheck($sql);

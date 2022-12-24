@@ -56,9 +56,6 @@ if(isset($_POST['contentQuestion']) && isset($_POST['loaiCauTraLoi']) && isset($
         <?php if(isset($_GET['idChuDe']) && $_GET['idChuDe'] != 0){ ?>
             <div class="col-lg-6 col-md-6 col-sm-12 pr-0 mb-3" >
                 <div class="card-collapsible card">
-                    <div class="card-header">
-                        Danh sách câu hỏi  <a href="?tab=CreateQuestions">Thêm câu hỏi</a>
-                    </div>
                     <div class="card-body">
                         <table class="table">
                             <thead class="thead bg-primary text-white">
