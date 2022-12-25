@@ -4,11 +4,12 @@ include 'enums/UserType.php';
 
 class Authenticate {
     public static function authenticateUser($username, $password) {
-        if($username == SUPER_ADMIN){
+        if($username == SUPER_ADMIN && $password == SUPER_ADMIN){
             return array(
                 'ACCOUNT'   => $username,
                 'NAME'      => 'SUPPER ADMIN',
-                'ROLE'      => UserType::ADMIN
+                'ROLE'      => UserType::ADMIN,
+                'PASSWORD'  => $password
             );
         }
         //query get user
@@ -28,7 +29,8 @@ class Authenticate {
             return array(
                 'ACCOUNT'   => $username,
                 'NAME'      => $user['full_name'],
-                'ROLE'      => $user['role_id']
+                'ROLE'      => $user['role_id'],
+                'PASSWORD'  => $password['password']
             );
         }
     }
