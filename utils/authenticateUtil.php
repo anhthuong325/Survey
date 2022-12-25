@@ -8,8 +8,7 @@ class Authenticate {
             return array(
                 'ACCOUNT'   => $username,
                 'NAME'      => 'SUPPER ADMIN',
-                'ROLE'      => UserType::ADMIN,
-                'PASSWORD'  => $password
+                'ROLE'      => UserType::ADMIN
             );
         }
         //query get user
@@ -29,8 +28,8 @@ class Authenticate {
             return array(
                 'ACCOUNT'   => $username,
                 'NAME'      => $user['full_name'],
-                'ROLE'      => $user['role_id'],
-                'PASSWORD'  => $password['password']
+                'ROLE'      => $user['role_id']
+               
             );
         }
     }

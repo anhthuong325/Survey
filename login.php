@@ -32,7 +32,7 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
         $_SESSION['USER_ACCOUNT']   = $data['ACCOUNT'];
         $_SESSION['USER_NAME']      = $data['NAME'];
         $_SESSION['ROLE']           = $data['ROLE'];
-        $_SESSION['PASSWORD']       = $data['PASSWORD'];
+
 
         header("Location: index.php");
         die();
