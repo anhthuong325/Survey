@@ -1,3 +1,9 @@
+
+<!--/*include_once 'controllers/clientController.php';-->
+<!---->
+<!--$arrOpt = ClientController::getAllLuaChon();-->
+<!--*/-->
+
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2"><i class="fa fa-question-circle-o" aria-hidden="true"></i> Trực quan hóa mẫu khảo sát</h1>
@@ -72,10 +78,14 @@
                             <option value="">Giảng viên</option>
                         </select></th>
                     <th>Nội dung câu hỏi</th>
-                    <th>Opt1</th>
-                    <th>Opt2</th>
-                    <th>Opt3</th>
-                    <th>Opt4</th>
+                    <?php foreach ($arrOpt as $row) { ?>
+                        <tr>
+                            <th><?php echo $row['tenLuaChon'][0]; ?></th>
+                            <th><?php echo $row['tenLuaChon'][1]; ?></th>
+                            <th><?php echo $row['tenLuaChon'][2]; ?></th>
+                            <th><?php echo $row['tenLuaChon'][3]; ?></th>
+                        </tr>
+                    <?php } ?>
                 </tr>
                 </thead>
                 <tbody>

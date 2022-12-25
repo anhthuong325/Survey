@@ -9,14 +9,13 @@ if (isset($_GET['logout'])) {
     unset($_SESSION['USER_ACCOUNT']);
     unset($_SESSION['USER_NAME']);
     unset($_SESSION['ROLE']);
-    unset($_SESSION['PASSWORD']);
     session_destroy();
     header("Location: login.php");
     die();
 }
 
 if(isset($_SESSION['USER_ACCOUNT'])) {
-    header("Location: index.php");
+    header("Location: index2.php");
     die();
 }
 
@@ -32,8 +31,7 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
         $_SESSION['USER_ACCOUNT']   = $data['ACCOUNT'];
         $_SESSION['USER_NAME']      = $data['NAME'];
         $_SESSION['ROLE']           = $data['ROLE'];
-        $_SESSION['PASSWORD']       = $data['PASSWORD'];
-        header("Location: index.php");
+        header("Location: index2.php");
         die();
     }
 }
