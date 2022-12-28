@@ -1,15 +1,27 @@
 <?php
+include 'enums/UserType.php';
+session_start();
+
+if (!in_array($_SESSION['ROLE'], array(UserType::STUDENT))) {
+    header("Location: login.php");
+    die();
+}
 $tabs = array(
-array(
-'title'=>"News",
-'icon'=>'<i class="fa fa-home"></i>',
-'name'=>'Cập nhật tin tức'
-),
-array(
-'title'=>"Surveys",
-'icon'=>'<i class="fa fa-pencil-square-o"></i>',
-'name'=>'Khảo sát đánh giá'
-)
+    array(
+    'title'=>"News",
+    'icon'=>'<i class="fa fa-home"></i>',
+    'name'=>'Cập nhật tin tức'
+    ),
+    array(
+    'title'=>"Surveys",
+    'icon'=>'<i class="fa fa-pencil-square-o"></i>',
+    'name'=>'Khảo sát đánh giá'
+    ),
+    array(
+        'title'=>"History",
+        'icon'=>'<i class="fa fa-history"></i>',
+        'name'=>'Lịch sử khảo sát'
+    )
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
 
@@ -28,14 +40,14 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
     <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 </head>
 <body>
-<?php include 'layouts/page_header.php';?>
+<?php include 'views/layouts/page_header.php';?>
 
 <div class="container-fluid">
     <div class="row">
         <aside class="col-md-2 d-none d-md-block bg-light sidebar">
 
             <div class="sidebar-sticky">
-                <?php include 'layouts/tagsiteclient.php';?>
+                <?php include 'views/layouts/tagsiteclient.php';?>
                 <h6 class="sidebar-heading">
                     <span>Khung hệ thống</span>
                 </h6>
@@ -65,10 +77,13 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
         </aside>
         <?php
         if ($current_tab == "News") {
-            include '../sur/views/surveys/news.php';
+            include 'views/surveys/news.php';
         }
         if ($current_tab == "Surveys") {
-            include '../sur/views/surveys/survey.php';
+            include 'views/surveys/clientSurvey.php';
+        }
+        if ($current_tab == "History") {
+            include 'views/surveys/statistic.php';
         }
         ?>
 
@@ -84,6 +99,6 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
     }
 </script>
 
-<?php include 'layouts/page_footer.php';?>
+<?php include 'views/layouts/page_footer.php';?>
 </body>
 </html>

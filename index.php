@@ -2,7 +2,7 @@
 include 'enums/UserType.php';
 session_start();
 
-if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN, UserType::STUDENT))) {
+if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN))) {
   header("Location: login.php");
   die();
 }
