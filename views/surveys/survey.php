@@ -1,3 +1,15 @@
+<?php
+include 'controllers/clientController.php';
+
+$arrChuDe = ClientController::getAllChuDe();
+$idChuDe = 0;
+$arrCauHoi = array();
+if(isset($_GET['idChuDe'])){
+    $idChuDe = $_GET['idChuDe'];
+    $arrCauHoi = QuestionController::getListQuestion($_GET['idChuDe']);
+}
+?>
+
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2"><i class="fa fa-question-circle-o" aria-hidden="true"></i> Trực quan hóa mẫu khảo sát</h1>
@@ -65,17 +77,19 @@
             <table id="example1-tab2-dt" class="table table-striped table-bordered table-condensed" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th><select class="js-select2" name="property">
-                            <option selected="selected">Tên chủ đề</option>
-                            <option value="">Môn học</option>
-                            <option value="">Trường lớp</option>
-                            <option value="">Giảng viên</option>
-                        </select></th>
+                    <th style="width:10%">
+                        <select class="custom-select" name="idChuDe" id="idChuDe">
+                            <option value="selected">Tên chủ đề</option>
+                            <?php foreach ($arrChuDe as $row) { ?>
+                                <option value="<?php echo $row['id']; ?>" <?php if(isset($_GET['idChuDe']) && $_GET['idChuDe'] == $row['id']){ echo "selected"; } ?>><?php echo $row['tenChuDe']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </th>
                     <th>Nội dung câu hỏi</th>
-                    <th>Opt1</th>
-                    <th>Opt2</th>
-                    <th>Opt3</th>
-                    <th>Opt4</th>
+                    <th>Đồng ý</th>
+                    <th>Không đồng ý</th>
+                    <th>Không ý kiến</th>
+                    <th>Theo số đông</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -87,6 +101,9 @@
                     <td><input type="radio" aria-label="Radio button for following text input"></td>
                     <td><input type="radio" aria-label="Radio button for following text input"></td>
                 </tr>
+
+                <!--Admin visualization : Bold red color for the inactive question, following both-->
+                <!--Client just seen with active questions, not both-->
                 <tr>
                     <td></td>
                     <td style="color:red;">Trường bạn theo học thuộc tiêu chuẩn loại mấy?</td>

@@ -2,34 +2,31 @@
 include 'enums/UserType.php';
 session_start();
 
-if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN))) {
-  header("Location: login.php");
-  die();
+if (!in_array($_SESSION['ROLE'], array(UserType::STUDENT))) {
+    header("Location: login.php");
+    die();
 }
 $tabs = array(
     array(
-        'title'=>"Topics",
-        'icon'=>'<i class="fa fa-book" aria-hidden="true"></i>',
-        'name'=>"Chủ đề"
+    'title'=>"News",
+    'icon'=>'<i class="fa fa-home"></i>',
+    'name'=>'Cập nhật tin tức'
     ),
     array(
-        'title'=>"Questions",
-        'icon'=>'<i class="fa fa-question" aria-hidden="true"></i>',
-        'name'=>'Danh sách câu hỏi'
+    'title'=>"Surveys",
+    'icon'=>'<i class="fa fa-pencil-square-o"></i>',
+    'name'=>'Khảo sát đánh giá'
     ),
     array(
-        'title'=>"CreateQuestions",
-        'icon'=>'<i class="fa fa-plus" aria-hidden="true"></i>',
-        'name'=>'Tạo câu hỏi'
-    ),
-    array(
-        'title'=>"SurveyForms",
-        'icon'=>'<i class="fa fa-pencil-square-o"></i>',
-        'name'=>'Mẫu khảo sát'
+        'title'=>"History",
+        'icon'=>'<i class="fa fa-history"></i>',
+        'name'=>'Lịch sử khảo sát'
     )
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,14 +41,15 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
 </head>
 <body>
 <?php include 'views/layouts/page_header.php';?>
+
 <div class="container-fluid">
     <div class="row">
         <aside class="col-md-2 d-none d-md-block bg-light sidebar">
 
             <div class="sidebar-sticky">
-                <?php include 'views/layouts/tagsiteadmin.php';?>
+                <?php include 'views/layouts/tagsiteclient.php';?>
                 <h6 class="sidebar-heading">
-                    <span>Danh mục chính</span>
+                    <span>Khung hệ thống</span>
                 </h6>
 
                 <ul class="nav flex-column">
@@ -78,28 +76,29 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
             </div>
         </aside>
         <?php
-            if($current_tab == "Topics"){
-                include 'views/surveys/topic.php';
-            }
-            if ($current_tab == "Questions") {
-                include 'views/surveys/question.php';
-            }
-            if($current_tab == "CreateQuestions"){
-                include 'views/surveys/createQuestion.php';
-            }
-            if($current_tab == "UpdateQuestions"){
-                include 'views/surveys/updateQuestion.php';
-            }
-            if($current_tab == "SurveyForms"){
-                include 'views/surveys/survey.php';
-            }
-         ?>
+        if ($current_tab == "News") {
+            include 'views/surveys/news.php';
+        }
+        if ($current_tab == "Surveys") {
+            include 'views/surveys/clientSurvey.php';
+        }
+        if ($current_tab == "History") {
+            include 'views/surveys/statistic.php';
+        }
+        ?>
+
     </div>
 </div>
+
+<script>
+    $('#idChuDe').change(function() {
+        submitForm();
+    });
+    function submitForm() {
+        document.getElementById("formListQuestion").submit();
+    }
+</script>
 
 <?php include 'views/layouts/page_footer.php';?>
 </body>
 </html>
-<script>
-    $('#notifySaveQuestion').delay(3000).fadeOut();
-</script>
