@@ -2,41 +2,48 @@
 include 'utils/databaseUtil.php';
 class QuestionController
 {
-    public static function getAllChuDe(){
+    public static function getAllTopics(){
         try{
             $db = DatabaseUtil::getConn();
-            $query = "SELECT * FROM chude";
+            $query = "SELECT * FROM topics";
             $stmt = $db->prepare($query);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $arrChuDe = array();
+            $arrTopics = array();
             foreach ($stmt->fetchAll() as $row){
-                $arrChuDe[] = array(
+                $arrTopics[] = array(
                     'id'=>$row['id'],
-                    'tenChuDe'=>$row['ten_chu_de'],
-                    'ngayTao'=>$row['created_at'],
-                    'nguoiTao'=>$row['created_by']
+                    'topicName'=>$row['topic_name'],
+                    'createAt'=>$row['created_at'],
+                    'createBy'=>$row['created_by']
                 );
             }
-            return $arrChuDe;
+            return $arrTopics;
         } catch (Exception $e){
             return $e;
         }
     }
-    public static function getListQuestion($idChuDe){
+    public static function getListQuestion($topicId){
         try{
             $db = DatabaseUtil::getConn();
-            $query = "SELECT * FROM cauhoi WHERE id_chu_de = ".$idChuDe;
+            $query = "SELECT * FROM questions WHERE topic_id = :topicId";
             $stmt = $db->prepare($query);
+            $stmt->bindParam(':topicId', $topicId, PDO::PARAM_INT);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $arrCauHoi = array();
             foreach ($stmt->fetchAll() as $row){
                 $arrCauHoi[] = array(
                     'id'=>$row['id'],
-                    'noiDung'=>$row['noi_dung'],
-                    'loaiCauTraLoi'=>$row['loai_cau_tra_loi'],
-                    'status'=>$row['status']
+                    'content'=>$row['content'],
+                    'op1'=>$row['option1'],
+                    'op2'=>$row['option2'],
+                    'op3'=>$row['option3'],
+                    'op4'=>$row['option4'],
+                    'op5'=>$row['option5'],
+                    'op6'=>$row['option6'],
+                    'topicId'=>$topicId,
+                    'typeOption'=>$row['number_option']
                 );
             }
             return $arrCauHoi;
@@ -44,11 +51,11 @@ class QuestionController
             return $e;
         }
     }
-    public static function saveQuestion($noiDung, $idChuDe, $loaiCauHoi, $status){
+    public static function saveQuestion($content, $topicId, $op1, $op2, $op3, $op4, $op5, $op6, $numberOption){
         $dateTimeNow = date("Y-m-d H:i:s");
         try{
-            $query = "INSERT INTO cauhoi(noi_dung, id_chu_de, loai_cau_tra_loi, status, created_at)
-                        VALUES('$noiDung', '$idChuDe', '$loaiCauHoi', $status, '$dateTimeNow')";
+            $query = "INSERT INTO questions(content, topic_id, option1, option2, option3, option4, option5, option6, number_option, created_at)
+                        VALUES('$content', '$topicId', '$op1', '$op2', '$op3', '$op4', '$op5', '$op6', '$numberOption','$dateTimeNow')";
             $result = DatabaseUtil::executeQuery($query);
 
             return $result;
@@ -56,11 +63,11 @@ class QuestionController
             return $e;
         }
     }
-    public static function saveTopic($tenChuDe, $username){
+    public static function saveTopic($topicName, $username){
         $dateTimeNow = date("Y-m-d H:i:s");
         try{
-            $query = "INSERT INTO chude(ten_chu_de, created_at, created_by)
-                        VALUES('$tenChuDe','$dateTimeNow','$username')";
+            $query = "INSERT INTO topics(topic_name, created_at, created_by)
+                        VALUES('$topicName','$dateTimeNow','$username')";
             $result = DatabaseUtil::executeQuery($query);
 
             return $result;
@@ -68,11 +75,12 @@ class QuestionController
             return $e;
         }
     }
-    public static function updateQuestion($idQuestion, $noiDung, $loaiCauHoi, $status){
+    public static function updateQuestion($idQuestion, $content, $op1, $op2, $op3, $op4, $op5, $op6, $numOption){
         $dateTimeNow = date("Y-m-d H:i:s");
         try{
-            $query = "UPDATE cauhoi SET noi_dung = '$noiDung', loai_cau_tra_loi = $loaiCauHoi, status = $status, updated_at = '$dateTimeNow'
-                        WHERE id = $idQuestion";
+            $query = "UPDATE questions SET content = '$content', option1 = '$op1', option2 = '$op2', option3 = '$op3', 
+                        option4 = '$op4', option5 = '$op5', option6 = '$op6', number_option = '$numOption', updated_at = '$dateTimeNow'
+                        WHERE id = '$idQuestion'";
             $result = DatabaseUtil::executeQuery($query);
 
             return $result;
@@ -81,7 +89,7 @@ class QuestionController
         }
     }
     public static function removeQuestion($questionId, $topicId){
-        $sql = "DELETE FROM cauhoi WHERE id='$questionId' AND id_chu_de = '$topicId'";
+        $sql = "DELETE FROM questions WHERE id = '$questionId' AND topic_id = '$topicId'";
         $delete = DatabaseUtil::executeQueryCheck($sql);
         return $delete;
     }

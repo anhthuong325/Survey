@@ -1,17 +1,18 @@
 <?php
 include 'controllers/questionController.php';
 
-$arrTopic = QuestionController::getAllChuDe();
+$arrTopic = QuestionController::getAllTopics();
+$userName = $_SESSION['USER_ACCOUNT'];
 if(isset($_POST['contentTopic'])){
     $topic = $_POST['contentTopic'];
-    $result = QuestionController::saveTopic($topic, $_SESSION['USER_ACCOUNT']);
+    $result = QuestionController::saveTopic($topic, $userName);
     if($result > 0){
         $notifySuccess = "Lưu thành công!";
     }
     else {
         $notifyFalse = "Lỗi! Lưu không thành công.";
     }
-    $arrTopic = QuestionController::getAllChuDe();
+    $arrTopic = QuestionController::getAllTopics();
 }
 ?>
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
@@ -51,9 +52,9 @@ if(isset($_POST['contentTopic'])){
                                 foreach ($arrTopic as $row) { ?>
                                     <tr>
                                         <th scope="row"><?php echo $row['id']; ?></th>
-                                        <td><?php echo $row['tenChuDe']; ?></td>
-                                        <td><?php echo $row['nguoiTao']; ?></td>
-                                        <td><?php echo $row['ngayTao']; ?></td>
+                                        <td><?php echo $row['topicName']; ?></td>
+                                        <td><?php echo $row['createBy']; ?></td>
+                                        <td><?php echo $row['createAt']; ?></td>
                                     </tr>
                         <?php } } ?>
                         </tbody>

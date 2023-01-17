@@ -102,4 +102,71 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
 </html>
 <script>
     $('#notifySaveQuestion').delay(3000).fadeOut();
+    $('#optionType').change(function () {
+        const optionSelected = $(this).find("option:selected");
+        let valueSelected  = parseInt(optionSelected.val());
+        if(valueSelected === 0){
+            $(".numberOption").removeAttr("hidden");
+            const optionNumber = $("#inputNumber").find("option:selected");
+            let numberOption = parseInt(optionNumber.val());
+            if(numberOption === 2){
+                $(".towOption").removeAttr("hidden");
+                if ($(".fourOption").css("visibility") === "visible") {
+                    $(".fourOption").attr("hidden", true);
+                }
+                if ($(".sixOption").css("visibility") === "visible") {
+                    $(".sixOption").attr("hidden", true);
+                }
+            }
+            if(numberOption === 4){
+                $(".towOption").removeAttr("hidden");
+                $(".fourOption").removeAttr("hidden");
+                if ($(".sixOption").css("visibility") === "visible") {
+                    $(".sixOption").attr("hidden", true);
+                }
+            }
+            if(numberOption === 6){
+                $(".towOption").removeAttr("hidden");
+                $(".fourOption").removeAttr("hidden");
+                $(".sixOption").removeAttr("hidden");
+            }
+        }
+        if(valueSelected === 1) {
+            $(".numberOption").attr("hidden", true);
+            if ($(".towOption").css("visibility") === "visible") {
+                $(".towOption").attr("hidden", true);
+            }
+            if ($(".fourOption").css("visibility") === "visible") {
+                $(".fourOption").attr("hidden", true);
+            }
+            if ($(".sixOption").css("visibility") === "visible") {
+                $(".sixOption").attr("hidden", true);
+            }
+        }
+    });
+    $('#inputNumber').change(function () {
+        const optionNumber = $(this).find("option:selected");
+        let numberOption = parseInt(optionNumber.val());
+        if(numberOption === 2){
+            $(".towOption").removeAttr("hidden");
+            if ($(".fourOption").css("visibility") === "visible") {
+                $(".fourOption").attr("hidden", true);
+            }
+            if ($(".sixOption").css("visibility") === "visible") {
+                $(".sixOption").attr("hidden", true);
+            }
+        }
+        if(numberOption === 4){
+            $(".towOption").removeAttr("hidden");
+            $(".fourOption").removeAttr("hidden");
+            if ($(".sixOption").css("visibility") === "visible") {
+                $(".sixOption").attr("hidden", true);
+            }
+        }
+        if(numberOption === 6){
+            $(".towOption").removeAttr("hidden");
+            $(".fourOption").removeAttr("hidden");
+            $(".sixOption").removeAttr("hidden");
+        }
+    });
 </script>

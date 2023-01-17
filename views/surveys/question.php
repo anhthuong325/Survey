@@ -1,12 +1,12 @@
 <?php
 include 'controllers/questionController.php';
 
-$arrChuDe = QuestionController::getAllChuDe();
-$idChuDe = 0;
-$arrCauHoi = array();
-if(isset($_GET['idChuDe'])){
-    $idChuDe = $_GET['idChuDe'];
-    $arrCauHoi = QuestionController::getListQuestion($_GET['idChuDe']);
+$arrTopics = QuestionController::getAllTopics();
+$topicId = 0;
+$arrQuestions = array();
+if(isset($_GET['topicId'])){
+    $topicId = $_GET['topicId'];
+    $arrQuestions = QuestionController::getListQuestion($_GET['topicId']);
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['questionId']) && isset($_POST['topicId'])) {
     $questionId = $_POST['questionId'];
@@ -14,21 +14,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['questionId']) && isse
     QuestionController::removeQuestion($questionId, $topicId);
     $_SESSION['success'] = true;
     echo $topicId;
-    header("Location: ?tab=Questions&idChuDe=".$topicId."&action=remove");
+    header("Location: ?tab=Questions&topicId=".$topicId."&action=remove");
     die();
     return;
 }
 //update question
-if(isset($_POST['editQuestionId']) && isset($_POST['editContent']) && isset($_POST['editOption']) && isset($_POST['editStatus'])){
+if(isset($_POST['editQuestionId']) && isset($_POST['editContent'])){
     $id = $_POST['editQuestionId'];
-    $question = $_POST['editContent'];
-    $option = $_POST['editOption'];
-    $status = $_POST['editStatus'];
-    if($question != "" && $option > 0){
-        $result = QuestionController::updateQuestion($id, $question, $option, $status);
+    $content = $_POST['editContent'];
+    $optionType = (int)$_POST['optionType'];
+    $numOption = 0;
+    $op1 = $op2 = $op3 = $op4 = $op5 = $op6 = "";
+    if($content != "" && $optionType == 1){
+        $result = QuestionController::updateQuestion($id, $content, $op1, $op2, $op3, $op4, $op5, $op6, $numOption);
         if($result){
             $notifySuccess = "Cập nhật thành công!";
-            header("Location: ?tab=Questions&idChuDe=".$idChuDe);
+            header("Location: ?tab=Questions&topicId=".$topicId);
+            die();
+        }
+    }
+    if($content != "" && $optionType == 0){
+        $numOption = (int)$_POST['numberOption'];
+        if($numOption == 2){
+            $op1 = $_POST['option1'];
+            $op2 = $_POST['option2'];
+        }
+        if($numOption == 4){
+            $op1 = $_POST['option1'];
+            $op2 = $_POST['option2'];
+            $op3 = $_POST['option3'];
+            $op4 = $_POST['option4'];
+        }
+        if($numOption == 6){
+            $op1 = $_POST['option1'];
+            $op2 = $_POST['option2'];
+            $op3 = $_POST['option3'];
+            $op4 = $_POST['option4'];
+            $op5 = $_POST['option5'];
+            $op6 = $_POST['option6'];
+        }
+        $result = QuestionController::updateQuestion($id, $content, $op1, $op2, $op3, $op4, $op5, $op6, $numOption);
+        if($result){
+            $notifySuccess = "Cập nhật thành công!";
+            header("Location: ?tab=Questions&topicId=".$topicId);
             die();
         }
     } else {
@@ -65,55 +93,71 @@ if(isset($_POST['editQuestionId']) && isset($_POST['editContent']) && isset($_PO
         <form id="formListQuestion" method="get" action="">
             <input type="hidden" id="tab" name="tab" value="Questions" />
             <div class="btn-toolbar mb-2 mb-md-0">
-                <select class="custom-select" name="idChuDe" id="idChuDe" style="width: 300px; height: 50px; border-color: blue; border-width: medium;">
+                <select class="custom-select" name="topicId" id="topicIdSelect" style="width: 300px; height: 50px; border-color: blue; border-width: medium;">
                     <option value="" selected>Chọn chủ đề</option>
-                    <?php foreach ($arrChuDe as $row) { ?>
-                        <option value="<?php echo $row['id']; ?>" <?php if(isset($_GET['idChuDe']) && $_GET['idChuDe'] == $row['id']){ echo "selected"; } ?>><?php echo $row['tenChuDe']; ?></option>
+                    <?php foreach ($arrTopics as $row) { ?>
+                        <option value="<?php echo $row['id']; ?>" <?php if(isset($_GET['topicId']) && $_GET['topicId'] == $row['id']){ echo "selected"; } ?>><?php echo $row['topicName']; ?></option>
                     <?php } ?>
                 </select>
             </div>
         </form>
     </div>
 
-    <?php if(isset($_GET['idChuDe']) && $_GET['idChuDe'] != 0){ ?>
+    <?php if(isset($_GET['topicId']) && $_GET['topicId'] != 0){ ?>
         <div class="row" >
             <div class="col-lg-12 col-md-6 col-sm-12 pr-0 mb-3" >
                 <div class="card-collapsible card">
                     <div class="card-header">
-                        Danh sách câu hỏi  <a href="?tab=CreateQuestions&idChuDe=<?php echo $idChuDe; ?>">Thêm câu hỏi</a>
+                        Danh sách câu hỏi  <a href="?tab=CreateQuestions&topicId=<?php echo $topicId; ?>">Thêm câu hỏi</a>
                     </div>
                     <div class="card-body">
                         <table class="table">
                             <thead class="thead bg-primary text-white">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col" style="width: 60%;">   Nội dung</th>
+                                <th scope="col" style="width: 40%;">   Nội dung</th>
+                                <th scope="col">Option 1</th>
+                                <th scope="col">Option 2</th>
+                                <th scope="col">Option 3</th>
+                                <th scope="col">Option 4</th>
+                                <th scope="col">Option 5</th>
+                                <th scope="col">Option 6</th>
                                 <th scope="col">Dạng câu trả lời</th>
-                                <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php
                                 $count = 1;
-                                if(count($arrCauHoi) > 0){
-                                    foreach ($arrCauHoi as $row) { ?>
+                                if(count($arrQuestions) > 0){
+                                    foreach ($arrQuestions as $row) { ?>
                                         <tr>
                                             <th scope="row"><?php echo $count; ?></th>
-                                            <td><?php echo $row['noiDung']; ?></td>
-                                            <td><?php echo $row['loaiCauTraLoi'] == 1 ? "Trắc nghiệm" : "Nhập câu trả lời"; ?></td>
-                                            <td><?php echo $row['status'] == 1 ? "Active" : "Not active"; ?></td>
+                                            <td><?php echo $row['content']; ?></td>
+                                            <td><?php echo $row['op1']; ?></td>
+                                            <td><?php echo $row['op2']; ?></td>
+                                            <td><?php echo $row['op3']; ?></td>
+                                            <td><?php echo $row['op4']; ?></td>
+                                            <td><?php echo $row['op5']; ?></td>
+                                            <td><?php echo $row['op6']; ?></td>
+                                            <td><?php echo $row['typeOption'] == 0 ? "Text" : "Trắc nghiệm"; ?></td>
                                             <td>
                                                 <a class="btn btn-sm btn-secondary btnEdit"
                                                    question-id="<?php echo $row['id']; ?>"
-                                                   question="<?php echo $row['noiDung']; ?>"
-                                                   option="<?php echo $row['loaiCauTraLoi']; ?>"
-                                                   status="<?php echo $row['status']; ?>"
+                                                   question="<?php echo $row['content']; ?>"
+                                                   op1 = "<?php echo $row['op1'];?>"
+                                                   op2 = "<?php echo $row['op2'];?>"
+                                                   op3 = "<?php echo $row['op3'];?>"
+                                                   op4 = "<?php echo $row['op4'];?>"
+                                                   op5 = "<?php echo $row['op5'];?>"
+                                                   op6 = "<?php echo $row['op6'];?>"
+                                                   num-option="<?php echo $row['typeOption']; ?>"
+                                                   option="<?php echo $row['typeOption'] > 0 ? 0 : 1; ?>"
                                                    href="#">
                                                     <i class="fa fa-pencil-square-o "></i>
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-danger removeQuestion" question-id="<?php echo $row['id']; ?>"
-                                                    topic-id=<?php echo $idChuDe; ?>>
+                                                    topic-id=<?php echo $row['topicId']; ?>>
                                                     <i class="fa fa-trash "></i>
                                                 </button>
                                             </td>
@@ -167,19 +211,46 @@ if(isset($_POST['editQuestionId']) && isset($_POST['editContent']) && isset($_PO
                             <label for="editContent">Nhập nội dung câu hỏi:</label>
                             <input type="hidden" name="editQuestionId" id="editQuestionId" value="">
                             <textarea name="editContent" class="form-control" id="editContent" rows="6"></textarea>
+                            <div class="form-row mt-2 towOption">
+                                <div class="col">
+                                    <input type="text" id="option1" name="option1" value="" class="form-control" placeholder="Option 1">
+                                </div>
+                                <div class="col">
+                                    <input type="text" id="option2" name="option2" value="" class="form-control" placeholder="Option 2">
+                                </div>
+                            </div>
+                            <div class="form-row mt-2 fourOption" hidden>
+                                <div class="col">
+                                    <input type="text" id="option3" name="option3" value="" class="form-control" placeholder="Option 3">
+                                </div>
+                                <div class="col">
+                                    <input type="text" id="option4" name="option4" value="" class="form-control" placeholder="Option 4">
+                                </div>
+                            </div>
+                            <div class="form-row mt-2 sixOption" hidden>
+                                <div class="col">
+                                    <input type="text" id="option5" name="option5" value="" class="form-control" placeholder="Option 5">
+                                </div>
+                                <div class="col">
+                                    <input type="text" id="option6" name="option6" value="" class="form-control" placeholder="Option 6">
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group col-md-1 ml-2">
-                            <label for="editOption" style="width: 130px;">Câu trả lời:</label>
-                            <select id="editOption"name="editOption" class="form-control" style="width: 150px;">
-                                <option value="1">Trắc nghiệm</option>
-                                <option value="2">Nhập trả lời</option>
+                        <div class="form-group col-md-2 ml-2">
+                            <label for="optionType" style="width: 130px;">Câu trả lời:</label>
+                            <select id="optionType" name="optionType" class="form-control" style="width: 150px;">
+                                <option value="0" selected>Trắc nghiệm</option>
+                                <option value="1">Text</option>
                             </select>
                             <br>
-                            <label for="editStatus" style="width: 130px;">Trạng thái:</label>
-                            <select id="editStatus"name="editStatus" class="form-control" style="width: 150px;">
-                                <option value="0">Not active</option>
-                                <option value="1">Active</option>
-                            </select>
+                            <div class="numberOption">
+                                <label for="inputNumber" style="width: 130px;">Số Lượng:</label>
+                                <select id="inputNumber" name="numberOption" class="form-control">
+                                    <option value="2" selected>2</option>
+                                    <option value="4">4</option>
+                                    <option value="6">6</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -192,7 +263,7 @@ if(isset($_POST['editQuestionId']) && isset($_POST['editContent']) && isset($_PO
     </div>
 </div>
 <script>
-    $('#idChuDe').change(function() {
+    $('#topicIdSelect').change(function() {
         submitForm();
     });
     function submitForm() {
@@ -210,14 +281,25 @@ if(isset($_POST['editQuestionId']) && isset($_POST['editContent']) && isset($_PO
         const questionId = $(this).attr("question-id");
         const question = $(this).attr("question");
         const option = $(this).attr("option");
-        const status = $(this).attr("status");
+        const numOption = $(this).attr("num-option");
+        const op1 = $(this).attr("op1");
+        const op2 = $(this).attr("op2");
+        const op3 = $(this).attr("op3");
+        const op4 = $(this).attr("op4");
+        const op5 = $(this).attr("op5");
+        const op6 = $(this).attr("op6");
+
         $("#editContent").val(question);
         $("#editQuestionId").val(questionId);
-        $("#editOption").val(option).change();
-        $("#editStatus").val(status).change();
+        $("#option1").val(op1);
+        $("#option2").val(op2);
+        $("#option3").val(op3);
+        $("#option4").val(op4);
+        $("#option5").val(op5);
+        $("#option6").val(op6);
+        $("#optionType").val(option).change();
+        $("#inputNumber").val(numOption).change();
         $("#modalEditQuestion").modal('show');
     });
     $('#removeQuestionSuccess').delay(3000).fadeOut();
-
-
 </script>
