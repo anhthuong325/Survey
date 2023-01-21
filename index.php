@@ -87,9 +87,6 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
             if($current_tab == "CreateQuestions"){
                 include 'views/surveys/createQuestion.php';
             }
-            if($current_tab == "UpdateQuestions"){
-                include 'views/surveys/updateQuestion.php';
-            }
             if($current_tab == "SurveyForms"){
                 include 'views/surveys/survey.php';
             }

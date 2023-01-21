@@ -14,12 +14,6 @@ if (isset($_GET['logout'])) {
     header("Location: login.php");
     die();
 }
-
-if(isset($_SESSION['USER_ACCOUNT'])) {
-    header("Location: user.php");
-    die();
-}
-
 // login
 if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
     $username = $_POST['userLogin'];
@@ -29,11 +23,19 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
         $error = "You are not authorized to access. Please contact admin for help!";
     } else {
         // login succeed
-        $_SESSION['USER_ACCOUNT']   = $data['ACCOUNT'];
-        $_SESSION['USER_NAME']      = $data['NAME'];
-        $_SESSION['ROLE']           = $data['ROLE'];
-        header("Location: index.php");
-        die();
+        if($data['ROLE'] == '0'){
+            $_SESSION['USER_ACCOUNT']   = $data['ACCOUNT'];
+            $_SESSION['USER_NAME']      = $data['NAME'];
+            $_SESSION['ROLE']           = $data['ROLE'];
+            header("Location: index.php");
+            die();
+        } else {
+            $_SESSION['USER_ACCOUNT']   = $data['ACCOUNT'];
+            $_SESSION['USER_NAME']      = $data['NAME'];
+            $_SESSION['ROLE']           = $data['ROLE'];
+            header("Location: user.php");
+            die();
+        }
     }
 }
 ?>

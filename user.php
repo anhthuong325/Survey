@@ -2,7 +2,7 @@
 include 'enums/UserType.php';
 session_start();
 
-if (!in_array($_SESSION['ROLE'], array(UserType::STUDENT))) {
+if (!in_array($_SESSION['ROLE'], array(UserType::STUDENT, UserType::TEACHER, UserType::USER))) {
     header("Location: login.php");
     die();
 }
@@ -76,15 +76,6 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
             </div>
         </aside>
         <?php
-        if ($current_tab == "News") {
-            include 'views/surveys/news.php';
-        }
-        if ($current_tab == "Surveys") {
-            include 'views/surveys/clientSurvey.php';
-        }
-        if ($current_tab == "History") {
-            include 'views/surveys/statistic.php';
-        }
         ?>
 
     </div>

@@ -1,31 +1,44 @@
 <?php
 include 'controllers/clientController.php';
 
-$arrKhoa = ClientController::getAllKhoa();
-$arrLop = ClientController::getAllLop();
+$arrDepartment = ClientController::getAllDepartments();
+$arrClass = ClientController::getAllClass();
 
-$status = 0;
-
-if(isset($_POST['textUsername']) && isset($_POST['textFullname']) &&
-    isset($_POST['optRoleRadio']) && isset($_POST['textEmail']) && isset($_POST['textPassword'])
-    || isset($_POST['lopHoc']) || isset($_POST['khoaGV']) || isset($_POST['khoaSV'])){
-    $userName = $_POST['textUsername'];
-    $fullName = $_POST['textFullname'];
-    $idRole = $_POST['optRoleRadio'];
-    $email = $_POST['textEmail'];
-    $password = $_POST['textPassword'];
-    $idKhoa = isset($_POST['khoaSV']) && $_POST['khoaSV'] != '0' ? $_POST['khoaSV'] : 0;
-    $idLop = isset($_POST['lopHoc']) && $_POST['lopHoc'] != '0' ? $_POST['lopHoc'] : 0;
-    if($idKhoa == 0){
-        $idKhoa = isset($_POST['khoaGV']) && $_POST['khoaGV'] != '0' ? $_POST['khoaGV'] : 0;
-    }
-    if($userName != "" && $fullName != "" && $email != "" && $password != "" && $idRole > 1){
-        $result = ClientController::registerUser($userName, $fullName, $idRole, $email, $password, $idLop, $idKhoa, $status);
+if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birthday']) &&
+    isset($_POST['email']) && isset($_POST['password']) && isset($_POST['opUser'])
+    && isset($_POST['departmentId']) && isset($_POST['classId'])){
+    //
+    $userName = $_POST['userName'];
+    $fullName = $_POST['fullName'];
+    $roleId = (int)$_POST['opUser'];
+    $email = $_POST['email'];
+    $birthday = $_POST['birthday'];
+    $password = $_POST['password'];
+    $departmentId = $_POST['departmentId'];
+    $classId = $_POST['classId'];
+    // role = 1 is Student
+    // role = 2 is teacher
+    // role = 3 is user
+    if($roleId == 1){
+        $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, $classId, $departmentId);
         if($result > 0){
-            $notifySuccess = "Đăng ký thành công!";
+            $notifySuccess = "Chúc mừng Sinh viên ".$fullName." đã đăng ký thành công!";
         }
-    } else {
-        $notifyFalse = "Lỗi! Đăng ký không hợp thành.";
+    }
+    if($roleId == 2){
+        $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, null, $departmentId);
+        if($result > 0){
+            $notifySuccess = "Chúc mừng Giáo viên ".$fullName." đã đăng ký thành công!";
+        }
+    }
+    if($roleId == 3){
+        $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, null, null);
+        if($result > 0){
+            $notifySuccess = "Chúc mừng người dùng ".$fullName." đã đăng ký thành công!";
+        }
+    }
+    else {
+        $notifyFalse = "Lỗi! Đăng ký không thành công!";
     }
 }
 
@@ -86,62 +99,51 @@ if(isset($_POST['textUsername']) && isset($_POST['textFullname']) &&
                             <?php } ?>
                             <h2 class="fw-bold mb-4">Đăng ký tài khoản khảo sát</h2>
                             <form action="" method="post">
-                                <input type="hidden" value="0" id="khoaSV" name="khoaSV">
-                                <input type="hidden" value="0" id="khoaGV" name="khoaGV">
-                                <input type="hidden" value="0" id="lopHoc" name="lopHoc">
                                 <div class="form-group">
-                                    <input type="text" name="textUsername" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nhập tên tài khoản">
+                                    <input type="text" name="userName" class="form-control" id="" aria-describedby="emailHelp" placeholder="Nhập tên tài khoản">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" name="textFullname" class="form-control" id="exampleInputPassword1" placeholder="Họ và tên của bạn">
+                                    <input type="text" name="fullName" class="form-control" id="" placeholder="Họ và tên của bạn">
                                 </div>
-
-
-                                <h5 class="mb-2 pb-1">Lựa chọn nhân vật: </h5>
                                 <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label class="radio-inline"><input type="radio" name="optRoleRadio" id="opOne" value="2"><i class="fa fa-address-book-o ml-2" aria-hidden="true"></i> Sinh viên</label>
-                                        <label class="radio-inline ml-4 mr-4"><input type="radio" name="optRoleRadio" id="opTwo" value="3"><i class="fa fa-users ml-2" aria-hidden="true"></i> Giảng viên</label>
-                                        <label class="radio-inline"><input type="radio" name="optRoleRadio" id="opThree" checked value="4"><i class="fa fa-mercury ml-2" aria-hidden="true"></i> Khác</label>
+                                    <input class="form-control" type="date" name="birthday" placeholder="dd-mm-yyyy" value="" min="1960-01-01" max="<?php echo date("Y-m-d");?>">
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" name="email" class="form-control" id="" placeholder="Nhập địa chỉ email">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" class="form-control" id="" placeholder="Nhập mật khẩu">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12 form-check">
+                                        <label class="radio-inline">
+                                            <input class="form-check-input" type="radio" name="opUser" id="opStudent" value="1"><i class="fa fa-address-book-o ml-2" aria-hidden="true"></i> Sinh viên</label>
+                                        <label class="radio-inline ml-4 mr-4">
+                                            <input class="form-check-input" type="radio" name="opUser" id="opTeacher" value="2"><i class="fa fa-users ml-2" aria-hidden="true"></i> Giảng viên</label>
+                                        <label class="radio-inline">
+                                            <input class="form-check-input" type="radio" name="opUser" id="opUser" checked value="3"><i class="fa fa-mercury ml-2" aria-hidden="true"></i> Khác</label>
                                     </div>
                                 </div>
-                                <div class="form-group" id="optionOneDiv" hidden>
-                                    <select class="custom-select selectLop" name="idLop" id="optionOne" style="margin-bottom:15px;">
+                                <div class="form-group selectDepartment" hidden>
+                                    <select class="custom-select" name="departmentId">
+                                        <option value="0" selected>Chọn khoa của bạn</option>
+                                        <?php foreach ($arrDepartment as $row){ ?>
+                                            <option value="<?php echo $row['id']; ?>"><?php echo $row['departmentName']; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="form-group selectClass" hidden>
+                                    <select class="custom-select" name="classId">
                                         <option value="0" selected>Chọn lớp của bạn</option>
-                                        <?php foreach ($arrLop as $row) { ?>
-                                            <option value="<?php echo $row['id']; ?>" ><?php echo $row['tenLop']; ?></option>
+                                        <?php foreach ($arrClass as $row){ ?>
+                                            <option value="<?php echo $row['id']; ?>"><?php echo $row['className']; ?></option>
                                         <?php } ?>
                                     </select>
-<!--                                    <input class="form-control" type="text" name="textClass" id="optionOne" placeholder="Nhập lớp cho sinh viên"><br>-->
-                                    <select class="custom-select selectKhoaSV" name="idKhoa" id="optionTwo">
-                                        <option value="0" selected>Chọn khoa trực thuộc của bạn</option>
-                                        <?php foreach ($arrKhoa as $row) { ?>
-                                            <option value="<?php echo $row['id']; ?>" ><?php echo $row['tenKhoa']; ?></option>
-                                        <?php } ?>
-                                    </select>
-<!--                                    <input class="form-control" type="text" name="textApartment" id="optionOne" placeholder="Khoa trực thuộc của bạn">-->
                                 </div>
-                                <div class="form-group" id="optionTwoDiv" hidden>
-                                    <select class="custom-select selectKhoaGV" name="idKhoa" id="optionTwo">
-                                        <option value="0" selected>Chọn khoa trực thuộc của bạn</option>
-                                        <?php foreach ($arrKhoa as $row) { ?>
-                                            <option value="<?php echo $row['id']; ?>" ><?php echo $row['tenKhoa']; ?></option>
-                                        <?php } ?>
-                                    </select>
-<!--                                    <input class="form-control" type="text" name="textApartment" id="optionTwo" placeholder="Khoa trực thuộc đối với giảng viên">-->
-                                </div>
-                                <div class="form-group" id="optionThreeDiv" hidden>
-                                    <label class="control-label col-sm-3">Khác: <sup class="req">*</sup></label>
-                                    <input class="form-control" type="text" name="textDifferent" id="optionThree">
-                                </div>
-
+                                <div class="form-group"></div>
                                 <div class="form-group">
-                                    <input type="email" name="textEmail" class="form-control" id="exampleInputPassword1" placeholder="Nhập địa chỉ email">
+                                    <button type="submit" class="btn btn-primary" id="btnRegist">Xác nhận đăng ký</button>
                                 </div>
-                                <div class="form-group">
-                                    <input type="password" name="textPassword" class="form-control" id="exampleInputPassword1" placeholder="Nhập mật khẩu">
-                                </div>
-                                <button type="submit" class="btn btn-primary" id="btnRegist">Xác nhận đăng ký</button>
                             </form>
                         </div>
                     </div>
@@ -151,24 +153,29 @@ if(isset($_POST['textUsername']) && isset($_POST['textFullname']) &&
         <!-- Section: Design Block -->
     </div>
 </div>
-
-<script type="text/javascript">
-    $('input[name="optRoleRadio"]:radio').change(function () {
-        $('#optionOneDiv').toggle(this.id == 'opOne').removeAttr("hidden");
-        $('#optionTwoDiv').toggle(this.id == 'opTwo').removeAttr("hidden");
-        $('#optionThreeDiv').toggle(this.id == 'opThree');
-    });
-    $('#btnRegist').click(function() {
-        const lopHoc = $('.selectLop :selected').val();
-        const khoaSV = $('.selectKhoaSV :selected').val();
-        const khoaGV = $('.selectKhoaGV :selected').val();
-
-        $('#lopHoc').val(lopHoc);
-        $('#khoaSV').val(khoaSV);
-        $('#khoaGV').val(khoaGV);
-    });
-</script>
-
 <?php include 'views/layouts/page_footer.php';?>
 </body>
 </html>
+<script>
+    $('#notifyRegisterUser').delay(3000).fadeOut();
+    $('.form-check-input').click(function() {
+        if($('#opStudent').is(':checked')){
+            $(".selectDepartment").removeAttr("hidden");
+            $(".selectClass").removeAttr("hidden");
+        }
+        if($('#opTeacher').is(':checked')){
+            $(".selectDepartment").removeAttr("hidden");
+            if ($(".selectClass").css("visibility") === "visible") {
+                $(".selectClass").attr("hidden", true);
+            }
+        }
+        if($('#opUser').is(':checked')){
+            if ($(".selectDepartment").css("visibility") === "visible") {
+                $(".selectDepartment").attr("hidden", true);
+            }
+            if ($(".selectClass").css("visibility") === "visible") {
+                $(".selectClass").attr("hidden", true);
+            }
+        }
+    });
+</script>

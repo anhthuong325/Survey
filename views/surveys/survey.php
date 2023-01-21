@@ -1,12 +1,12 @@
 <?php
 include 'controllers/clientController.php';
 
-$arrChuDe = ClientController::getAllChuDe();
-$idChuDe = 0;
-$arrCauHoi = array();
-if(isset($_GET['idChuDe'])){
-    $idChuDe = $_GET['idChuDe'];
-    $arrCauHoi = QuestionController::getListQuestion($_GET['idChuDe']);
+$arrTopic = QuestionController::getAllTopics();
+$topicId = 0;
+$arrQuestions = array();
+if(isset($_GET['topicId'])){
+    $topicId = $_GET['topicId'];
+    $arrQuestions = QuestionController::getListQuestion($_GET['topicId']);
 }
 ?>
 
@@ -80,8 +80,8 @@ if(isset($_GET['idChuDe'])){
                     <th style="width:10%">
                         <select class="custom-select" name="idChuDe" id="idChuDe">
                             <option value="selected">Tên chủ đề</option>
-                            <?php foreach ($arrChuDe as $row) { ?>
-                                <option value="<?php echo $row['id']; ?>" <?php if(isset($_GET['idChuDe']) && $_GET['idChuDe'] == $row['id']){ echo "selected"; } ?>><?php echo $row['tenChuDe']; ?></option>
+                            <?php foreach ($arrTopic as $row) { ?>
+                                <option value="<?php echo $row['id']; ?>" <?php if(isset($_GET['topicId']) && $_GET['topicId'] == $row['id']){ echo "selected"; } ?>><?php echo $row['topicName']; ?></option>
                             <?php } ?>
                         </select>
                     </th>

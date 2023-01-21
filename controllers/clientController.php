@@ -2,21 +2,26 @@
 include 'utils/databaseUtil.php';
 class ClientController
 {
-    public static function registerUser($userName, $fullName, $idRole, $email, $password, $idLop, $idKhoa, $status){
+    public static function registerUser($userName, $fullName, $roleId, $email, $birthdate, $password, $classId, $departmentId){
+        $dateTimeNow = date("Y-m-d H:i:s");
         try{
-            $query = "INSERT INTO users (user_name, full_name, role_id, email, password, lop_id, khoa_id, active)
-                        VALUES('$userName', '$fullName', $idRole, '$email', '$password', $idLop, $idKhoa, $status)";
+            $query = "INSERT INTO users(user_name, full_name, role_id, email, birthdate, password, class_id, department_id, active, created_at)
+                        SELECT * FROM (SELECT '$userName' AS user_name, '$fullName' AS full_name, '$roleId' AS role_id, 
+                                              '$email' AS email, '$birthdate' AS birthdate, '$password' AS password, 
+                                              '$classId' AS class_id, '$departmentId' AS department_id, '1' AS active, '$dateTimeNow' AS created_at) AS temp
+                        WHERE NOT EXISTS (
+                            SELECT user_name FROM users WHERE user_name = '$userName'
+                        ) LIMIT 1;";
             $result = DatabaseUtil::executeQuery($query);
-
             return $result;
         } catch (Exception $e){
             return $e;
         }
     }
-    public static function getAllKhoa(){
+    public static function getAllDepartments(){
         try{
             $db = DatabaseUtil::getConn();
-            $query = "SELECT * FROM khoa";
+            $query = "SELECT * FROM departments";
             $stmt = $db->prepare($query);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -24,7 +29,7 @@ class ClientController
             foreach ($stmt->fetchAll() as $row){
                 $arrKhoa[] = array(
                     'id'=>$row['id'],
-                    'tenKhoa'=>$row['ten_khoa']
+                    'departmentName'=>$row['department_name']
                 );
             }
             return $arrKhoa;
@@ -32,10 +37,10 @@ class ClientController
             return $e;
         }
     }
-    public static function getAllLop(){
+    public static function getAllClass(){
         try{
             $db = DatabaseUtil::getConn();
-            $query = "SELECT * FROM lop";
+            $query = "SELECT * FROM class";
             $stmt = $db->prepare($query);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -43,7 +48,7 @@ class ClientController
             foreach ($stmt->fetchAll() as $row){
                 $arrLop[] = array(
                     'id'=>$row['id'],
-                    'tenLop'=>$row['ten_lop']
+                    'className'=>$row['class_name']
                 );
             }
             return $arrLop;
@@ -51,44 +56,4 @@ class ClientController
             return $e;
         }
     }
-    public static function getAllChuDe(){
-        try{
-            $db = DatabaseUtil::getConn();
-            $query = "SELECT * FROM chude";
-            $stmt = $db->prepare($query);
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $arrChuDe = array();
-            foreach ($stmt->fetchAll() as $row){
-                $arrChuDe[] = array(
-                    'id'=>$row['id'],
-                    'tenChuDe'=>$row['ten_chu_de']
-                );
-            }
-            return $arrChuDe;
-        } catch (Exception $e){
-            return $e;
-        }
-    }
-    public static function getListQuestion($idChuDe){
-        try{
-            $db = DatabaseUtil::getConn();
-            $query = "SELECT * FROM cauhoi WHERE id_chu_de = ".$idChuDe;
-            $stmt = $db->prepare($query);
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $arrCauHoi = array();
-            foreach ($stmt->fetchAll() as $row){
-                $arrCauHoi[] = array(
-                    'id'=>$row['id'],
-                    'noiDung'=>$row['noi_dung'],
-                    'loaiCauTraLoi'=>$row['loai_cau_tra_loi']
-                );
-            }
-            return $arrCauHoi;
-        } catch (Exception $e){
-            return $e;
-        }
-    }
-
 }
