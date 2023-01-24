@@ -1,4 +1,4 @@
-/* main componenets */
+t/* main componenets */
 
 .logo {
     width: 40px;
@@ -108,6 +108,11 @@ td.table-no-record {
 
 .table td, .table thead th {
     vertical-align: middle;
+    color : #000000;
+}
+
+.table thead th {
+    background-color: #80bdff;
 }
 
 .border-less td, .border-less thead th {
