@@ -24,11 +24,17 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
         if ($result > 0) {
             $notifySuccess = "Chúc mừng Sinh viên " . $fullName . " đã đăng ký thành công!";
         }
+        else {
+            $notifyFalse = "Lỗi! Đăng ký không thành công!";
+        }
     }
     if ($roleId == 2) {
         $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, null, $departmentId);
         if ($result > 0) {
             $notifySuccess = "Chúc mừng Giáo viên " . $fullName . " đã đăng ký thành công!";
+        }
+        else {
+            $notifyFalse = "Lỗi! Đăng ký không thành công!";
         }
     }
     if ($roleId == 3) {
@@ -36,11 +42,11 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
         if ($result > 0) {
             $notifySuccess = "Chúc mừng người dùng " . $fullName . " đã đăng ký thành công!";
         }
+        else {
+            $notifyFalse = "Lỗi! Đăng ký không thành công!";
+        }
     }
-
-} else {
-        $notifyFalse = "Lỗi! Đăng ký không thành công!";
-    }
+} 
 
 ?>
 <html>
