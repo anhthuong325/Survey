@@ -2,7 +2,7 @@
 include 'controllers/clientController.php';
 
 $arrDepartment = ClientController::getAllDepartments();
-$arrClass = ClientController::getAllClass();
+$arrClass = ClientController::getAllClasses();
 
 if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birthday']) &&
     isset($_POST['email']) && isset($_POST['password']) && isset($_POST['opUser'])
@@ -17,8 +17,8 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
     $departmentId = $_POST['departmentId'];
     $classId = $_POST['classId'];
     // role = 1 is Student
-    // role = 2 is teacher
-    // role = 3 is user
+    // role = 2 is Teacher
+    // role = 3 is User
     if ($roleId == 1) {
         $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, $classId, $departmentId);
         if ($result > 0) {
@@ -46,7 +46,7 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
             $notifyFalse = "Lỗi! Đăng ký không thành công!";
         }
     }
-} 
+}
 
 ?>
 <html>

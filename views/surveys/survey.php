@@ -2,7 +2,9 @@
 include 'controllers/questionController.php';
 
 $arrTopic = QuestionController::getAllTopics();
+$arrFormSurvey = QuestionController::getAllSurveys();
 $topicId = 0;
+$formSurveyId = 0;
 $arrQuestions = array();
 if(isset($_GET['topicId'])){
     $topicId = $_GET['topicId'];
@@ -12,7 +14,7 @@ if(isset($_GET['topicId'])){
 
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formSurvey">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Dựng mẫu</h1>
+        <h1 class="h2"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Dựng mẫu khảo sát</h1>
     </div>
     <div class="col-lg-12">
         <div class="row">
@@ -30,6 +32,12 @@ if(isset($_GET['topicId'])){
                                         <option value="" selected>Chọn chủ đề</option>
                                         <?php foreach ($arrTopic as $row) { ?>
                                             <option value="<?php echo $row['id']; ?>" <?php if(isset($_GET['topicId']) && $_GET['topicId'] == $row['id']){ echo "selected"; } ?>><?php echo $row['topicName']; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <select class="custom-select mt-3 mb-3" name="formSurveyId" id="formSurveyIdSelect">
+                                        <option value="" selected>Chọn mẫu khảo sát</option>
+                                        <?php foreach ($arrFormSurvey as $row) { ?>
+                                            <option value="<?php echo $row['id']; ?>" <?php if(isset($_GET['formSurveyId']) && $_GET['formSurveyId'] == $row['id']){ echo "selected"; } ?>><?php echo $row['formTitle']; ?></option>
                                         <?php } ?>
                                     </select>
                                     <p>Ngày bắt đầu: <b>24/01/2023</b></p>

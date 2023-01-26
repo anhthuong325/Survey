@@ -16,37 +16,36 @@ if(isset($_POST['contentTopic'])){
 }
 
 ?>
-<main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
+<main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formTopic">
     <?php if(isset($notifySuccess)){ ?>
-        <div class="alert alert-success" role="alert" id="notifySaveQuestion">
+        <div class="alert alert-success" role="alert" id="notifySaveTopic">
             <?php echo $notifySuccess; ?>
         </div>
     <?php } ?>
     <?php if(isset($notifyFalse)){ ?>
-        <div class="alert alert-danger" role="alert" id="notifySaveQuestion">
+        <div class="alert alert-danger" role="alert" id="notifySaveTopic">
             <?php echo $notifyFalse; ?>
         </div>
     <?php } ?>
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2"><i class="fa fa-crosshairs" aria-hidden="true"></i> Tạo chủ đề khảo sát</h1>
+        <h1 class="h2"><i class="fa fa-crosshairs" aria-hidden="true"></i> Tạo chủ đề </h1>
     </div>
 
     <div class="row" >
         <div class="col-lg-7 col-md-6 col-sm-12 pr-0 mb-3">
             <div class="card-collapsible card">
                 <div class="card-header">
-                    Danh sách chủ đề khảo sát<i class="fa fa-caret-down caret"></i>
+                    Danh sách chủ đề <i class="fa fa-caret-down caret"></i>
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead class="thead bg-primary text-white">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col" style="width: 40%;">Tên chủ đề khảo sát</th>
+                            <th scope="col" style="width: 40%;">Tên chủ đề</th>
                             <th scope="col">Người tạo</th>
                             <th scope="col">Ngày tạo</th>
-                            <th scope="col">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -58,19 +57,6 @@ if(isset($_POST['contentTopic'])){
                                         <td><?php echo $row['topicName']; ?></td>
                                         <td><?php echo $row['createBy']; ?></td>
                                         <td><?php echo $row['createAt']; ?></td>
-                                        <td class="text-center">
-                                            <div class="btn-group">
-                                                <a href="" class="btn btn-primary btn-flat">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <a  href="?tab=SurveyForms&topicId=<?php echo $row['id']; ?>" class="btn btn-info btn-flat">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-danger btn-flat delete_survey" data-id="<?php echo $row['id'] ?>">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
                                     </tr>
                         <?php $count++; } } ?>
                         </tbody>
@@ -81,12 +67,12 @@ if(isset($_POST['contentTopic'])){
         <div class="col-lg-5 col-md-6 col-sm-12 pr-0 mb-3">
             <div class="card-collapsible card">
                 <div class="card-header">
-                    Tạo chủ đề khảo sát<i class="fa fa-caret-down caret"></i>
+                    Tạo chủ đề <i class="fa fa-caret-down caret"></i>
                 </div>
                 <div class="card-body">
                     <form action="" method="post">
                         <div class="form-row">
-                            <label for="exampleFormControlTextarea1">Nhập tên chủ đề khảo sát:</label>
+                            <label for="exampleFormControlTextarea1">Nhập tên chủ đề:</label>
                             <textarea name="contentTopic" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
                         <div class="form-row">
