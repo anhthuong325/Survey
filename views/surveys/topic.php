@@ -14,21 +14,22 @@ if(isset($_POST['contentTopic'])){
     }
     $arrTopic = QuestionController::getAllTopics();
 }
+
 ?>
-<main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
+<main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formTopic">
     <?php if(isset($notifySuccess)){ ?>
-        <div class="alert alert-success" role="alert" id="notifySaveQuestion">
+        <div class="alert alert-success" role="alert" id="notifySaveTopic">
             <?php echo $notifySuccess; ?>
         </div>
     <?php } ?>
     <?php if(isset($notifyFalse)){ ?>
-        <div class="alert alert-danger" role="alert" id="notifySaveQuestion">
+        <div class="alert alert-danger" role="alert" id="notifySaveTopic">
             <?php echo $notifyFalse; ?>
         </div>
     <?php } ?>
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2"><i class="fa fa-crosshairs" aria-hidden="true"></i> Tạo chủ đề</h1>
+        <h1 class="h2"><i class="fa fa-crosshairs" aria-hidden="true"></i> Tạo chủ đề </h1>
     </div>
 
     <div class="row" >
@@ -42,21 +43,22 @@ if(isset($_POST['contentTopic'])){
                         <thead class="thead bg-primary text-white">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col" style="width: 60%;">Tên chủ đề</th>
+                            <th scope="col" style="width: 40%;">Tên chủ đề</th>
                             <th scope="col">Người tạo</th>
                             <th scope="col">Ngày tạo</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php if(count($arrTopic)) {
+                        <?php $count = 1;
+                        if(count($arrTopic) > 0) {
                                 foreach ($arrTopic as $row) { ?>
                                     <tr>
-                                        <th scope="row"><?php echo $row['id']; ?></th>
+                                        <th scope="row"><?php echo $count; ?></th>
                                         <td><?php echo $row['topicName']; ?></td>
                                         <td><?php echo $row['createBy']; ?></td>
                                         <td><?php echo $row['createAt']; ?></td>
                                     </tr>
-                        <?php } } ?>
+                        <?php $count++; } } ?>
                         </tbody>
                     </table>
                 </div>

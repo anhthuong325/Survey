@@ -25,8 +25,13 @@ $tabs = array(
     array(
         'title'=>"SurveyForms",
         'icon'=>'<i class="fa fa-pencil-square-o"></i>',
-        'name'=>'Mẫu khảo sát'
-    )
+        'name'=>'Dựng mẫu khảo sát'
+    ),
+    array(
+        'title'=>"CreateSurveys",
+        'icon'=>'<i class="fa fa-lastfm-square"></i>',
+        'name'=>'Tạo khảo sát'
+    ),
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
 ?>
@@ -89,6 +94,9 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
             }
             if($current_tab == "SurveyForms"){
                 include 'views/surveys/survey.php';
+            }
+            if($current_tab == "CreateSurveys"){
+                include 'views/surveys/createSurvey.php';
             }
          ?>
     </div>

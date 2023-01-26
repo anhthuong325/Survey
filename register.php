@@ -2,11 +2,11 @@
 include 'controllers/clientController.php';
 
 $arrDepartment = ClientController::getAllDepartments();
-$arrClass = ClientController::getAllClass();
+$arrClass = ClientController::getAllClasses();
 
 if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birthday']) &&
     isset($_POST['email']) && isset($_POST['password']) && isset($_POST['opUser'])
-    && isset($_POST['departmentId']) && isset($_POST['classId'])){
+    && isset($_POST['departmentId']) && isset($_POST['classId'])) {
     //
     $userName = $_POST['userName'];
     $fullName = $_POST['fullName'];
@@ -17,28 +17,34 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
     $departmentId = $_POST['departmentId'];
     $classId = $_POST['classId'];
     // role = 1 is Student
-    // role = 2 is teacher
-    // role = 3 is user
-    if($roleId == 1){
+    // role = 2 is Teacher
+    // role = 3 is User
+    if ($roleId == 1) {
         $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, $classId, $departmentId);
-        if($result > 0){
-            $notifySuccess = "Chúc mừng Sinh viên ".$fullName." đã đăng ký thành công!";
+        if ($result > 0) {
+            $notifySuccess = "Chúc mừng Sinh viên " . $fullName . " đã đăng ký thành công!";
+        }
+        else {
+            $notifyFalse = "Lỗi! Đăng ký không thành công!";
         }
     }
-    if($roleId == 2){
+    if ($roleId == 2) {
         $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, null, $departmentId);
-        if($result > 0){
-            $notifySuccess = "Chúc mừng Giáo viên ".$fullName." đã đăng ký thành công!";
+        if ($result > 0) {
+            $notifySuccess = "Chúc mừng Giáo viên " . $fullName . " đã đăng ký thành công!";
+        }
+        else {
+            $notifyFalse = "Lỗi! Đăng ký không thành công!";
         }
     }
-    if($roleId == 3){
+    if ($roleId == 3) {
         $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, null, null);
-        if($result > 0){
-            $notifySuccess = "Chúc mừng người dùng ".$fullName." đã đăng ký thành công!";
+        if ($result > 0) {
+            $notifySuccess = "Chúc mừng người dùng " . $fullName . " đã đăng ký thành công!";
         }
-    }
-    else {
-        $notifyFalse = "Lỗi! Đăng ký không thành công!";
+        else {
+            $notifyFalse = "Lỗi! Đăng ký không thành công!";
+        }
     }
 }
 

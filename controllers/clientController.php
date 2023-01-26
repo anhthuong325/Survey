@@ -37,10 +37,10 @@ class ClientController
             return $e;
         }
     }
-    public static function getAllClass(){
+    public static function getAllClasses(){
         try{
             $db = DatabaseUtil::getConn();
-            $query = "SELECT * FROM class";
+            $query = "SELECT * FROM classes";
             $stmt = $db->prepare($query);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);

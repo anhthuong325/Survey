@@ -23,6 +23,85 @@ class QuestionController
             return $e;
         }
     }
+    public static function getAllSurveys(){
+        try{
+            $db = DatabaseUtil::getConn();
+            $query = "SELECT * FROM form_survey";
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arrSurveys = array();
+            foreach ($stmt->fetchAll() as $row){
+                $arrSurveys[] = array(
+                    'id'=>$row['id'],
+                    'formTitle'=>$row['form_title'],
+                    'startTime'=>$row['start_time'],
+                    'endTime'=>$row['end_time']
+                );
+            }
+            return $arrSurveys;
+        } catch (Exception $e){
+            return $e;
+        }
+    }
+    public static function getAllUsers(){
+        try{
+            $db = DatabaseUtil::getConn();
+            $query = "SELECT * FROM users";
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arrUsers = array();
+            foreach ($stmt->fetchAll() as $row){
+                $arrUsers[] = array(
+                    'id'=>$row['id'],
+                    'roleId'=>$row['role_id'],
+                    'userName'=>$row['user_name']
+                );
+            }
+            return $arrUsers;
+        } catch (Exception $e){
+            return $e;
+        }
+    }
+    public static function getAllDepartments(){
+        try{
+            $db = DatabaseUtil::getConn();
+            $query = "SELECT * FROM departments";
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arrKhoa = array();
+            foreach ($stmt->fetchAll() as $row){
+                $arrKhoa[] = array(
+                    'id'=>$row['id'],
+                    'departmentName'=>$row['department_name']
+                );
+            }
+            return $arrKhoa;
+        } catch (Exception $e){
+            return $e;
+        }
+    }
+    public static function getAllClasses(){
+        try{
+            $db = DatabaseUtil::getConn();
+            $query = "SELECT * FROM classes";
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arrLop = array();
+            foreach ($stmt->fetchAll() as $row){
+                $arrLop[] = array(
+                    'id'=>$row['id'],
+                    'className'=>$row['class_name']
+                );
+            }
+            return $arrLop;
+        } catch (Exception $e){
+            return $e;
+        }
+    }
     public static function getListQuestion($topicId){
         try{
             $db = DatabaseUtil::getConn();
@@ -70,6 +149,22 @@ class QuestionController
                         VALUES('$topicName','$dateTimeNow','$username')";
             $result = DatabaseUtil::executeQuery($query);
 
+            return $result;
+        } catch (Exception $e){
+            return $e;
+        }
+    }
+    public static function saveSurvey($formTitle, $topicId, $departmentId, $classId, $userId, $startTime, $endTime){
+        $dateTimeNow = date("Y-m-d H:i:s");
+        try{
+            $query = "INSERT INTO form_survey(form_title, topic_id, department_id, class_id, user_id, start_time, end_time, active, created_at)
+                        SELECT * FROM (SELECT '$formTitle' AS form_title, '$topicId' AS topic_id, '$departmentId' AS department_id, 
+                                              '$classId' AS class_id, '$userId' AS user_id, '$startTime' AS start_time, 
+                                              '$endTime' AS end_time, '1' AS active, '$dateTimeNow' AS created_at) AS temp
+                        WHERE NOT EXISTS (
+                            SELECT form_title FROM form_survey WHERE form_title = '$formTitle'
+                        ) LIMIT 1;";
+            $result = DatabaseUtil::executeQuery($query);
             return $result;
         } catch (Exception $e){
             return $e;
