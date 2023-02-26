@@ -1,5 +1,7 @@
 <?php
 include 'enums/UserType.php';
+include 'utils/databaseUtil.php';
+error_reporting(0);
 session_start();
 
 if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN))) {
@@ -18,14 +20,19 @@ $tabs = array(
         'name'=>'Danh sách câu hỏi'
     ),
     array(
+        'title'=>"SurveyForms",
+        'icon'=>'<i class="fa fa-window-maximize" aria-hidden="true"></i>',
+        'name'=>'Form khảo sát'
+    ),
+    array(
         'title'=>"CreateQuestions",
         'icon'=>'<i class="fa fa-plus" aria-hidden="true"></i>',
         'name'=>'Tạo câu hỏi'
     ),
     array(
-        'title'=>"SurveyForms",
-        'icon'=>'<i class="fa fa-pencil-square-o"></i>',
-        'name'=>'Mẫu khảo sát'
+        'title'=>"CreateSurveyForms",
+        'icon'=>'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>',
+        'name'=>'Tạo form khảo sát'
     )
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
@@ -41,6 +48,8 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
 
     <script type="text/javascript" src="assets/js/jquery.min.js"></script>
     <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/axios.min.js"></script>
+
 </head>
 <body>
 <?php include 'views/layouts/page_header.php';?>
@@ -81,14 +90,17 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
             if($current_tab == "Topics"){
                 include 'views/surveys/topic.php';
             }
-            if ($current_tab == "Questions") {
+            if($current_tab == "Questions"){
                 include 'views/surveys/question.php';
             }
             if($current_tab == "CreateQuestions"){
                 include 'views/surveys/createQuestion.php';
             }
+            if($current_tab == "CreateSurveyForms"){
+                include 'views/surveys/createFormSurvey.php';
+            }
             if($current_tab == "SurveyForms"){
-                include 'views/surveys/survey.php';
+                include 'views/surveys/formSurvey.php';
             }
          ?>
     </div>

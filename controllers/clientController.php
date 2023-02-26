@@ -1,5 +1,5 @@
 <?php
-include 'utils/databaseUtil.php';
+//include 'utils/databaseUtil.php';
 class ClientController
 {
     public static function registerUser($userName, $fullName, $roleId, $email, $birthdate, $password, $classId, $departmentId){

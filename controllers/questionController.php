@@ -1,5 +1,5 @@
 <?php
-include 'utils/databaseUtil.php';
+//include 'utils/databaseUtil.php';
 class QuestionController
 {
     public static function getAllTopics(){
@@ -92,5 +92,64 @@ class QuestionController
         $sql = "DELETE FROM questions WHERE id = '$questionId' AND topic_id = '$topicId'";
         $delete = DatabaseUtil::executeQueryCheck($sql);
         return $delete;
+    }
+    public static function saveFormSurvey($title, $topicId, $timeStart, $timeEnd, $departmentId, $classId, $allUsers, $questions){
+        try{
+            $db = DatabaseUtil::getConn();
+            $sql_form = "INSERT INTO form_surveys(title, topic_id, time_start, time_end, department_id, class_id, all_users)
+                            VALUES(?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $db->prepare($sql_form);
+            $stmt->execute(array(
+                $title,
+                $topicId,
+                $timeStart,
+                $timeEnd,
+                $departmentId,
+                $classId,
+                $allUsers
+            ));
+            //
+            foreach ($questions as $questionId => $status){
+                $sql_log = "INSERT INTO form_survey_logs(question_id, form_id, status)
+                            VALUES ((SELECT id FROM form_surveys WHERE title = ? AND topic_id = ?), ?, ?)";
+                $stmt_log = $db->prepare($sql_log);
+                $stmt_log->execute(array(
+                    $title,
+                    $topicId,
+                    $questionId,
+                    $status
+                ));
+            }
+            return 1;
+        } catch(Exception $e){
+            return $e;
+        }
+    }
+    public static function getAllFormSurvey(){
+        try{
+            $db = DatabaseUtil::getConn();
+            $sql = "SELECT FS.id, FS.title, T.topic_name, FS.time_start, FS.time_end, D.department_name, C.class_name, FS.all_users
+                    FROM form_surveys FS, departments D, class C, topics T
+                    WHERE FS.topic_id = T.id AND FS.department_id = D.id AND FS.class_id = C.id";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arrForm = array();
+            foreach ($stmt->fetchAll() as $row){
+                $arrForm[] = array(
+                    'id'=>$row['id'],
+                    'title'=>$row['title'],
+                    'topicName'=>$row['topic_name'],
+                    'timeStart'=>$row['time_start'],
+                    'timeEnd'=>$row['time_end'],
+                    'departmentName'=>$row['department_name'],
+                    'className'=>$row['class_name'],
+                    'allUser'=>$row['all_users']
+                );
+            }
+            return $arrForm;
+        } catch(Exception $e) {
+            return $e;
+        }
     }
 }

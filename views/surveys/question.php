@@ -123,7 +123,7 @@ if(isset($_POST['editQuestionId']) && isset($_POST['editContent'])){
                                 <th scope="col">Option 5</th>
                                 <th scope="col">Option 6</th>
                                 <th scope="col">Dạng câu trả lời</th>
-                                <th scope="col">Action</th>
+                                <th scope="col" style="width: 100px;">Action</th>
                             </tr>
                             </thead>
                             <tbody>
