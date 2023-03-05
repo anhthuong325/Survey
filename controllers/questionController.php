@@ -1,5 +1,5 @@
 <?php
-//include 'utils/databaseUtil.php';
+include 'utils/databaseUtil.php';
 class QuestionController
 {
     public static function getAllTopics(){
@@ -108,15 +108,15 @@ class QuestionController
                 $classId,
                 $allUsers
             ));
+            $formId = $db->lastInsertId();
             //
             foreach ($questions as $questionId => $status){
                 $sql_log = "INSERT INTO form_survey_logs(question_id, form_id, status)
-                            VALUES ((SELECT id FROM form_surveys WHERE title = ? AND topic_id = ?), ?, ?)";
+                            VALUES (?, ?, ?)";
                 $stmt_log = $db->prepare($sql_log);
                 $stmt_log->execute(array(
-                    $title,
-                    $topicId,
                     $questionId,
+                    $formId,
                     $status
                 ));
             }
@@ -149,6 +149,55 @@ class QuestionController
             }
             return $arrForm;
         } catch(Exception $e) {
+            return $e;
+        }
+    }
+    public static function removeFormSurvey($id){
+        try{
+            $sql = "DELETE FROM form_surveys WHERE id = '$id'";
+            $result = DatabaseUtil::executeQueryCheck($sql);
+            $sql_log = "DELETE FROM form_survey_logs WHERE question_id = '$id'";
+            $result = DatabaseUtil::executeQueryCheck($sql_log);
+            return $result;
+        } catch(Exception $e){
+            return $e;
+        }
+    }
+    public static function getAllDepartments(){
+        try{
+            $db = DatabaseUtil::getConn();
+            $query = "SELECT * FROM departments";
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arrKhoa = array();
+            foreach ($stmt->fetchAll() as $row){
+                $arrKhoa[] = array(
+                    'id'=>$row['id'],
+                    'departmentName'=>$row['department_name']
+                );
+            }
+            return $arrKhoa;
+        } catch (Exception $e){
+            return $e;
+        }
+    }
+    public static function getAllClass(){
+        try{
+            $db = DatabaseUtil::getConn();
+            $query = "SELECT * FROM class";
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arrLop = array();
+            foreach ($stmt->fetchAll() as $row){
+                $arrLop[] = array(
+                    'id'=>$row['id'],
+                    'className'=>$row['class_name']
+                );
+            }
+            return $arrLop;
+        } catch (Exception $e){
             return $e;
         }
     }

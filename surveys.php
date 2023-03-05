@@ -8,19 +8,14 @@ if (!in_array($_SESSION['ROLE'], array(UserType::STUDENT, UserType::TEACHER, Use
 }
 $tabs = array(
     array(
-    'title'=>"News",
-    'icon'=>'<i class="fa fa-home"></i>',
-    'name'=>'Cập nhật tin tức'
-    ),
-    array(
     'title'=>"Surveys",
     'icon'=>'<i class="fa fa-pencil-square-o"></i>',
     'name'=>'Khảo sát đánh giá'
     ),
     array(
-        'title'=>"History",
-        'icon'=>'<i class="fa fa-history"></i>',
-        'name'=>'Lịch sử khảo sát'
+        'title'=>"EnterSurvey",
+        'icon'=>'<i class="fa fa-pencil-square-o"></i>',
+        'name'=>'Nhập khảo sát'
     )
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
@@ -45,13 +40,11 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
 <div class="container-fluid">
     <div class="row">
         <aside class="col-md-2 d-none d-md-block bg-light sidebar">
-
             <div class="sidebar-sticky">
                 <?php include 'views/layouts/tagsiteclient.php';?>
                 <h6 class="sidebar-heading">
                     <span>Khung hệ thống</span>
                 </h6>
-
                 <ul class="nav flex-column">
                     <?php foreach ($tabs as $tab) { ?>
                         <li class="nav-item">
@@ -61,26 +54,27 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
                         </li>
                     <?php } ?>
                 </ul>
-
                 <h6 class="sidebar-heading">
                     <span>Danh mục người dùng</span>
                 </h6>
-
                 <ul class="nav flex-column">
                     <a class="nav-link" href="#">
                         <i class="fa fa-user-o"></i> Hồ sơ thông tin</i>
                     </a>
                     <li class="nav-item"><a class="nav-link" href="./login.php?logout=true"><i class="fa fa-sign-out"></i> Logout</a></li>
                 </ul>
-
             </div>
         </aside>
         <?php
+            if($current_tab == "Surveys"){
+                include 'views/users/index.php';
+            }
+            if($current_tab == "EnterSurvey"){
+                include "views/users/typeForm.php";
+            }
         ?>
-
     </div>
 </div>
-
 <script>
     $('#idChuDe').change(function() {
         submitForm();
@@ -89,7 +83,6 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
         document.getElementById("formListQuestion").submit();
     }
 </script>
-
 <?php include 'views/layouts/page_footer.php';?>
 </body>
 </html>

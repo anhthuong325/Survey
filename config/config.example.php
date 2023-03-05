@@ -7,4 +7,6 @@
     define('DB_PORT',3306);
 
     define("SUPER_ADMIN",'admin');
+    // Base domain - deployment URL
+    define("BASE_DOMAIN",'http://localhost:9999');
 ?>

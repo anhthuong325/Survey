@@ -1,6 +1,6 @@
 <?php
 include 'enums/UserType.php';
-include 'utils/databaseUtil.php';
+
 error_reporting(0);
 session_start();
 

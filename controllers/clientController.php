@@ -1,5 +1,5 @@
 <?php
-//include 'utils/databaseUtil.php';
+include 'utils/databaseUtil.php';
 class ClientController
 {
     public static function registerUser($userName, $fullName, $roleId, $email, $birthdate, $password, $classId, $departmentId){
@@ -52,6 +52,59 @@ class ClientController
                 );
             }
             return $arrLop;
+        } catch (Exception $e){
+            return $e;
+        }
+    }
+    public static function getListSurvey($user){
+        try {
+            $db = DatabaseUtil::getConn();
+            $sql = "SELECT FS.*
+                    FROM form_surveys FS INNER JOIN users U ON FS.class_id = U.class_id OR FS.department_id = U.department_id OR FS.all_users = 0
+                    WHERE U.user_name = :userName
+                    GROUP BY FS.id";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':userName', $user, PDO::PARAM_STR);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arrForm = array();
+            foreach ($stmt->fetchAll() as $row){
+                $item['id'] = $row['id'];
+                $item['title'] = $row['title'];
+                $item['timeStart'] = $row['time_start'];
+                $item['timeEnd'] = $row['time_end'];
+                $arrForm[] = $item;
+            }
+            return $arrForm;
+        } catch(Exception $e){
+            return $e;
+        }
+    }
+    public static function getDetailSurvey($idForm){
+        try{
+            $db = DatabaseUtil::getConn();
+            $sql = "SELECT FS.title, Q.id, Q.content, Q.option1, Q.option2, Q.option3, Q.option4, Q.option5, Q.option6, Q.number_option
+                    FROM form_surveys FS INNER JOIN form_survey_logs FSL ON FS.id = FSL.form_id
+                        INNER JOIN questions Q ON FSL.question_id = Q.id
+                    WHERE FS.id = :formId AND FSL.status = 1";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':formId', $idForm, PDO::PARAM_STR);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arrDetail = array();
+            foreach ($stmt->fetchAll() as $row){
+                $item['content'] = $row['content'];
+                $item['option1'] = $row['option1'];
+                $item['option2'] = $row['option2'];
+                $item['option3'] = $row['option3'];
+                $item['option4'] = $row['option4'];
+                $item['option5'] = $row['option5'];
+                $item['option6'] = $row['option6'];
+                $item['numOption'] = $row['number_option'];
+                $arrDetail['title'] = $row['title'];
+                $arrDetail['questions'][$row['id']] = $item;
+            }
+            return $arrDetail;
         } catch (Exception $e){
             return $e;
         }

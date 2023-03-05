@@ -1,6 +1,5 @@
 <?php
 include 'controllers/questionController.php';
-include 'controllers/clientController.php';
 
 $arrTopics = QuestionController::getAllTopics();
 $topicId = 0;
@@ -10,8 +9,8 @@ if(isset($_GET['topicId'])){
     $arrQuestions = QuestionController::getListQuestion($_GET['topicId']);
 }
 //get dữ liệu
-$arrDepartment = ClientController::getAllDepartments();
-$arrClass = ClientController::getAllClass();
+$arrDepartment = QuestionController::getAllDepartments();
+$arrClass = QuestionController::getAllClass();
 //xử lí lưu form
 $method = $_SERVER['REQUEST_METHOD'];
 if($method === 'POST'){

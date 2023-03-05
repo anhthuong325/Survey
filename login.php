@@ -33,7 +33,7 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
             $_SESSION['USER_ACCOUNT']   = $data['ACCOUNT'];
             $_SESSION['USER_NAME']      = $data['NAME'];
             $_SESSION['ROLE']           = $data['ROLE'];
-            header("Location: user.php");
+            header("Location: surveys.php");
             die();
         }
     }
