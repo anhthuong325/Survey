@@ -1,1 +1,0 @@
-chứa file sql sau mỗi lần cập nhật db
