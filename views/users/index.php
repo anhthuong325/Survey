@@ -40,7 +40,7 @@ if(isset($_SESSION['USER_ACCOUNT'])){
                                     <td><?= $form['timeStart']; ?></td>
                                     <td><?= $form['timeEnd']; ?></td>
                                     <td>
-                                        <a class="btn btn-sm btn-primary text-white" href="<?= BASE_DOMAIN ?>/surveys.php?tab=EnterSurvey&id=<?= $form['id'];?>">
+                                        <a class="btn btn-sm btn-primary text-white" href="<?= BASE_DOMAIN ?>/surveys.php?tab=Surveys&id=<?= $form['id'];?>">
                                             <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                             Bắt đầu khảo sát
                                         </a>

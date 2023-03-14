@@ -115,7 +115,7 @@ if(isset($_POST['contentQuestion']) && isset($_POST['optionType']) && isset($_PO
                     <div class="card-body">
                         <form action="" method="post">
                             <div class="form-row">
-                                <div class="form-group col-md-9">
+                                <div class="col col-md-9">
                                     <label for="exampleFormControlTextarea1">Nhập nội dung câu hỏi:</label>
                                     <textarea name="contentQuestion" class="form-control" id="exampleFormControlTextarea1" rows="6"></textarea>
                                     <div class="form-row mt-2 towOption">
@@ -143,14 +143,15 @@ if(isset($_POST['contentQuestion']) && isset($_POST['optionType']) && isset($_PO
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-1 ml-2">
-                                    <label for="optionType" style="width: 130px;">Câu trả lời:</label>
-                                    <select id="optionType" name="optionType" class="form-control" style="width: 150px;">
-                                        <option value="0" selected>Trắc nghiệm</option>
-                                        <option value="1">Text</option>
-                                    </select>
-                                    <br>
-                                    <div class="numberOption">
+                                <div class="col col-md-3">
+                                    <div class="form-group">
+                                        <label for="optionType">Câu trả lời:</label>
+                                        <select id="optionType" name="optionType" class="form-control">
+                                            <option value="0" selected>Trắc nghiệm</option>
+                                            <option value="1">Text</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group numberOption">
                                         <label for="inputNumber" style="width: 130px;">Số Lượng:</label>
                                         <select id="inputNumber" name="numberOption" class="form-control">
                                             <option value="2" selected>2</option>
@@ -160,7 +161,7 @@ if(isset($_POST['contentQuestion']) && isset($_POST['optionType']) && isset($_PO
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row mt-5">
                                 <div class="col-sm-10">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-send"></i> Gửi đi

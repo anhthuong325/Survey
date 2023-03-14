@@ -11,11 +11,6 @@ $tabs = array(
     'title'=>"Surveys",
     'icon'=>'<i class="fa fa-pencil-square-o"></i>',
     'name'=>'Khảo sát đánh giá'
-    ),
-    array(
-        'title'=>"EnterSurvey",
-        'icon'=>'<i class="fa fa-pencil-square-o"></i>',
-        'name'=>'Nhập khảo sát'
     )
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
@@ -67,10 +62,11 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
         </aside>
         <?php
             if($current_tab == "Surveys"){
-                include 'views/users/index.php';
-            }
-            if($current_tab == "EnterSurvey"){
-                include "views/users/typeForm.php";
+                if(isset($_GET['id'])){
+                    include 'views/users/typeForm.php';
+                } else {
+                    include 'views/users/index.php';
+                }
             }
         ?>
     </div>
