@@ -9,6 +9,9 @@ if(isset($_POST['formSurveyId'])){
         header("Location: ?tab=SurveyForms");
     }
 }
+
+$userFeedback = questionController::getStatisticFeedBack();
+
 ?>
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -76,6 +79,51 @@ if(isset($_POST['formSurveyId'])){
             </div>
         </div>
     </div>
+
+    <div class="container">
+        <h2><i class="fa fa-bar-chart" aria-hidden="true"></i>Thống kê phản hồi lượt khảo sát</h2>
+        <table class="table table-info">
+            <thead style="background-color: #9fcdff">
+            <tr align="center">
+<!--                <th>ID</th>-->
+                <th>Tên tài khoản</th>
+                <th>Mẫu khảo sát số</th>
+                <th>Lần khảo sát</th>
+                <th>Ngày khảo sát</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $currentUser = null; ?>
+            <?php $surveyData = []; ?>
+            <?php foreach($userFeedback as $feedback): ?>
+                <?php
+                // Lấy số lần khảo sát của Form Survey ID của User Name hiện tại
+                $numOfSurvey = questionController::countSurveyByFormIdAndUserName($feedback['formSurveyId'], $feedback['userName']);
+
+                // Thêm dữ liệu vào mảng surveyData
+                if (!array_key_exists($feedback['userName'], $surveyData)) {
+                    $surveyData[$feedback['userName']] = $numOfSurvey;
+                } else {
+                    $surveyData[$feedback['userName']] += $numOfSurvey;
+                }
+                ?>
+                <?php if ($currentUser !== $feedback['userName']): ?>
+                    <?php $currentUser = $feedback['userName']; ?>
+                    <tr align="center">
+<!--                        <td>--><?php //echo $feedback['id']; ?><!--</td>-->
+                        <td><?php echo $feedback['userName']?></td>
+                        <td><?php echo $feedback['formSurveyId']; ?></td>
+                        <td><?php echo $numOfSurvey; ?></td>
+                        <td><?php echo $feedback['createdAt']; ?></td>
+                    </tr>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <canvas id="survey-chart" width="1200" height="200"></canvas>
+
 </main>
 <div class="modal fade" id="deleteFormSurvey">
     <div class="modal-dialog" role="document">
@@ -99,6 +147,7 @@ if(isset($_POST['formSurveyId'])){
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     $('.deleteFormSurvey').click(function(){
         const formId = $(this).attr("form-id");
@@ -106,5 +155,34 @@ if(isset($_POST['formSurveyId'])){
         $('#titleModal').text(titleForm);
         $('#formSurveyId').val(formId);
         $('#deleteFormSurvey').modal('show');
+    });
+
+
+    //Chart Maximum Survey Joined
+    // Lấy thẻ canvas
+    var ctx = document.getElementById('survey-chart').getContext('2d');
+
+    // Tạo biểu đồ
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(<?php echo json_encode($surveyData); ?>),
+    datasets: [{
+        label: 'Thống kê chỉ số % khảo sát cao nhất và thấp nhất với từng người dùng',
+        data: Object.values(<?php echo json_encode($surveyData); ?>),
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 2
+    }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
     });
 </script>

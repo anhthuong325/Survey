@@ -7,7 +7,7 @@ class Authenticate {
         if($username == SUPER_ADMIN && $password == SUPER_ADMIN){
             return array(
                 'ACCOUNT'   => $username,
-                'NAME'      => 'SUPPER ADMIN',
+                'NAME'      => 'SUPER ADMIN',
                 'ROLE'      => UserType::ADMIN
             );
         }
@@ -32,6 +32,7 @@ class Authenticate {
             );
         }
     }
+
 }
 
 ?>

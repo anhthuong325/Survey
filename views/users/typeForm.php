@@ -2,30 +2,34 @@
 include 'controllers/clientController.php';
 
 $idForm = 0;
-$arrQuestions = array();
-if(isset($_GET['id'])){
+$arrForms = array();
+if(isset($_GET['id'])) {
     $idForm = $_GET['id'];
-    $arrQuestions = ClientController::getDetailSurvey($idForm);
+    $arrForms = ClientController::getDetailSurvey($idForm);
     //
     $method = $_SERVER['REQUEST_METHOD'];
-    if($method === 'POST'){
+    if ($method === 'POST') {
         $arrFeedBack = array();
-        $arrFeedBack['formSurveyId'] = $arrQuestions['surveyId'];
-        foreach ($arrQuestions['questions'] as $questionId => $question){
+        $arrFeedBack['formSurveyId'] = $arrForms['surveyId'];
+        foreach ($arrForms['questions'] as $questionId => $question) {
             $item = array();
-            if(isset($_POST[$questionId.'option'])){
-                $item['option'] = $_POST[$questionId.'option'];
+            if (isset($_POST[$questionId . 'option'])) {
+                $item['option'] = $_POST[$questionId . 'option'];
             }
-            if(isset($_POST[$questionId.'optionText'])){
-                $item['value'] = $_POST[$questionId.'optionText'];
+            if (isset($_POST[$questionId . 'optionText'])) {
+                $item['value'] = $_POST[$questionId . 'optionText'];
             }
             $arrFeedBack['feedback'][$questionId] = $item;
         }
-        $result = ClientController::saveFeedbackUser($arrFeedBack);
-        if($result > 0){
+        if ($arrFeedBack['formSurveyId'] = $idForm) {
             //submit thành công
-        } else {
-            //thất bại
+            $result = ClientController::saveFeedbackUser($arrFeedBack);
+            if ($result > 0) {
+                $notifySuccess = "Form " . $arrForms['title'] . " đã ghi lại các phản hồi!";
+            } else {
+                //thất bại
+                $notifyFalse = "Lỗi! Đăng ký không thành công!";
+            }
         }
     }
 }
@@ -34,19 +38,29 @@ if(isset($_GET['id'])){
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formFormSurvey">
 
     <?php if(isset($_GET['id']) && $_GET['id'] != 0){ ?>
-        <section class="vh-100 pt-2 mb-5" style="max-width: 80%; margin: 0 auto;background-color: black; background-image: linear-gradient(#b3cde0, #6497b1, #005b96); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);">
+        <section class="vh-100 pt-3 mb-5 pb-5" style="max-width: 80%; margin: 0 auto;background-color: black; background-image: linear-gradient(#b3cde0, #6497b1, #005b96); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);">
             <div class="container-fluid h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-xl-9 p-3">
+                        <?php if(isset($notifySuccess)){ ?>
+                            <div class="alert alert-success" role="alert" id="notifysaveFeedBack">
+                                <?php echo $notifySuccess; ?>
+                            </div>
+                        <?php } ?>
+                        <?php if(isset($notifyFalse)){ ?>
+                            <div class="alert alert-danger" role="alert" id="notifysaveFeedBack">
+                                <?php echo $notifyFalse; ?>
+                            </div>
+                        <?php } ?>
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4 pb-4 mb-4 border-bottom">
                             <h1 class="h2" style="color:blue;font-family: Times New Roman; text-shadow: 3px 3px white; letter-spacing: 2px; font-weight:bold;"><i class="fa fa-linode" aria-hidden="true"></i> Bắt đầu:
-                                <?php echo isset($arrQuestions) ? $arrQuestions['title'] : ""; ?>
+                                <?php echo isset($arrForms) ? $arrForms['title'] : ""; ?>
                             </h1>
                         </div>
-                        <form class=" bg-white px-4 pt-3" style="border-radius: 10px" action="" method="post">
+                        <form class=" bg-white px-4 pt-3" style="border-radius: 10px;" action="" method="post">
                             <?php
-                            if(isset($arrQuestions['questions']) && is_array($arrQuestions['questions'])) { $sn = 0;
-                                foreach($arrQuestions['questions'] as $id => $question) { $sn++; ?>
+                            if(isset($arrForms['questions']) && is_array($arrForms['questions'])) { $sn = 0;
+                                foreach($arrForms['questions'] as $id => $question) { $sn++; ?>
                                     <div class="pt-2 pb-2 mb-2">
                                         <label class="form-label font-weight-bold"><?= $sn.". ".$question['content']; ?></label>
                                         <?php
@@ -102,3 +116,6 @@ if(isset($_GET['id'])){
         </div>
     <?php } ?>
 </main>
+<script>
+    $('#notifysaveFeedBack').delay(3000).fadeOut();
+</script>

@@ -6,6 +6,7 @@ if (!in_array($_SESSION['ROLE'], array(UserType::STUDENT, UserType::TEACHER, Use
     header("Location: login.php");
     die();
 }
+
 $tabs = array(
     array(
     'title'=>"Surveys",
@@ -53,8 +54,19 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
                     <span>Danh mục người dùng</span>
                 </h6>
                 <ul class="nav flex-column">
-                    <a class="nav-link" href="#">
-                        <i class="fa fa-user-o"></i> Hồ sơ thông tin</i>
+                    <a class="profile" href="profile.php">
+                        <i class="fa fa-user-o">
+                            <div class="welcome-message"
+                                 style= "display: inline-flex;
+                                          background-color: #f5f5f5;
+                                          border: 3px solid #ccc;
+                                          padding-top: 5px;
+                                          padding-left: 10px;
+                                          padding-right: 10px;
+                                          margin-top: 10px;">
+                            <p>Xin chào, <span class="username" style="color: #007bff;font-weight: bold;"><?php echo $_SESSION['USER_NAME']; ?></span></p>
+                            </div>
+                        </i>
                     </a>
                     <li class="nav-item"><a class="nav-link" href="./login.php?logout=true"><i class="fa fa-sign-out"></i> Logout</a></li>
                 </ul>
@@ -71,6 +83,7 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
         ?>
     </div>
 </div>
+
 <script>
     $('#idChuDe').change(function() {
         submitForm();
