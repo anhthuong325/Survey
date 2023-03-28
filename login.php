@@ -63,15 +63,15 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
                 <img src="assets/img/symbol.png"
                      class="img-fluid" alt="Sample image">
             </div>
-            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 mb-5">
 
                 <div class="d-flex align-items-center mb-3 pb-1">
+                    <span class="h3 fw-bold mb-0" style="color: cornflowerblue">Khảo sát <br> Đại học Phú Yên</span>
                     <img src="assets/img/online-survey.ico"
                          class="img-fluid" alt="Sample image">
-                    <span class="h3 fw-bold mb-0" style="color: cornflowerblue">Khảo sát Đại học Phú Yên</span>
                 </div>
 
-                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Đăng nhập vào tài khoản của bạn</h5>
+                <h6 class="fw-normal" style="text-align:right; letter-spacing: 1px;">Đăng nhập vào tài khoản của bạn</h6>
 
                     <form action="login.php" method="post">
 
@@ -90,24 +90,16 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <!-- Checkbox -->
-                            <div class="form-check mb-0">
-                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-                                <label class="form-check-label" for="form2Example3">
-                                    Ghi nhớ
-                                </label>
-                            </div>
-                            <a href="#!" class="text-body">Quên mật khẩu?</a>
+                            <p class="small fw-bold mt-2 pt-1 mb-0">Đã có tài khoản? <a href="register.php"
+                                                                                        class="link-danger">Đăng ký</a></p>
                         </div>
 
-                        <div class="text-center text-lg-start mt-4 pt-2">
+                        <div class="text-center text-lg-start mt-sm-3 pt-2">
                             <button type="submit" class="btn btn-primary btn-lg"
                                     style="padding-left: 2.5rem; padding-right: 2.5rem;">Đăng nhập</button>
                             <?php if(isset($error)) { ?>
                                 <div class="text-center text-danger pt-4"><?php echo $error; ?></div>
                             <?php } ?>
-                            <p class="small fw-bold mt-2 pt-1 mb-0">Đã có tài khoản? <a href="register.php"
-                                                                                              class="link-danger">Đăng ký</a></p>
                         </div>
 
                     </form>
@@ -115,8 +107,7 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
             </div>
         </div>
     </div>
-    <?php include 'views/layouts/page_footer.php';?>
 </section>
-
 </body>
+<?php include 'views/layouts/page_footer.php';?>
 </html>

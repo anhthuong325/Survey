@@ -74,12 +74,23 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
                 </ul>
 
                 <h6 class="sidebar-heading">
-                    <span>Danh mục người dùng</span>
+                    <span>Hệ thống</span>
                 </h6>
 
                 <ul class="nav flex-column">
-                    <a class="nav-link" href="#">
-                        <i class="fa fa-user-o"></i> Hồ sơ thông tin</i>
+                    <a class="profile" href="#">
+                        <div class="welcome-message"
+                             style="display: inline-flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    background-color: #f5f5f5;
+                                    border: 3px solid #ccc;
+                                    padding-top: 5px;
+                                    padding-left: 10px;
+                                    padding-right: 10px;
+                                    margin-top: 10px;">
+                            <p><span class="username" style="color: brown;font-weight: bold;text-align:center;"><?php echo $_SESSION['USER_NAME']; ?></span></p>
+                        </div>
                     </a>
                     <li class="nav-item"><a class="nav-link" href="./login.php?logout=true"><i class="fa fa-sign-out"></i> Logout</a></li>
                 </ul>

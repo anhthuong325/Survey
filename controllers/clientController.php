@@ -18,6 +18,39 @@ class ClientController
             return $e;
         }
     }
+    public static function getAllUsers(){
+        try{
+            $db = DatabaseUtil::getConn();
+            $query = "SELECT * FROM users";
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arrUser = array();
+            foreach ($stmt->fetchAll() as $row){
+                $arrUser[] = array(
+                    'id'=>$row['id'],
+                    'full_name'=>$row['full_name'],
+                    'email'=>$row['email'],
+                    'birthdate'=>$row['birthdate']
+                );
+            }
+            return $arrUser;
+        } catch (Exception $e){
+            return $e;
+        }
+    }
+    public static function updateUser($id, $fullName, $email, $birthdate){
+        $dateTimeNow = date("Y-m-d H:i:s");
+        try{
+            $query = "UPDATE users SET full_name = '$fullName', email = '$email', birthdate = '$birthdate', updated_at = '$dateTimeNow'
+                        WHERE id = '$id'";
+            $result = DatabaseUtil::executeQuery($query);
+
+            return $result;
+        } catch (Exception $e){
+            return $e;
+        }
+    }
     public static function getAllDepartments(){
         try{
             $db = DatabaseUtil::getConn();
@@ -150,7 +183,7 @@ class ClientController
                 //save multiple choice question format
                 if(isset($option['option'])){
                     $db_option = DatabaseUtil::getConn();
-                    $sql_option = "INSERT INTO user_feedback_logs(user_feedback_id, question_id, option)
+                    $sql_option = "INSERT INTO user_feedback_logs(user_feedback_times, question_id, option)
                                     VALUES (?, ?, ?)";
                     $stmt_option = $db_option->prepare($sql_option);
                     $stmt_option->execute(array(
@@ -162,7 +195,7 @@ class ClientController
                 //save essay question format
                 else if(isset($option['value'])){
                     $db_essay = DatabaseUtil::getConn();
-                    $sql_essay = "INSERT INTO user_feedback_logs(user_feedback_id, question_id, value)
+                    $sql_essay = "INSERT INTO user_feedback_logs(user_feedback_times, question_id, value)
                                     VALUES (?, ?, ?)";
                     $stmt_essay = $db_essay->prepare($sql_essay);
                     $stmt_essay->execute(array(
@@ -173,8 +206,12 @@ class ClientController
                 }
             }
             return $feedbackId;
-        } catch (Exception $e){
-            return $e;
+        } catch (PDOException $e){
+            // Log lỗi vào file log
+            error_log($e->getMessage(), 0);
+
+            // Trả về false để báo lỗi
+            return false;
         }
     }
 }
