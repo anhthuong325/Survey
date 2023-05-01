@@ -201,40 +201,4 @@ class QuestionController
             return $e;
         }
     }
-    public static function getStatisticFeedBack(){
-        try{
-            $db = DatabaseUtil::getConn();
-            $query = "SELECT * FROM user_feedback";
-            $stmt = $db->prepare($query);
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $arrUserFeedBack = array();
-            foreach ($stmt->fetchAll() as $row){
-                $arrUserFeedBack[] = array(
-                    'id'=>$row['id'],
-                    'userName'=>$row['user_name'],
-                    'formSurveyId'=>$row['form_survey_id'],
-                    'createdAt'=>$row['created_at']
-                );
-            }
-            return $arrUserFeedBack;
-        } catch (Exception $e){
-            return $e;
-        }
-    }
-
-    public static function countSurveyByFormIdAndUserName($formSurveyId, $userName){
-        try{
-            $db = DatabaseUtil::getConn();
-            $query = "SELECT COUNT(*) as count FROM user_feedback WHERE form_survey_id = :formSurveyId AND user_name = :userName";
-            $stmt = $db->prepare($query);
-            $stmt->bindParam(':formSurveyId', $formSurveyId, PDO::PARAM_INT);
-            $stmt->bindParam(':userName', $userName, PDO::PARAM_STR);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result['count'];
-        } catch (Exception $e){
-            return $e;
-        }
-    }
 }

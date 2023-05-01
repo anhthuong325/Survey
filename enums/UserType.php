@@ -2,18 +2,18 @@
 
 class UserType
 {
-    const ADMIN = 0;
-    const STUDENT = 1;
-    const TEACHER = 2;
-    const USER = 3;
+    const ADMIN = 1;
+    const STUDENT = 2;
+    const TEACHER = 3;
+    const USER = 4;
     public static function getRole($role){
-        if($role == 0)
-            return "ADMIN";
         if($role == 1)
-            return "STUDENT";
+            return "ADMIN";
         if($role == 2)
-            return "TEACHER";
+            return "STUDENT";
         if($role == 3)
+            return "TEACHER";
+        if($role == 4)
             return "USER";
     }
 }

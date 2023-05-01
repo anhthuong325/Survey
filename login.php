@@ -23,17 +23,22 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
         $error = "You are not authorized to access. Please contact admin for help!";
     } else {
         // login succeed
-        if($data['ROLE'] == '0'){
+        if($data['ROLE'] == 1){
             $_SESSION['USER_ACCOUNT']   = $data['ACCOUNT'];
             $_SESSION['USER_NAME']      = $data['NAME'];
             $_SESSION['ROLE']           = $data['ROLE'];
             header("Location: index.php");
             die();
-        } else {
+        }
+        else if($data['ROLE'] == 2 || $data['ROLE'] == 3 || $data['ROLE'] == 4) {
             $_SESSION['USER_ACCOUNT']   = $data['ACCOUNT'];
             $_SESSION['USER_NAME']      = $data['NAME'];
             $_SESSION['ROLE']           = $data['ROLE'];
             header("Location: surveys.php");
+            die();
+        }
+        else {
+            header("Location: login.php");
             die();
         }
     }

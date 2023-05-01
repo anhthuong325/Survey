@@ -1,12 +1,11 @@
 <?php
 include 'enums/UserType.php';
 
-error_reporting(0);
 session_start();
 
 if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN))) {
-  header("Location: login.php");
-  die();
+    header("Location: login.php");
+    die();
 }
 $tabs = array(
     array(
@@ -84,7 +83,6 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
                                     justify-content: center;
                                     align-items: center;
                                     background-color: #f5f5f5;
-                                    border: 3px solid #ccc;
                                     padding-top: 5px;
                                     padding-left: 10px;
                                     padding-right: 10px;

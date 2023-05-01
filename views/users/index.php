@@ -1,19 +1,14 @@
-<?php
-include 'controllers/clientController.php';
-error_reporting(0);
-session_start();
-if(isset($_SESSION['USER_ACCOUNT'])){
-    $userName = $_SESSION['USER_ACCOUNT'];
-    $arrForm = ClientController::getListSurvey($userName);
-}
-
-?>
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2"><i class="fa fa-crosshairs" aria-hidden="true"></i> Danh sách khảo sát</h1>
     </div>
-
+    <?php if(isset($_SESSION['success']) && isset($_GET['notification'])){
+        unset($_SESSION['success']); ?>
+        <div class="alert alert-success" role="alert" id="notifysaveFeedBack">
+            <?php echo $_GET['notification']; ?>
+        </div>
+    <?php } ?>
     <div class="row" >
         <div class="col-lg-12 col-md-6 col-sm-12 pr-0 mb-3">
             <div class="card-collapsible card">

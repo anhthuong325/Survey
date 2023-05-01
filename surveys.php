@@ -1,5 +1,8 @@
 <?php
+include 'controllers/clientController.php';
 include 'enums/UserType.php';
+
+error_reporting(0);
 session_start();
 
 if (!in_array($_SESSION['ROLE'], array(UserType::STUDENT, UserType::TEACHER, UserType::USER))) {
@@ -16,6 +19,48 @@ $tabs = array(
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
 
+//index form
+if(isset($_SESSION['USER_ACCOUNT'])){
+    $userName = $_SESSION['USER_ACCOUNT'];
+    $arrForm = ClientController::getListSurvey($userName);
+}
+
+//type form survey
+$idForm = 0;
+$arrForms = array();
+if(isset($_GET['id'])) {
+    $idForm = $_GET['id'];
+    $arrForms = ClientController::getDetailSurvey($idForm);
+    //
+    $method = $_SERVER['REQUEST_METHOD'];
+    if ($method === 'POST') {
+        $arrFeedBack = array();
+        $arrFeedBack['formSurveyId'] = $arrForms['surveyId'];
+        foreach ($arrForms['questions'] as $questionId => $question) {
+            $item = array();
+            if (isset($_POST[$questionId . 'option'])) {
+                $item['option'] = $_POST[$questionId . 'option'];
+            }
+            if (isset($_POST[$questionId . 'optionText'])) {
+                $item['value'] = $_POST[$questionId . 'optionText'];
+            }
+            $arrFeedBack['feedback'][$questionId] = $item;
+        }
+        if ($arrFeedBack['formSurveyId'] = $idForm) {
+            //submit thành công
+            $result = ClientController::saveFeedbackUser($arrFeedBack);
+            if ($result > 0) {
+                $_SESSION['success'] = 'SUCCESS';
+                $notifySuccess = "Form " . $arrForms['title'] . " đã ghi lại các phản hồi!";
+                header("Location: surveys.php?tab=Surveys&notification=".$notifySuccess);
+            } else {
+                //thất bại
+                $_SESSION['ERROR'] = 'ERROR';
+                $notifyFalse = "Lỗi! Đăng ký không thành công!";
+            }
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,18 +100,15 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
                 </h6>
                 <ul class="nav flex-column">
                     <a class="profile" href="profile.php">
-                        <i class="fa fa-user-o">
-                            <div class="welcome-message"
-                                 style= "display: inline-flex;
+                        <div class="welcome-message"
+                             style= "display: inline-flex;
                                           background-color: #f5f5f5;
-                                          border: 3px solid #ccc;
                                           padding-top: 5px;
                                           padding-left: 10px;
                                           padding-right: 10px;
                                           margin-top: 10px;">
                             <p>Xin chào, <span class="username" style="color: #007bff;font-weight: bold;"><?php echo $_SESSION['USER_NAME']; ?></span></p>
-                            </div>
-                        </i>
+                        </div>
                     </a>
                     <li class="nav-item"><a class="nav-link" href="./login.php?logout=true"><i class="fa fa-sign-out"></i> Logout</a></li>
                 </ul>
@@ -91,6 +133,7 @@ $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
     function submitForm() {
         document.getElementById("formListQuestion").submit();
     }
+    $('#notifysaveFeedBack').delay(3000).fadeOut();
 </script>
 <?php include 'views/layouts/page_footer.php';?>
 </body>
