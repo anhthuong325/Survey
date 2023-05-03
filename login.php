@@ -47,7 +47,8 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
 ?>
 <html>
 <head>
-    <title>Survey | Login</title>
+    <link rel="icon" href="assets/img/logo.png">
+    <title><?php echo PROJECT_NAME; ?> | LOGIN</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/main.css">

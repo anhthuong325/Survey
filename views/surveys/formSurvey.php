@@ -56,7 +56,7 @@
                                 </td>
                             </tr>
                         <?php } else { $sn = 0;
-                            foreach ($arrFormSurveys as $formSurvey) { $sn ++; ?>
+                            foreach ($arrFormSurveys as $key=>$formSurvey) { $sn ++; ?>
                             <tr>
                                 <td><?= $sn; ?></td>
                                 <td><?= $formSurvey['title']; ?></td>
@@ -67,9 +67,9 @@
                                 <td><?= $formSurvey['className']; ?></td>
                                 <td><?= $formSurvey['allUser'] == 0 ? "All users" : ""; ?></td>
                                 <td class="row">
-                                    <button class="btn btn-sm btn-secondary mr-1 col" title="undeveloped feature">
-                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                    </button>
+                                    <a class="btn btn-sm btn-secondary mr-1 col" href="?tab=Statistics&formId=<?= $key; ?>">
+                                        <i class="fa fa-server" aria-hidden="true"></i>
+                                    </a>
                                     <button class="btn btn-sm btn-danger col deleteFormSurvey" form-id="<?= $formSurvey['id']; ?>" title-form="<?= $formSurvey['title']; ?>">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>

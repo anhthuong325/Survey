@@ -1,4 +1,6 @@
 <?php
+    // Project Name
+    define("PROJECT_NAME","PYU - SURVEY");
     // Database connection info
     define('DB_USER','root');
     define('DB_PASSWORD','');

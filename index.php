@@ -24,16 +24,6 @@ $tabs = array(
         'title'=>"SurveyForms",
         'icon'=>'<i class="fa fa-window-maximize" aria-hidden="true"></i>',
         'name'=>'Form khảo sát'
-    ),
-    array(
-        'title'=>"CreateQuestions",
-        'icon'=>'<i class="fa fa-plus" aria-hidden="true"></i>',
-        'name'=>'Tạo câu hỏi'
-    ),
-    array(
-        'title'=>"CreateSurveyForms",
-        'icon'=>'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>',
-        'name'=>'Tạo form khảo sát'
     )
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
@@ -55,7 +45,7 @@ if(isset($_POST['contentTopic'])){
     $arrTopics = QuestionController::getAllTopics();
 }
 
-//TODO: Remove topics
+//TODO: Remove topics (done)
 if(isset($_POST['topicIdRemove'])) {
     $result = QuestionController::removeTopic($_POST['topicIdRemove']);
     if($result > 0){
@@ -75,7 +65,6 @@ if(isset($_GET['topicId'])){
     $arrQuestions = QuestionController::getListQuestion($_GET['topicId']);
 
     //TODO: Lấy dữ liệu đã submit (done)
-    $status = 0;
     if(isset($_POST['contentQuestion']) && isset($_POST['optionType']) && isset($_POST['numberOption'])){
         $content = $_POST['contentQuestion'];
         $option = (int)$_POST['optionType'];
@@ -102,7 +91,7 @@ if(isset($_GET['topicId'])){
                 $op6 = $_POST['option6'];
             }
         }
-        //TODO: Cập nhật câu hỏi
+        //TODO: Cập nhật câu hỏi (done)
         if(isset($_POST['editQuestionId'])) {
             $id = $_POST['editQuestionId'];
             $result = QuestionController::updateQuestion($id, $content, $op1, $op2, $op3, $op4, $op5, $op6, $number);
@@ -115,7 +104,7 @@ if(isset($_GET['topicId'])){
                 $notifyFalse = "Lỗi! Lưu không thành công.";
             }
         }
-        //TODO: Thêm câu hỏi mới
+        //TODO: Thêm câu hỏi mới (done)
         else {
             $result = QuestionController::saveQuestion($content, $topicId, $op1, $op2, $op3, $op4, $op5, $op6, $number);
             if($result){
@@ -128,6 +117,7 @@ if(isset($_GET['topicId'])){
             }
         }
     }
+
     //TODO: Remove câu hỏi (done)
     if(isset($_POST['questionIdRemove'])){
         $result = QuestionController::removeQuestion($_POST['questionIdRemove'], $topicId);
@@ -176,9 +166,11 @@ if(isset($_GET['topicId'])){
         }
     }
 }
+
 //Lấy danh sách khảo sát
 $arrFormSurveys = QuestionController::getAllFormSurvey();
-//TODO: Delete form survey
+
+//TODO: Delete form survey (done)
 if(isset($_POST['formSurveyIdRemove'])){
     $result = QuestionController::removeFormSurvey($_POST['formSurveyIdRemove']);
     if($result > 0){
@@ -193,6 +185,8 @@ if(isset($_POST['formSurveyIdRemove'])){
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title><?php echo PROJECT_NAME; ?> | ADMIN</title>
+    <link rel="icon" href="assets/img/logo.png">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!--important link source from "https://bootstrapious.com/p/about-us-page"-->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -264,6 +258,9 @@ if(isset($_POST['formSurveyIdRemove'])){
             }
             if($current_tab == "SurveyForms"){
                 include 'views/surveys/formSurvey.php';
+            }
+            if($current_tab == "Statistics"){
+                include 'views/surveys/statisticsSurvey.php';
             }
          ?>
     </div>

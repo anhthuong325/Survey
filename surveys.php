@@ -66,6 +66,8 @@ if(isset($_GET['id'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" href="assets/img/logo.png">
+    <title><?php echo PROJECT_NAME; ?> | USER</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!--important link source from "https://bootstrapious.com/p/about-us-page"-->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">

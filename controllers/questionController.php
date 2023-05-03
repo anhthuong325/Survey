@@ -173,7 +173,7 @@ class QuestionController
             $stmt->bindParam('idForm', $id, PDO::PARAM_INT);
             $stmt->execute();
             //
-            $sql = "DELETE FROM form_survey_logs WHERE question_id = :idForm";
+            $sql = "DELETE FROM form_survey_logs WHERE form_id = :idForm";
             $stmt = $db->prepare($sql);
             $stmt->bindParam('idForm', $id, PDO::PARAM_INT);
             $stmt->execute();

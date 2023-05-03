@@ -35,7 +35,8 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
 ?>
 <html>
 <head>
-    <title>Survey | Register</title>
+    <link rel="icon" href="assets/img/logo.png">
+    <title><?php echo PROJECT_NAME; ?> | REGISTER</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/main.css">

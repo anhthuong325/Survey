@@ -24,7 +24,7 @@
         </div>
     <?php } ?>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2"><i class="fa fa-crosshairs" aria-hidden="true"></i> Tạo chủ đề</h1>
+        <h1 class="h2"><i class="fa fa-crosshairs" aria-hidden="true"></i> Chủ đề</h1>
     </div>
 
     <div class="row" >
@@ -53,6 +53,9 @@
                                         <td><?php echo $row['createBy']; ?></td>
                                         <td><?php echo $row['createAt']; ?></td>
                                         <td class="text-center">
+                                            <a class="btn btn-sm btn-secondary" href="?tab=CreateSurveyForms&topicId=<?php echo $row['id']; ?>">
+                                                <i class="fa fa-pencil-square-o "></i>
+                                            </a>
                                             <button type="button" class="btn btn-sm btn-danger removeTopic" topic-id="<?php echo $row['id']; ?>"
                                                     topic-name="<?php echo $row['topicName']; ?>">
                                                 <i class="fa fa-trash "></i>
