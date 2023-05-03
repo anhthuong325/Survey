@@ -4,8 +4,8 @@ include 'controllers/clientController.php';
 session_start();
 
 if (!in_array($_SESSION['ROLE'], array(UserType::STUDENT, UserType::TEACHER, UserType::USER))) {
-header("Location: login.php");
-die();
+    header("Location: login.php");
+    die();
 }
 
 // Lấy thông tin của người dùng hiện tại từ session

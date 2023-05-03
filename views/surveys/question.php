@@ -1,91 +1,26 @@
-<?php
-include 'controllers/questionController.php';
-
-$arrTopics = QuestionController::getAllTopics();
-$topicId = 0;
-$arrQuestions = array();
-if(isset($_GET['topicId'])){
-    $topicId = $_GET['topicId'];
-    $arrQuestions = QuestionController::getListQuestion($_GET['topicId']);
-}
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['questionId']) && isset($_POST['topicId'])) {
-    $questionId = $_POST['questionId'];
-    $topicId = $_POST['topicId'];
-    QuestionController::removeQuestion($questionId, $topicId);
-    $_SESSION['success'] = true;
-    echo $topicId;
-    header("Location: ?tab=Questions&topicId=".$topicId."&action=remove");
-    die();
-    return;
-}
-//update question
-if(isset($_POST['editQuestionId']) && isset($_POST['editContent'])){
-    $id = $_POST['editQuestionId'];
-    $content = $_POST['editContent'];
-    $optionType = (int)$_POST['optionType'];
-    $numOption = 0;
-    $op1 = $op2 = $op3 = $op4 = $op5 = $op6 = "";
-    if($content != "" && $optionType == 1){
-        $result = QuestionController::updateQuestion($id, $content, $op1, $op2, $op3, $op4, $op5, $op6, $numOption);
-        if($result){
-            $notifySuccess = "Cập nhật thành công!";
-            header("Location: ?tab=Questions&topicId=".$topicId);
-            die();
-        }
-    }
-    if($content != "" && $optionType == 0){
-        $numOption = (int)$_POST['numberOption'];
-        if($numOption == 2){
-            $op1 = $_POST['option1'];
-            $op2 = $_POST['option2'];
-        }
-        if($numOption == 4){
-            $op1 = $_POST['option1'];
-            $op2 = $_POST['option2'];
-            $op3 = $_POST['option3'];
-            $op4 = $_POST['option4'];
-        }
-        if($numOption == 6){
-            $op1 = $_POST['option1'];
-            $op2 = $_POST['option2'];
-            $op3 = $_POST['option3'];
-            $op4 = $_POST['option4'];
-            $op5 = $_POST['option5'];
-            $op6 = $_POST['option6'];
-        }
-        $result = QuestionController::updateQuestion($id, $content, $op1, $op2, $op3, $op4, $op5, $op6, $numOption);
-        if($result){
-            $notifySuccess = "Cập nhật thành công!";
-            header("Location: ?tab=Questions&topicId=".$topicId);
-            die();
-        }
-    } else {
-        $notifyFalse = "Lỗi! Thất bại.";
-    }
-}
-?>
-
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
-    <?php
-    if(isset($_SESSION['success']))
-    {
-        unset($_SESSION['success']);
-        ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert" id="removeQuestionSuccess">
-            Successfully <?php echo $_GET['action'].' question '?>!
-            <button type="button" class="close" data-dismiss="alert">
-                <span>&times;</span>
-            </button>
-        </div>
-    <?php } ?>
-    <?php if(isset($notifySuccess)){ ?>
+    <?php if(isset($_SESSION['success']) && $_SESSION['success'] == 'UPDATE_SUCCESS'){
+        unset ($_SESSION['success']); ?>
         <div class="alert alert-success" role="alert" id="notifySaveQuestion">
-            <?php echo $notifySuccess; ?>
+            Cập nhật thành công!
         </div>
     <?php } ?>
-    <?php if(isset($notifyFalse)){ ?>
+    <?php if(isset($_SESSION['false']) && $_SESSION['false'] == 'UPDATE_FALSE'){
+        unset ($_SESSION['false']); ?>
         <div class="alert alert-danger" role="alert" id="notifySaveQuestion">
-            <?php echo $notifyFalse; ?>
+            Cập nhật thất bại!
+        </div>
+    <?php } ?>
+    <?php if(isset($_SESSION['success']) && $_SESSION['success'] == 'REMOVE_SUCCESS'){
+        unset ($_SESSION['success']); ?>
+        <div class="alert alert-success" role="alert" id="notifySaveQuestion">
+            Xóa thành công!
+        </div>
+    <?php } ?>
+    <?php if(isset($_SESSION['false']) && $_SESSION['false'] == 'REMOVE_FALSE'){
+        unset ($_SESSION['false']); ?>
+        <div class="alert alert-danger" role="alert" id="notifySaveQuestion">
+            Xóa thất bại!
         </div>
     <?php } ?>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -156,8 +91,7 @@ if(isset($_POST['editQuestionId']) && isset($_POST['editContent'])){
                                                    href="#">
                                                     <i class="fa fa-pencil-square-o "></i>
                                                 </a>
-                                                <button type="button" class="btn btn-sm btn-danger removeQuestion" question-id="<?php echo $row['id']; ?>"
-                                                    topic-id=<?php echo $row['topicId']; ?>>
+                                                <button type="button" class="btn btn-sm btn-danger removeQuestion" question-id="<?php echo $row['id']; ?>">
                                                     <i class="fa fa-trash "></i>
                                                 </button>
                                             </td>
@@ -183,8 +117,7 @@ if(isset($_POST['editQuestionId']) && isset($_POST['editContent'])){
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" value="" name="questionId" id="questionId" />
-                    <input type="hidden" value="" name="topicId" id="topicId" />
+                    <input type="hidden" value="" name="questionIdRemove" id="questionIdRemove" />
                     Are you sure you want to remove this question ?
                 </div>
                 <div class="modal-footer">
@@ -208,9 +141,9 @@ if(isset($_POST['editQuestionId']) && isset($_POST['editContent'])){
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-md-9">
-                            <label for="editContent">Nhập nội dung câu hỏi:</label>
+                            <label for="contentQuestion">Nhập nội dung câu hỏi:</label>
                             <input type="hidden" name="editQuestionId" id="editQuestionId" value="">
-                            <textarea name="editContent" class="form-control" id="editContent" rows="6"></textarea>
+                            <textarea name="contentQuestion" class="form-control" id="contentQuestion" rows="6"></textarea>
                             <div class="form-row mt-2 towOption">
                                 <div class="col">
                                     <input type="text" id="option1" name="option1" value="" class="form-control" placeholder="Option 1">
@@ -271,9 +204,7 @@ if(isset($_POST['editQuestionId']) && isset($_POST['editContent'])){
     }
     $('.removeQuestion').click(function() {
         const questionId = $(this).attr("question-id");
-        const topicId = $(this).attr("topic-id");
-        $('#questionId').val(questionId);
-        $('#topicId').val(topicId);
+        $('#questionIdRemove').val(questionId);
         $('#deleteQuestion').modal('show');
     });
 
@@ -289,7 +220,7 @@ if(isset($_POST['editQuestionId']) && isset($_POST['editContent'])){
         const op5 = $(this).attr("op5");
         const op6 = $(this).attr("op6");
 
-        $("#editContent").val(question);
+        $("#contentQuestion").val(question);
         $("#editQuestionId").val(questionId);
         $("#option1").val(op1);
         $("#option2").val(op2);

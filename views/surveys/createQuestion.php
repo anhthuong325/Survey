@@ -1,67 +1,14 @@
-<?php
-include 'controllers/questionController.php';
-
-$arrTopics = QuestionController::getAllTopics();
-$topicId = 0;
-$arrQuestions = array();
-if(isset($_GET['topicId'])){
-    $topicId = $_GET['topicId'];
-    $arrQuestions = QuestionController::getListQuestion($_GET['topicId']);
-}
-$status = 0;
-if(isset($_POST['contentQuestion']) && isset($_POST['optionType']) && isset($_POST['numberOption'])){
-    $content = $_POST['contentQuestion'];
-    $option = (int)$_POST['optionType'];
-    $number = 0;
-    $op1 = $op2 = $op3 = $op4 = $op5 = $op6 = "";
-    if($content != "" && $option == 1){
-        $result = QuestionController::saveQuestion($content, $topicId, $op1, $op2, $op3, $op4, $op5, $op6, $number);
-        if($result){
-            $notifySuccess = "Lưu thành công!";
-        }
-    }else if($content != "" && $option == 0){
-        $number = (int)$_POST['numberOption'];
-        if($number == 2){
-            $op1 = $_POST['option1'];
-            $op2 = $_POST['option2'];
-        }
-        if($number == 4){
-            $op1 = $_POST['option1'];
-            $op2 = $_POST['option2'];
-            $op3 = $_POST['option3'];
-            $op4 = $_POST['option4'];
-        }
-        if($number == 6){
-            $op1 = $_POST['option1'];
-            $op2 = $_POST['option2'];
-            $op3 = $_POST['option3'];
-            $op4 = $_POST['option4'];
-            $op5 = $_POST['option5'];
-            $op6 = $_POST['option6'];
-        }
-        $result = QuestionController::saveQuestion($content, $topicId, $op1, $op2, $op3, $op4, $op5, $op6, $number);
-        if($result){
-            $notifySuccess = "Lưu thành công!";
-        }
-    }
-    else {
-        $notifyFalse = "Lỗi! Lưu không thành công.";
-    }
-    if(isset($_GET['topicId'])){
-        $arrQuestions = QuestionController::getListQuestion($_GET['topicId']);
-    }
-
-}
-?>
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
-    <?php if(isset($notifySuccess)){ ?>
+    <?php if(isset($_SESSION['success']) && $_SESSION['success'] == 'INSERT_SUCCESS'){
+        unset ($_SESSION['success']); ?>
         <div class="alert alert-success" role="alert" id="notifySaveQuestion">
-            <?php echo $notifySuccess; ?>
+            Tạo mới thành công!
         </div>
     <?php } ?>
-    <?php if(isset($notifyFalse)){ ?>
+    <?php if(isset($_SESSION['false']) && $_SESSION['false'] == 'CREATE_FALSE'){
+        unset ($_SESSION['false']); ?>
         <div class="alert alert-danger" role="alert" id="notifySaveQuestion">
-            <?php echo $notifyFalse; ?>
+            Lỗi! Tạo mới thất bại.
         </div>
     <?php } ?>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">

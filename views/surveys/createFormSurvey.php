@@ -1,52 +1,4 @@
-<?php
-include 'controllers/questionController.php';
-
-$arrTopics = QuestionController::getAllTopics();
-$topicId = 0;
-$arrQuestions = array();
-if(isset($_GET['topicId'])){
-    $topicId = $_GET['topicId'];
-    $arrQuestions = QuestionController::getListQuestion($_GET['topicId']);
-}
-//get dữ liệu
-$arrDepartment = QuestionController::getAllDepartments();
-$arrClass = QuestionController::getAllClass();
-//xử lí lưu form
-$method = $_SERVER['REQUEST_METHOD'];
-if($method === 'POST'){
-    if(isset($_POST['titleForm']) && isset($_POST['departmentSurvey']) && isset($_POST['classSurvey'])
-        && isset($_POST['startDate']) && isset($_POST['endDate'])){
-        $title = $_POST['titleForm'];
-        $departmentId = $_POST['departmentSurvey'];
-        $classId = $_POST['classSurvey'];
-        $startDate = $_POST['startDate'];
-        $endDate = $_POST['endDate'];
-        //
-        $arrQuestionForm = array();
-        foreach($arrQuestions as $item) {
-            if(isset($_POST['checkRemove'.$item['id']])){
-                $arrQuestionForm[$item['id']] = $_POST['checkRemove'.$item['id']];
-            } else {
-                $arrQuestionForm[$item['id']] = 1;
-            }
-        }
-        //
-        $allUser = 1;// disable get all user
-        if($departmentId == 0 && $classId == 0){
-            $allUser = 0;// enable get all user
-        }
-        $result = QuestionController::saveFormSurvey($title, $topicId, $startDate, $endDate, $departmentId, $classId, $allUser, $arrQuestionForm);
-        if($result == 1){
-            header('Location: ?tab=SurveyForms');
-            die();
-            return;
-        }
-    }
-}
-?>
-
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
-
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2"><i class="fa fa-crosshairs" aria-hidden="true"></i> Tạo form khảo sát</h1>
         <form id="createFormSurvey" method="get" action="">
@@ -62,7 +14,7 @@ if($method === 'POST'){
         </form>
     </div>
     <?php if(isset($_GET['topicId']) && $_GET['topicId'] != 0){ ?>
-        <form action="" method="post">
+        <form method="POST">
             <div class="row" >
                 <div class="col-lg-6 col-md-6 col-sm-12 pr-0 mb-3">
                     <div class="card-collapsible card">
@@ -137,9 +89,13 @@ if($method === 'POST'){
                                     <label>Lớp</label>
                                     <select class="form-control" name="classSurvey">
                                         <?php if(count($arrClass) > 0) {
-                                            foreach ($arrClass as $item) { ?>
-                                                <option value="<?= $item['id']; ?>"><?= $item['className']; ?></option>
-                                            <?php } } ?>
+                                            foreach ($arrClass as $class) { ?>
+                                                <option class="font-weight-bold" disabled><?= $class['departmentName']; ?></option>
+                                                <?php foreach ($class['class'] as $item) { ?>
+                                                    <option value="<?php echo $item['id']; ?>">
+                                                        <?php echo $item['className']; ?>
+                                                    </option>
+                                            <?php } } } ?>
                                     </select>
                                 </div>
                             </div>

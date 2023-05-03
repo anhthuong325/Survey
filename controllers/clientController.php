@@ -73,14 +73,15 @@ class ClientController
     public static function getAllClass(){
         try{
             $db = DatabaseUtil::getConn();
-            $query = "SELECT * FROM class";
+            $query = "SELECT C.id as 'class_id', D.id as 'department_id', D.department_name, C.class_name FROM class C INNER JOIN departments D ON C.department_id = D.id";
             $stmt = $db->prepare($query);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $arrLop = array();
             foreach ($stmt->fetchAll() as $row){
-                $arrLop[] = array(
-                    'id'=>$row['id'],
+                $arrLop[$row['department_id']]['departmentName'] = $row['department_name'];
+                $arrLop[$row['department_id']]['class'][] = array(
+                    'id'=>$row['class_id'],
                     'className'=>$row['class_name']
                 );
             }

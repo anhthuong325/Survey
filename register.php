@@ -19,30 +19,19 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
     // role = 1 is Student
     // role = 2 is teacher
     // role = 3 is user
-    if ($roleId == 1) {
+    if ($roleId == 1 || $roleId == 2 || $roleId == 3) {
         $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, $classId, $departmentId);
         if ($result > 0) {
-            $notifySuccess = "Chúc mừng Sinh viên " . $fullName . " đã đăng ký thành công!";
-        }
-    }
-    if ($roleId == 2) {
-        $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, null, $departmentId);
-        if ($result > 0) {
-            $notifySuccess = "Chúc mừng Giáo viên " . $fullName . " đã đăng ký thành công!";
-        }
-    }
-    if ($roleId == 3) {
-        $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, null, null);
-        if ($result > 0) {
-            $notifySuccess = "Chúc mừng người dùng " . $fullName . " đã đăng ký thành công!";
+            $_SESSION['success'] = 'CREATE_SUCCESS';
+            header("Location: login.php");
+            die();
+        } else {
+            $_SESSION['false'] = 'CREATE_FALSE';
         }
     } else {
-        $notifyFalse = "Lỗi! Đăng ký không thành công!";
+        $_SESSION['error'] = 'ERRORS';
     }
-} else {
-    $notifyFalse = "Lỗi! Không xác định được phiên tạo tài khoản, đợi trong vòng 3 giây!";
 }
-
 ?>
 <html>
 <head>
@@ -92,32 +81,32 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
 
                             <div class="row d-flex justify-content-center" id="formRegisterUser">
                                 <div class="col-lg-8">
-                                    <?php if(isset($notifySuccess)){ ?>
+                                    <?php if(isset($_SESSION['false']) && $_SESSION['false'] == 'CREATE_FALSE'){ ?>
                                         <div class="alert alert-success" role="alert" id="notifyRegisterUser">
-                                            <?php echo $notifySuccess; ?>
+                                            Tạo tài khoản không thành công!
                                         </div>
                                     <?php } ?>
-                                    <?php if(isset($notifyFalse)){ ?>
-                                        <div class="alert alert-danger" role="alert" id="notifyRegisterUser">
-                                            <?php echo $notifyFalse; ?>
+                                    <?php if(isset($_SESSION['error']) && $_SESSION['error'] == 'ERRORS'){ ?>
+                                        <div class="alert alert-success" role="alert" id="notifyRegisterUser">
+                                            Có lỗi xảy ra, vui lòng thử lại!
                                         </div>
                                     <?php } ?>
                                     <h2 class="fw-bold mb-4">Đăng ký tài khoản khảo sát</h2>
                                     <form action="" method="post">
                                         <div class="form-group">
-                                            <input type="text" name="userName" class="form-control" id="" aria-describedby="emailHelp" placeholder="Nhập tên tài khoản">
+                                            <input type="text" name="userName" class="form-control" id="" aria-describedby="emailHelp" placeholder="Nhập tên tài khoản" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" name="fullName" class="form-control" id="" placeholder="Họ và tên của bạn">
+                                            <input type="text" name="fullName" class="form-control" id="" placeholder="Họ và tên của bạn" required>
                                         </div>
                                         <div class="form-group">
-                                            <input class="form-control" type="date" name="birthday" placeholder="dd-mm-yyyy" value="" min="1960-01-01" max="<?php echo date("Y-m-d");?>">
+                                            <input class="form-control" type="date" name="birthday" placeholder="dd-mm-yyyy" value="" min="1960-01-01" max="<?php echo date("Y-m-d");?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="email" name="email" class="form-control" id="" placeholder="Nhập địa chỉ email">
+                                            <input type="email" name="email" class="form-control" id="" placeholder="Nhập địa chỉ email" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="password" class="form-control" id="" placeholder="Nhập mật khẩu">
+                                            <input type="password" name="password" class="form-control" id="" placeholder="Nhập mật khẩu" required>
                                         </div>
                                         <div class="form-group" style="text-align: center">
                                             <div class="col-md-12 form-check">
@@ -131,7 +120,6 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
                                         </div>
                                         <div class="form-group selectDepartment" hidden>
                                             <select class="custom-select" name="departmentId">
-                                                <option value="0" selected>Chọn khoa của bạn</option>
                                                 <?php foreach ($arrDepartment as $row){ ?>
                                                     <option value="<?php echo $row['id']; ?>"><?php echo $row['departmentName']; ?></option>
                                                 <?php } ?>
@@ -139,16 +127,23 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
                                         </div>
                                         <div class="form-group selectClass" hidden>
                                             <select class="custom-select" name="classId">
-                                                <option value="0" selected>Chọn lớp của bạn</option>
-                                                <?php foreach ($arrClass as $row){ ?>
-                                                    <option value="<?php echo $row['id']; ?>"><?php echo $row['className']; ?></option>
-                                                <?php } ?>
+                                                <?php if(count($arrClass) > 0) {
+                                                    foreach ($arrClass as $class) { ?>
+                                                        <option class="font-weight-bold" disabled><?= $class['departmentName']; ?></option>
+                                                        <?php foreach ($class['class'] as $item) { ?>
+                                                            <option value="<?php echo $item['id']; ?>">
+                                                                <?php echo $item['className']; ?>
+                                                            </option>
+                                                        <?php } } } ?>
                                             </select>
                                         </div>
                                         <div class="text-center text-lg-start">
                                             <button type="submit" class="btn btn-primary" id="btnRegist">Xác nhận đăng ký</button>
                                         </div>
                                     </form>
+                                    <div class="text-center font-weight-light">
+                                        <a href="login.php">Đăng nhập</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

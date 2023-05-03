@@ -1,32 +1,28 @@
-<?php
-include 'controllers/questionController.php';
-
-$arrTopic = QuestionController::getAllTopics();
-$userName = $_SESSION['USER_ACCOUNT'];
-if(isset($_POST['contentTopic'])){
-    $topic = $_POST['contentTopic'];
-    $result = QuestionController::saveTopic($topic, $userName);
-    if($result > 0){
-        $notifySuccess = "Lưu thành công!";
-    }
-    else {
-        $notifyFalse = "Lỗi! Lưu không thành công.";
-    }
-    $arrTopic = QuestionController::getAllTopics();
-}
-?>
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
-    <?php if(isset($notifySuccess)){ ?>
+    <?php if(isset($_SESSION['success']) && $_SESSION['success'] == 'CREATE_SUCCESS'){
+        unset ($_SESSION['success']); ?>
         <div class="alert alert-success" role="alert" id="notifySaveQuestion">
-            <?php echo $notifySuccess; ?>
+            Tạo mới chủ đề thành công!
         </div>
     <?php } ?>
-    <?php if(isset($notifyFalse)){ ?>
+    <?php if(isset($_SESSION['false']) && $_SESSION['false'] == 'CREATE_FALSE'){
+        unset ($_SESSION['false']); ?>
         <div class="alert alert-danger" role="alert" id="notifySaveQuestion">
-            <?php echo $notifyFalse; ?>
+            Lỗi! Tạo mới chủ đề thất bại.
         </div>
     <?php } ?>
-
+    <?php if(isset($_SESSION['success']) && $_SESSION['success'] == 'REMOVE_SUCCESS'){
+        unset ($_SESSION['success']); ?>
+        <div class="alert alert-success" role="alert" id="notifySaveQuestion">
+            Xóa chủ đề thành công!
+        </div>
+    <?php } ?>
+    <?php if(isset($_SESSION['false']) && $_SESSION['false'] == 'REMOVE_FALSE'){
+        unset ($_SESSION['false']); ?>
+        <div class="alert alert-danger" role="alert" id="notifySaveQuestion">
+            Xóa chủ đề thất bại!
+        </div>
+    <?php } ?>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2"><i class="fa fa-crosshairs" aria-hidden="true"></i> Tạo chủ đề</h1>
     </div>
@@ -42,19 +38,26 @@ if(isset($_POST['contentTopic'])){
                         <thead class="thead bg-primary text-white">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col" style="width: 60%;">Tên chủ đề</th>
+                            <th scope="col" style="width: 40%;">Tên chủ đề</th>
                             <th scope="col">Người tạo</th>
                             <th scope="col">Ngày tạo</th>
+                            <th scope="col" style="width: auto;">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php if(count($arrTopic)) {
-                                foreach ($arrTopic as $row) { ?>
+                        <?php if(count($arrTopics)) {
+                                foreach ($arrTopics as $row) { ?>
                                     <tr>
                                         <th scope="row"><?php echo $row['id']; ?></th>
                                         <td><?php echo $row['topicName']; ?></td>
                                         <td><?php echo $row['createBy']; ?></td>
                                         <td><?php echo $row['createAt']; ?></td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn btn-sm btn-danger removeTopic" topic-id="<?php echo $row['id']; ?>"
+                                                    topic-name="<?php echo $row['topicName']; ?>">
+                                                <i class="fa fa-trash "></i>
+                                            </button>
+                                        </td>
                                     </tr>
                         <?php } } ?>
                         </tbody>
@@ -86,3 +89,35 @@ if(isset($_POST['contentTopic'])){
         </div>
     </div>
 </main>
+<div class="modal fade" id="deleteTopic" tabindex="-1" role="dialog" aria-hidden="true">
+    <form method="POST">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" value="" name="topicIdRemove" id="topicIdRemove" />
+                    Sẽ xóa tất cả các câu hỏi và form khảo sát hiện có của chủ đề này!
+                    Bạn có chắc chắn xóa chủ đề [<span class="font-weight-bold" id="topicName"></span>] không ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger stretched-link">Yes, Remove</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $('.removeTopic').click(function() {
+        const topicId = $(this).attr("topic-id");
+        const topicName = $(this).attr("topic-name");
+        $('#topicIdRemove').val(topicId);
+        $('#topicName').text(topicName);
+        $('#deleteTopic').modal('show');
+    });
+</script>

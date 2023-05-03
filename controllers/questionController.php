@@ -5,7 +5,7 @@ class QuestionController
     public static function getAllTopics(){
         try{
             $db = DatabaseUtil::getConn();
-            $query = "SELECT * FROM topics";
+            $query = "SELECT * FROM topics WHERE status = 1";
             $stmt = $db->prepare($query);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -20,6 +20,19 @@ class QuestionController
             }
             return $arrTopics;
         } catch (Exception $e){
+            return $e;
+        }
+    }
+    public static function removeTopic($id){
+        try{
+            $db = DatabaseUtil::getConn();
+            $sql = "UPDATE topics SET status = 0 WHERE id = :idTopic";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam('idTopic', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return 1;
+        } catch(Exception $e){
             return $e;
         }
     }
@@ -154,11 +167,17 @@ class QuestionController
     }
     public static function removeFormSurvey($id){
         try{
-            $sql = "DELETE FROM form_surveys WHERE id = '$id'";
-            $result = DatabaseUtil::executeQueryCheck($sql);
-            $sql_log = "DELETE FROM form_survey_logs WHERE question_id = '$id'";
-            $result = DatabaseUtil::executeQueryCheck($sql_log);
-            return $result;
+            $db = DatabaseUtil::getConn();
+            $sql = "DELETE FROM form_surveys WHERE id = :idForm";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam('idForm', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            //
+            $sql = "DELETE FROM form_survey_logs WHERE question_id = :idForm";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam('idForm', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return 1;
         } catch(Exception $e){
             return $e;
         }
@@ -185,14 +204,15 @@ class QuestionController
     public static function getAllClass(){
         try{
             $db = DatabaseUtil::getConn();
-            $query = "SELECT * FROM class";
+            $query = "SELECT C.id as 'class_id', D.id as 'department_id', D.department_name, C.class_name FROM class C INNER JOIN departments D ON C.department_id = D.id";
             $stmt = $db->prepare($query);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $arrLop = array();
             foreach ($stmt->fetchAll() as $row){
-                $arrLop[] = array(
-                    'id'=>$row['id'],
+                $arrLop[$row['department_id']]['departmentName'] = $row['department_name'];
+                $arrLop[$row['department_id']]['class'][] = array(
+                    'id'=>$row['class_id'],
                     'className'=>$row['class_name']
                 );
             }

@@ -1,33 +1,38 @@
-<?php
-include 'controllers/questionController.php';
-
-$arrFormSurveys = QuestionController::getAllFormSurvey();
-//Delete form survey
-if(isset($_POST['formSurveyId'])){
-    $result = QuestionController::removeFormSurvey($_POST['formSurveyId']);
-    if($result){
-        header("Location: ?tab=SurveyForms");
-    }
-}
-
-?>
 <main class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="formQuestion">
+    <?php if(isset($_SESSION['success']) && $_SESSION['success'] == 'CREATE_SUCCESS'){
+        unset ($_SESSION['success']); ?>
+        <div class="alert alert-success" role="alert" id="notifySaveQuestion">
+            Tạo mới khảo sát thành công!
+        </div>
+    <?php } ?>
+    <?php if(isset($_SESSION['false']) && $_SESSION['false'] == 'CREATE_FALSE'){
+        unset ($_SESSION['false']); ?>
+        <div class="alert alert-danger" role="alert" id="notifySaveQuestion">
+            Lỗi! Tạo mới khảo sát thất bại.
+        </div>
+    <?php } ?>
+    <?php if(isset($_SESSION['success']) && $_SESSION['success'] == 'REMOVE_SUCCESS'){
+        unset ($_SESSION['success']); ?>
+        <div class="alert alert-success" role="alert" id="notifySaveQuestion">
+            Xóa khảo sát thành công!
+        </div>
+    <?php } ?>
+    <?php if(isset($_SESSION['false']) && $_SESSION['false'] == 'REMOVE_FALSE'){
+        unset ($_SESSION['false']); ?>
+        <div class="alert alert-danger" role="alert" id="notifySaveQuestion">
+            Xóa khảo sát thất bại!
+        </div>
+    <?php } ?>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2"><i class="fa fa-question-circle-o" aria-hidden="true"></i> Danh sách form khảo sát</h1>
         <form id="formListQuestion" method="get" action="">
             <input type="hidden" id="tab" name="tab" value="Questions" />
-            <div class="btn-toolbar mb-2 mb-md-0">
-
-            </div>
         </form>
     </div>
 
     <div class="row" >
         <div class="col-lg-12 col-md-6 col-sm-12 pr-0 mb-3" >
             <div class="card-collapsible card">
-                <div class="card-header">
-
-                </div>
                 <div class="card-body">
                     <table class="table">
                         <thead class="thead bg-primary text-white">
@@ -62,10 +67,10 @@ if(isset($_POST['formSurveyId'])){
                                 <td><?= $formSurvey['className']; ?></td>
                                 <td><?= $formSurvey['allUser'] == 0 ? "All users" : ""; ?></td>
                                 <td class="row">
-                                    <button class="col btn btn-sm btn-secondary mr-1">
+                                    <button class="btn btn-sm btn-secondary mr-1 col" title="undeveloped feature">
                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                     </button>
-                                    <button class="col btn btn-sm btn-danger deleteFormSurvey" form-id="<?= $formSurvey['id']; ?>" title-form="<?= $formSurvey['title']; ?>">
+                                    <button class="btn btn-sm btn-danger col deleteFormSurvey" form-id="<?= $formSurvey['id']; ?>" title-form="<?= $formSurvey['title']; ?>">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </td>
@@ -82,7 +87,7 @@ if(isset($_POST['formSurveyId'])){
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form method="POST">
-                <input type="hidden" name="formSurveyId" id="formSurveyId">
+                <input type="hidden" name="formSurveyIdRemove" id="formSurveyIdRemove">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Delete Form</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -106,36 +111,7 @@ if(isset($_POST['formSurveyId'])){
         const formId = $(this).attr("form-id");
         const titleForm = $(this).attr("title-form");
         $('#titleModal').text(titleForm);
-        $('#formSurveyId').val(formId);
+        $('#formSurveyIdRemove').val(formId);
         $('#deleteFormSurvey').modal('show');
-    });
-
-
-    //Chart Maximum Survey Joined
-    // Lấy thẻ canvas
-    var ctx = document.getElementById('survey-chart').getContext('2d');
-
-    // Tạo biểu đồ
-    var chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: Object.keys(<?php echo json_encode($surveyData); ?>),
-    datasets: [{
-        label: 'Thống kê chỉ số % khảo sát cao nhất và thấp nhất với từng người dùng',
-        data: Object.values(<?php echo json_encode($surveyData); ?>),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 2
-    }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
     });
 </script>

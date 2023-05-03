@@ -1,6 +1,7 @@
 <?php
-session_start();
 include 'utils/authenticateUtil.php';
+
+session_start();
 
 // logout
 if (isset($_GET['logout'])) {
@@ -77,7 +78,11 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
                 </div>
 
                 <h6 class="fw-normal" style="text-align:right; letter-spacing: 1px;">Đăng nhập vào tài khoản của bạn</h6>
-
+                <?php if(isset($_SESSION['success']) && $_SESSION['success'] == 'CREATE_SUCCESS'){ ?>
+                    <div class="alert alert-success" role="alert" id="notifyRegisterUser">
+                        TTạo tài khoản thành công! Mời bạn đăng nhập vào hệ thống.
+                    </div>
+                <?php } ?>
                     <form action="login.php" method="post">
 
                         <!-- Email input -->

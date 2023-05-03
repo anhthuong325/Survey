@@ -24,7 +24,7 @@ class Authenticate {
         if(!$users) return null;
 
         foreach ($users as $user){
-            if (!in_array($user['role_id'], array(UserType::ADMIN, UserType::STUDENT))) return null;
+            if (!in_array($user['role_id'], array(UserType::ADMIN, UserType::STUDENT, UserType::USER, UserType::TEACHER))) return null;
             return array(
                 'ACCOUNT'   => $username,
                 'NAME'      => $user['full_name'],

@@ -1,6 +1,8 @@
 <?php
+include 'controllers/questionController.php';
 include 'enums/UserType.php';
 
+error_reporting(0);
 session_start();
 
 if (!in_array($_SESSION['ROLE'], array(UserType::ADMIN))) {
@@ -35,6 +37,158 @@ $tabs = array(
     )
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
+
+//TODO: Create Topic (done)
+$arrTopics = QuestionController::getAllTopics();
+$userName = $_SESSION['USER_ACCOUNT'];
+if(isset($_POST['contentTopic'])){
+    $topic = $_POST['contentTopic'];
+    $result = QuestionController::saveTopic($topic, $userName);
+    if($result > 0){
+        $_SESSION['success'] = 'CREATE_SUCCESS';
+        header("Location: ?tab=Topics");
+        die();
+    }
+    else {
+        $_SESSION['FALSE'] = 'CREATE_FALSE';
+    }
+    $arrTopics = QuestionController::getAllTopics();
+}
+
+//TODO: Remove topics
+if(isset($_POST['topicIdRemove'])) {
+    $result = QuestionController::removeTopic($_POST['topicIdRemove']);
+    if($result > 0){
+        $_SESSION['success'] = 'REMOVE_SUCCESS';
+        header("Location: ?tab=Topics");
+        die();
+    } else {
+        $_SESSION['false'] = 'REMOVE_FALSE';
+    }
+}
+
+//TODO: Features
+$topicId = 0;
+$arrQuestions = array();
+if(isset($_GET['topicId'])){
+    $topicId = $_GET['topicId'];
+    $arrQuestions = QuestionController::getListQuestion($_GET['topicId']);
+
+    //TODO: Lấy dữ liệu đã submit (done)
+    $status = 0;
+    if(isset($_POST['contentQuestion']) && isset($_POST['optionType']) && isset($_POST['numberOption'])){
+        $content = $_POST['contentQuestion'];
+        $option = (int)$_POST['optionType'];
+        $number = 0;
+        $op1 = $op2 = $op3 = $op4 = $op5 = $op6 = "";
+        if($content != "" && $option == 0){
+            $number = (int)$_POST['numberOption'];
+            if($number == 2){
+                $op1 = $_POST['option1'];
+                $op2 = $_POST['option2'];
+            }
+            if($number == 4){
+                $op1 = $_POST['option1'];
+                $op2 = $_POST['option2'];
+                $op3 = $_POST['option3'];
+                $op4 = $_POST['option4'];
+            }
+            if($number == 6){
+                $op1 = $_POST['option1'];
+                $op2 = $_POST['option2'];
+                $op3 = $_POST['option3'];
+                $op4 = $_POST['option4'];
+                $op5 = $_POST['option5'];
+                $op6 = $_POST['option6'];
+            }
+        }
+        //TODO: Cập nhật câu hỏi
+        if(isset($_POST['editQuestionId'])) {
+            $id = $_POST['editQuestionId'];
+            $result = QuestionController::updateQuestion($id, $content, $op1, $op2, $op3, $op4, $op5, $op6, $number);
+            if($result){
+                $_SESSION['success'] = 'UPDATE_SUCCESS';
+                header("Location: ?tab=Questions&topicId=".$topicId);
+                die();
+            } else {
+                $_SESSION['false'] = 'UPDATE_FALSE';
+                $notifyFalse = "Lỗi! Lưu không thành công.";
+            }
+        }
+        //TODO: Thêm câu hỏi mới
+        else {
+            $result = QuestionController::saveQuestion($content, $topicId, $op1, $op2, $op3, $op4, $op5, $op6, $number);
+            if($result){
+                $_SESSION['success'] = 'INSERT_SUCCESS';
+                header("Location: ?tab=CreateQuestions&topicId=".$topicId);
+                die();
+            }
+            else {
+                $_SESSION['false'] = 'CREATE_FALSE';
+            }
+        }
+    }
+    //TODO: Remove câu hỏi (done)
+    if(isset($_POST['questionIdRemove'])){
+        $result = QuestionController::removeQuestion($_POST['questionIdRemove'], $topicId);
+        if($result){
+            $_SESSION['success'] = 'REMOVE_SUCCESS';
+            header("Location: ?tab=Questions&topicId=".$topicId);
+            die();
+        }
+        else {
+            $_SESSION['false'] = 'REMOVE_FALSE';
+        }
+    }
+
+    //TODO: Create FormSurvey (done)
+    $arrDepartment = QuestionController::getAllDepartments();
+    $arrClass = QuestionController::getAllClass();
+    //xử lí lưu form
+    if(isset($_POST['titleForm']) && isset($_POST['departmentSurvey']) && isset($_POST['classSurvey'])
+        && isset($_POST['startDate']) && isset($_POST['endDate'])){
+        $title = $_POST['titleForm'];
+        $departmentId = $_POST['departmentSurvey'];
+        $classId = $_POST['classSurvey'];
+        $startDate = $_POST['startDate'];
+        $endDate = $_POST['endDate'];
+        //
+        $arrQuestionForm = array();
+        foreach($arrQuestions as $item) {
+            if(isset($_POST['checkRemove'.$item['id']])){
+                $arrQuestionForm[$item['id']] = $_POST['checkRemove'.$item['id']];
+            } else {
+                $arrQuestionForm[$item['id']] = 1;
+            }
+        }
+        //
+        $allUser = 1;// disable get all user
+        if($departmentId == 0 && $classId == 0){
+            $allUser = 0;// enable get all user
+        }
+        $result = QuestionController::saveFormSurvey($title, $topicId, $startDate, $endDate, $departmentId, $classId, $allUser, $arrQuestionForm);
+        if($result > 0){
+            $_SESSION['success'] = 'CREATE_SUCCESS';
+            header("Location: index.php?tab=SurveyForms");
+            die();
+        } else {
+            $_SESSION['false'] = 'CREATE_FALSE';
+        }
+    }
+}
+//Lấy danh sách khảo sát
+$arrFormSurveys = QuestionController::getAllFormSurvey();
+//TODO: Delete form survey
+if(isset($_POST['formSurveyIdRemove'])){
+    $result = QuestionController::removeFormSurvey($_POST['formSurveyIdRemove']);
+    if($result > 0){
+        $_SESSION['success'] = 'REMOVE_SUCCESS';
+        header('Location: index.php?tab=SurveyForms');
+        die();
+    } else {
+        $_SESSION['success'] = 'REMOVE_FALSE';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
