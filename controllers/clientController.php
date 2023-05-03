@@ -94,8 +94,8 @@ class ClientController
         try {
             $db = DatabaseUtil::getConn();
             $sql = "SELECT FS.*
-                    FROM form_surveys FS INNER JOIN users U ON FS.class_id = U.class_id OR FS.department_id = U.department_id OR FS.all_users = 0
-                    WHERE U.user_name = :userName
+                    FROM form_surveys FS INNER JOIN users U
+                    WHERE U.user_name = :userName AND (FS.department_id = U.department_id AND (FS.class_id = U.class_id OR FS.class_id = 0) OR FS.all_users = 0) 
                     GROUP BY FS.id";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':userName', $user, PDO::PARAM_STR);
