@@ -95,7 +95,8 @@ class ClientController
             $db = DatabaseUtil::getConn();
             $sql = "SELECT FS.*
                     FROM form_surveys FS INNER JOIN users U
-                    WHERE U.user_name = :userName AND (FS.department_id = U.department_id AND (FS.class_id = U.class_id OR FS.class_id = 0) OR FS.all_users = 0) 
+                    WHERE U.user_name = :userName AND (FS.department_id = U.department_id AND (FS.class_id = U.class_id OR FS.class_id = 0) OR FS.all_users = 0)
+                        AND FS.id NOT IN (SELECT form_survey_id FROM user_feedback WHERE user_name = :userName)
                     GROUP BY FS.id";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':userName', $user, PDO::PARAM_STR);
@@ -184,7 +185,7 @@ class ClientController
                 //save multiple choice question format
                 if(isset($option['option'])){
                     $db_option = DatabaseUtil::getConn();
-                    $sql_option = "INSERT INTO user_feedback_logs(user_feedback_times, question_id, option)
+                    $sql_option = "INSERT INTO user_feedback_logs(user_feedback_id, question_id, option)
                                     VALUES (?, ?, ?)";
                     $stmt_option = $db_option->prepare($sql_option);
                     $stmt_option->execute(array(
@@ -196,7 +197,7 @@ class ClientController
                 //save essay question format
                 else if(isset($option['value'])){
                     $db_essay = DatabaseUtil::getConn();
-                    $sql_essay = "INSERT INTO user_feedback_logs(user_feedback_times, question_id, value)
+                    $sql_essay = "INSERT INTO user_feedback_logs(user_feedback_id, question_id, value)
                                     VALUES (?, ?, ?)";
                     $stmt_essay = $db_essay->prepare($sql_essay);
                     $stmt_essay->execute(array(
@@ -207,12 +208,8 @@ class ClientController
                 }
             }
             return $feedbackId;
-        } catch (PDOException $e){
-            // Log lỗi vào file log
-            error_log($e->getMessage(), 0);
-
-            // Trả về false để báo lỗi
-            return false;
+        } catch (Exception $e){
+            return $e;
         }
     }
 }

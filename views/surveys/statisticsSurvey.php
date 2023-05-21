@@ -19,40 +19,62 @@
             <div class="col-lg-12 col-md-6 col-sm-12 pr-0 mb-3" >
                 <div class="card-collapsible card">
                     <div class="card-header">
-                        <?= isset($arrFormSurveys) ? $arrFormSurveys[$_GET['formId']]['title'] : "None"; ?>
+                        <span class="font-weight-bold">
+                            <?= isset($arrFormSurveys) ? $arrFormSurveys[0]['title'] : "None"; ?>
+                        </span>
+                        <span class="text-right font-weight-bold">
+                            Số lượng người tham gia: <?= isset($numberForm) ? $numberForm : "None"; ?>
+                        </span>
                     </div>
                     <div class="card-body">
-                        <table class="table">
-                            <thead class="thead bg-primary text-white">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col" style="width: 40%;">   Nội dung</th>
-                                <th scope="col">Option 1</th>
-                                <th scope="col">Option 2</th>
-                                <th scope="col">Option 3</th>
-                                <th scope="col">Option 4</th>
-                                <th scope="col">Option 5</th>
-                                <th scope="col">Option 6</th>
-                                <th scope="col">Dạng câu trả lời</th>
-                            </tr>
-                            </thead>
+                        <table class="table table-bordered">
                             <tbody>
-                            <?php
-                            $count = 1;
-                            if(count($arrQuestions) > 0){
-                                foreach ($arrQuestions as $row) { ?>
-                                    <tr>
-                                        <th scope="row"><?php echo $count; ?></th>
-                                        <td><?php echo $row['content']; ?></td>
-                                        <td><?php echo $row['op1']; ?></td>
-                                        <td><?php echo $row['op2']; ?></td>
-                                        <td><?php echo $row['op3']; ?></td>
-                                        <td><?php echo $row['op4']; ?></td>
-                                        <td><?php echo $row['op5']; ?></td>
-                                        <td><?php echo $row['op6']; ?></td>
-                                        <td><?php echo $row['typeOption'] == 0 ? "Text" : "Trắc nghiệm"; ?></td>
-                                    </tr>
-                                    <?php $count++; } } ?>
+                            <?php if (isset($arrStatistics) && count($arrStatistics) > 0) { $sn = 0;
+                                foreach ($arrStatistics as $question) { $sn++;
+                                    if($question['number_option'] > 0){
+                                        if($question['number_option'] == 2) { ?>
+                                        <tr>
+                                            <td class="font-weight-bold"><?= $sn; ?></td>
+                                            <td><?= $question['content']; ?></td>
+                                            <td><?= $question['option1'].' <span class="font-weight-bold">('.$question['number_option1'].')</span>'; ?></td>
+                                            <td colspan="5"><?= $question['option2'].' <span class="font-weight-bold">('.$question['number_option2'].')</span>'; ?></td>
+                                        </tr>
+                                    <?php } else if($question['number_option'] == 4) { ?>
+                                            <tr>
+                                                <td class="font-weight-bold"><?= $sn; ?></td>
+                                                <td><?= $question['content']; ?></td>
+                                                <td><?= $question['option1'].' <span class="font-weight-bold">('.$question['number_option1'].')</span>'; ?></td>
+                                                <td><?= $question['option2'].' <span class="font-weight-bold">('.$question['number_option2'].')</span>'; ?></td>
+                                                <td><?= $question['option3'].' <span class="font-weight-bold">('.$question['number_option3'].')</span>'; ?></td>
+                                                <td colspan="3"><?= $question['option4'].' <span class="font-weight-bold">('.$question['number_option4'].')</span>'; ?></td>
+                                            </tr>
+                                    <?php } else if($question['number_option'] == 6) { ?>
+                                            <tr>
+                                                <td class="font-weight-bold"><?= $sn; ?></td>
+                                                <td><?= $question['content']; ?></td>
+                                                <td><?= $question['option1'].' <span class="font-weight-bold">('.$question['number_option1'].')</span>'; ?></td>
+                                                <td><?= $question['option2'].' <span class="font-weight-bold">('.$question['number_option2'].')</span>'; ?></td>
+                                                <td><?= $question['option3'].' <span class="font-weight-bold">('.$question['number_option3'].')</span>'; ?></td>
+                                                <td><?= $question['option4'].' <span class="font-weight-bold">('.$question['number_option4'].')</span>'; ?></td>
+                                                <td><?= $question['option5'].' <span class="font-weight-bold">('.$question['number_option5'].')</span>'; ?></td>
+                                                <td><?= $question['option6'].' <span class="font-weight-bold">('.$question['number_option6'].')</span>'; ?></td>
+                                            </tr>
+                                    <?php } ?>
+                                <?php } else if($question['number_option'] == 0) {
+                                        unset($question['number_option']); ?>
+                                        <tr>
+                                            <td class="font-weight-bold"><?= $sn; ?></td>
+                                            <td colspan="7"><?= $question['content']; ?></td>
+                                        <tr>
+                                    <?php unset($question['content']);
+                                        foreach ($question as $user_name => $value) { ?>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td colspan="6"><?= $user_name.' : <span class="text-muted">'.$value.'</span>';?></td>
+                                            </tr>
+                                <?php } } ?>
+                            <?php } } ?>
                             </tbody>
                         </table>
                     </div>

@@ -53,6 +53,9 @@
                                         <td><?php echo $row['createBy']; ?></td>
                                         <td><?php echo $row['createAt']; ?></td>
                                         <td class="text-center">
+                                            <a class="btn btn-sm btn-success" href="?tab=CreateQuestions&topicId=<?php echo $row['id']; ?>">
+                                                <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+                                            </a>
                                             <a class="btn btn-sm btn-secondary" href="?tab=CreateSurveyForms&topicId=<?php echo $row['id']; ?>">
                                                 <i class="fa fa-pencil-square-o "></i>
                                             </a>

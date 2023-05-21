@@ -16,10 +16,10 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
     $password = $_POST['password'];
     $departmentId = $_POST['departmentId'];
     $classId = $_POST['classId'];
-    // role = 1 is Student
-    // role = 2 is teacher
-    // role = 3 is user
-    if ($roleId == 1 || $roleId == 2 || $roleId == 3) {
+    // role = 2 is Student
+    // role = 3 is teacher
+    // role = 4 is user
+    if ($roleId == 2 || $roleId == 3 || $roleId == 4) {
         $result = ClientController::registerUser($userName, $fullName, $roleId, $email, $birthday, $password, $classId, $departmentId);
         if ($result > 0) {
             $_SESSION['success'] = 'CREATE_SUCCESS';
@@ -112,15 +112,15 @@ if(isset($_POST['userName']) && isset($_POST['fullName']) && isset($_POST['birth
                                         <div class="form-group" style="text-align: center">
                                             <div class="col-md-12 form-check">
                                                 <label class="radio-inline">
-                                                    <input class="form-check-input" type="radio" name="opUser" id="opStudent" value="1"><i class="fa fa-address-book-o ml-2" aria-hidden="true"></i> Sinh viên</label>
+                                                    <input class="form-check-input" type="radio" name="opUser" id="opStudent" value="2"><i class="fa fa-address-book-o ml-2" aria-hidden="true"></i> Sinh viên</label>
                                                 <label class="radio-inline ml-4 mr-4">
-                                                    <input class="form-check-input" type="radio" name="opUser" id="opTeacher" value="2"><i class="fa fa-users ml-2" aria-hidden="true"></i> Giảng viên</label>
+                                                    <input class="form-check-input" type="radio" name="opUser" id="opTeacher" value="3"><i class="fa fa-users ml-2" aria-hidden="true"></i> Giảng viên</label>
                                                 <label class="radio-inline">
-                                                    <input class="form-check-input" type="radio" name="opUser" id="opUser" checked value="3"><i class="fa fa-mercury ml-2" aria-hidden="true"></i> Khác</label>
+                                                    <input class="form-check-input" type="radio" name="opUser" id="opUser" checked value="4"><i class="fa fa-mercury ml-2" aria-hidden="true"></i> Khác</label>
                                             </div>
                                         </div>
                                         <div class="form-group selectDepartment" hidden>
-                                            <select class="custom-select" name="departmentId">
+                                            <select id="department" class="custom-select" name="departmentId">
                                                 <?php foreach ($arrDepartment as $row){ ?>
                                                     <option value="<?php echo $row['id']; ?>"><?php echo $row['departmentName']; ?></option>
                                                 <?php } ?>

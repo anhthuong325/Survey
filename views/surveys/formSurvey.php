@@ -67,7 +67,7 @@
                                 <td><?= $formSurvey['className']; ?></td>
                                 <td><?= $formSurvey['allUser'] == 0 ? "All users" : ""; ?></td>
                                 <td class="row">
-                                    <a class="btn btn-sm btn-secondary mr-1 col" href="?tab=Statistics&formId=<?= $key; ?>">
+                                    <a class="btn btn-sm btn-secondary mr-1 col" href="?tab=Statistics&formId=<?= $formSurvey['id']; ?>">
                                         <i class="fa fa-server" aria-hidden="true"></i>
                                     </a>
                                     <button class="btn btn-sm btn-danger col deleteFormSurvey" form-id="<?= $formSurvey['id']; ?>" title-form="<?= $formSurvey['title']; ?>">

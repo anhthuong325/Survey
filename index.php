@@ -181,6 +181,23 @@ if(isset($_POST['formSurveyIdRemove'])){
         $_SESSION['success'] = 'REMOVE_FALSE';
     }
 }
+
+//TODO: Thống kê khảo sát theo số lượng (doing)
+if(isset($_GET['formId'])){
+    $arrStatistics = QuestionController::statisticSurvey($_GET['formId']);
+    $numberForm = 0;
+    foreach ($arrStatistics as $question){
+        if($question['number_option'] > 0){
+            $numberForm = $question['number_option1']
+                            + $question['number_option2']
+                            + $question['number_option3']
+                            + $question['number_option4']
+                            + $question['number_option5']
+                            + $question['number_option6'];
+            break;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
