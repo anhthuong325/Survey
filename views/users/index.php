@@ -23,7 +23,7 @@
                                 <th scope="col">Tiêu đề</th>
                                 <th scope="col">Bắt đầu</th>
                                 <th scope="col">Kết thúc</th>
-                                <th scope="col" style="width: 100px;">Action</th>
+                                <th scope="col" style="width: 100px;">Tác vụ</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,7 +35,7 @@
                                     <td><?= $form['timeStart']; ?></td>
                                     <td><?= $form['timeEnd']; ?></td>
                                     <td>
-                                        <a class="btn btn-sm btn-primary text-white" href="<?= BASE_DOMAIN ?>/surveys.php?tab=Surveys&id=<?= $form['id'];?>">
+                                        <a class="btn btn-sm btn-primary text-white" href="?tab=Surveys&id=<?= $form['id'];?>">
                                             <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                             Bắt đầu khảo sát
                                         </a>
@@ -44,7 +44,7 @@
                             <?php $sn++; } } else { ?>
                                 <tr>
                                     <td colspan="100%" class="table-no-record">
-                                        No Record Found
+                                        Không có form khảo sát nào được chuyển đến
                                     </td>
                                 </tr>
                         <?php } ?>

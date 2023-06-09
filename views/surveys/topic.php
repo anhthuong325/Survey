@@ -41,7 +41,7 @@
                             <th scope="col" style="width: 40%;">Tên chủ đề</th>
                             <th scope="col">Người tạo</th>
                             <th scope="col">Ngày tạo</th>
-                            <th scope="col" style="width: auto;">Action</th>
+                            <th scope="col" style="width: auto;">Tác vụ</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -85,7 +85,7 @@
                         <div class="form-row">
                             <div class="col-sm-10 mt-2">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-send"></i> Gửi đi
+                                    <i class="fa fa-send"></i> Lưu chủ đề
                                 </button>
                             </div>
                         </div>

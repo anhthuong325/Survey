@@ -44,15 +44,15 @@
                             <th scope="col">Kết thúc</th>
                             <th scope="col">Khoa</th>
                             <th scope="col">Lớp</th>
-                            <th scope="col">Note</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Ghi chú</th>
+                            <th scope="col">Tác vụ</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php if(!$arrFormSurveys) { ?>
                             <tr>
                                 <td colspan="100%" class="table-no-record">
-                                    No Record Found
+                                    Không có form khảo sát nào được công bố
                                 </td>
                             </tr>
                         <?php } else { $sn = 0;
@@ -89,17 +89,17 @@
             <form method="POST">
                 <input type="hidden" name="formSurveyIdRemove" id="formSurveyIdRemove">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Form</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Xóa Form</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Do you want to delete [<span class="font-weight-bold" id="titleModal"></span>] ?
+                    Có phải bạn muốn xóa form khảo sát [<span class="font-weight-bold" id="titleModal"></span>] ?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Đồng ý và xóa đi</button>
                 </div>
             </form>
         </div>

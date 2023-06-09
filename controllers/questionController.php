@@ -326,4 +326,27 @@ class QuestionController
             return $e;
         }
     }
+    public static function checkFeedback(){
+        try{
+            $db = DatabaseUtil::getConn();
+            $query = "SELECT u.user_name, f.form_survey_id, f.created_at
+                    FROM users u
+                    LEFT JOIN user_feedback f ON u.user_name = f.user_name
+                    WHERE u.role_id > 1";
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arrFeedback = array();
+            foreach ($stmt->fetchAll() as $row){
+                $arrFeedback[] = array(
+                    'userName' => $row['user_name'],
+                    'formSurveyID' => $row['form_survey_id'],
+                    'feedbackedAt' => $row['created_at']
+                );
+            }
+            return $arrFeedback;
+        } catch (Exception $e){
+            return $e;
+        }
+    }    
 }

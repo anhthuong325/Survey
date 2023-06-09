@@ -112,7 +112,7 @@
                             <div class="form-row">
                                 <div class="col-sm-10 mt-2">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-send"></i> Gửi đi
+                                        <i class="fa fa-send"></i> Tạo form
                                     </button>
                                 </div>
                             </div>

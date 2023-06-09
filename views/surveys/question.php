@@ -50,15 +50,15 @@
                             <thead class="thead bg-primary text-white">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col" style="width: 40%;">   Nội dung</th>
-                                <th scope="col">Option 1</th>
-                                <th scope="col">Option 2</th>
-                                <th scope="col">Option 3</th>
-                                <th scope="col">Option 4</th>
-                                <th scope="col">Option 5</th>
-                                <th scope="col">Option 6</th>
+                                <th scope="col" style="width: 20%;">   Nội dung</th>
+                                <th scope="col">Lựa chọn 1</th>
+                                <th scope="col">Lựa chọn 2</th>
+                                <th scope="col">Lựa chọn 3</th>
+                                <th scope="col">Lựa chọn 4</th>
+                                <th scope="col">Lựa chọn 5</th>
+                                <th scope="col">Lựa chọn 6</th>
                                 <th scope="col">Dạng câu trả lời</th>
-                                <th scope="col" style="width: 100px;">Action</th>
+                                <th scope="col" style="width: 100px;">Tác vụ</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -111,18 +111,18 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirm</h5>
+                    <h5 class="modal-title">Xác nhận</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" value="" name="questionIdRemove" id="questionIdRemove" />
-                    Are you sure you want to remove this question ?
+                    Bạn có chắc chắn muốn xóa câu hỏi này không?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger stretched-link">Yes, Remove</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger stretched-link">Đồng ý và xóa đi</button>
                 </div>
             </div>
         </div>
@@ -188,8 +188,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật câu hỏi</button>
                 </div>
             </form>
         </div>
