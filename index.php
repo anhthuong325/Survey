@@ -182,7 +182,7 @@ if(isset($_POST['formSurveyIdRemove'])){
     }
 }
 
-//TODO: Thống kê khảo sát theo số lượng (doing)
+//TODO: Thống kê khảo sát theo số lượng (done)
 if(isset($_GET['formId'])){
     $arrStatistics = QuestionController::statisticSurvey($_GET['formId']);
     $numberForm = 0;
