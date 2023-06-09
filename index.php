@@ -24,6 +24,11 @@ $tabs = array(
         'title'=>"SurveyForms",
         'icon'=>'<i class="fa fa-window-maximize" aria-hidden="true"></i>',
         'name'=>'Form khảo sát'
+    ),
+    array(
+        'title'=>"UserFeedbackManagement",
+        'icon'=>'<i class="fa fa-user-circle" aria-hidden="true"></i>',
+        'name'=>'Quản lý phản hồi người dùng'
     )
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
@@ -198,12 +203,15 @@ if(isset($_GET['formId'])){
         }
     }
 }
+
+//Lấy phản hồi từ người dùng
+$arrFeedback = QuestionController::checkFeedback();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title><?php echo PROJECT_NAME; ?> | ADMIN</title>
-    <link rel="icon" href="assets/img/logo.png">
+    <link rel="icon" href="assets/img/logo.ico">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!--important link source from "https://bootstrapious.com/p/about-us-page"-->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -255,7 +263,7 @@ if(isset($_GET['formId'])){
                             <p><span class="username" style="color: brown;font-weight: bold;text-align:center;"><?php echo $_SESSION['USER_NAME']; ?></span></p>
                         </div>
                     </a>
-                    <li class="nav-item"><a class="nav-link" href="./login.php?logout=true"><i class="fa fa-sign-out"></i> Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./login.php?logout=true"><i class="fa fa-sign-out"></i> Đăng xuất</a></li>
                 </ul>
 
             </div>
@@ -278,6 +286,9 @@ if(isset($_GET['formId'])){
             }
             if($current_tab == "Statistics"){
                 include 'views/surveys/statisticsSurvey.php';
+            }
+            if($current_tab == "UserFeedbackManagement"){
+                include 'views/surveys/userFeedback.php';
             }
          ?>
     </div>

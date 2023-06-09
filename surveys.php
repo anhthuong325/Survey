@@ -112,7 +112,7 @@ if(isset($_GET['id'])) {
                             <p>Xin chào, <span class="username" style="color: #007bff;font-weight: bold;"><?php echo $_SESSION['USER_NAME']; ?></span></p>
                         </div>
                     </a>
-                    <li class="nav-item"><a class="nav-link" href="./login.php?logout=true"><i class="fa fa-sign-out"></i> Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./login.php?logout=true"><i class="fa fa-sign-out"></i> Đăng xuất</a></li>
                 </ul>
             </div>
         </aside>

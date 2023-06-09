@@ -35,7 +35,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col" style="width: 65%;">   Nội dung</th>
-                                <th scope="col">Type Option</th>
+                                <th scope="col">Thể loại</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -67,26 +67,26 @@
                                     <textarea name="contentQuestion" class="form-control" id="exampleFormControlTextarea1" rows="6"></textarea>
                                     <div class="form-row mt-2 towOption">
                                         <div class="col">
-                                            <input type="text" name="option1" value="" class="form-control" placeholder="Option 1">
+                                            <input type="text" name="option1" value="" class="form-control" placeholder="Lựa chọn 1">
                                         </div>
                                         <div class="col">
-                                            <input type="text" name="option2" value="" class="form-control" placeholder="Option 2">
+                                            <input type="text" name="option2" value="" class="form-control" placeholder="Lựa chọn 2">
                                         </div>
                                     </div>
                                     <div class="form-row mt-2 fourOption" hidden>
                                         <div class="col">
-                                            <input type="text" name="option3" value="" class="form-control" placeholder="Option 3">
+                                            <input type="text" name="option3" value="" class="form-control" placeholder="Lựa chọn 3">
                                         </div>
                                         <div class="col">
-                                            <input type="text" name="option4" value="" class="form-control" placeholder="Option 4">
+                                            <input type="text" name="option4" value="" class="form-control" placeholder="Lựa chọn 4">
                                         </div>
                                     </div>
                                     <div class="form-row mt-2 sixOption" hidden>
                                         <div class="col">
-                                            <input type="text" name="option5" value="" class="form-control" placeholder="Option 5">
+                                            <input type="text" name="option5" value="" class="form-control" placeholder="Lựa chọn 5">
                                         </div>
                                         <div class="col">
-                                            <input type="text" name="option6" value="" class="form-control" placeholder="Option 6">
+                                            <input type="text" name="option6" value="" class="form-control" placeholder="Lựa chọn 6">
                                         </div>
                                     </div>
                                 </div>
@@ -111,7 +111,7 @@
                             <div class="form-row mt-5">
                                 <div class="col-sm-10">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-send"></i> Gửi đi
+                                        <i class="fa fa-send"></i> Thêm câu hỏi
                                     </button>
                                 </div>
                             </div>

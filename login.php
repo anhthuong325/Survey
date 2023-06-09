@@ -21,7 +21,8 @@ if (isset($_POST['userLogin']) && isset($_POST['userPassword'])) {
     $password = $_POST['userPassword'];
     $data = Authenticate::authenticateUser($username, $password);
     if($data == null) {
-        $error = "You are not authorized to access. Please contact admin for help!";
+        // You are not authorized to access. Please contact admin for help!
+        $error = "Bạn không có quyền truy cập hợp lệ. Vui lòng liên hệ quản trị viên để được giúp đỡ!";
     } else {
         // login succeed
         if($data['ROLE'] == 1){
