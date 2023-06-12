@@ -78,7 +78,7 @@
                             <div class="form-row">
                                 <div class="col-sm-6">
                                     <label>Khoa</label>
-                                    <select class="form-control" name="departmentSurvey">
+                                    <select class="form-control slt-department" name="departmentSurvey">
                                         <?php if(count($arrDepartment) > 0) {
                                             foreach ($arrDepartment as $item) { ?>
                                                 <option value="<?= $item['id']; ?>"><?= $item['departmentName']; ?></option>
@@ -87,15 +87,13 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <label>Lớp</label>
-                                    <select class="form-control" name="classSurvey">
+                                    <select class="form-control" name="classSurvey" id="classByDepartment">
                                         <?php if(count($arrClass) > 0) {
                                             foreach ($arrClass as $class) { ?>
-                                                <option class="font-weight-bold" disabled><?= $class['departmentName']; ?></option>
-                                                <?php foreach ($class['class'] as $item) { ?>
-                                                    <option value="<?php echo $item['id']; ?>">
-                                                        <?php echo $item['className']; ?>
+                                                    <option value="<?php echo $class['id']; ?>">
+                                                        <?php echo $class['class_name']; ?>
                                                     </option>
-                                            <?php } } } ?>
+                                            <?php } }  ?>
                                     </select>
                                 </div>
                             </div>

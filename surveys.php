@@ -19,13 +19,13 @@ $tabs = array(
 );
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
 
-//index form
+//TODO: index form
 if(isset($_SESSION['USER_ACCOUNT'])){
     $userName = $_SESSION['USER_ACCOUNT'];
     $arrForm = ClientController::getListSurvey($userName);
 }
 
-//type form survey
+//TODO: type form survey
 $idForm = 0;
 $arrForms = array();
 if(isset($_GET['id'])) {

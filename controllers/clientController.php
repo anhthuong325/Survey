@@ -96,21 +96,46 @@ class ClientController
             $sql = "SELECT FS.*
                     FROM form_surveys FS INNER JOIN users U
                     WHERE U.user_name = :userName AND (FS.department_id = U.department_id AND (FS.class_id = U.class_id OR FS.class_id = 0) OR FS.all_users = 0)
-                        AND FS.id NOT IN (SELECT form_survey_id FROM user_feedback WHERE user_name = :userName)
                     GROUP BY FS.id";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':userName', $user, PDO::PARAM_STR);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $arrForm = array();
+            //get surveys submitted
+            $arrSurveysSubmitted = ClientController::getFormSurveySubmited($user);
             foreach ($stmt->fetchAll() as $row){
                 $item['id'] = $row['id'];
                 $item['title'] = $row['title'];
                 $item['timeStart'] = $row['time_start'];
                 $item['timeEnd'] = $row['time_end'];
+                //0: not submit
+                //1: submitted
+                if(in_array($row['id'],$arrSurveysSubmitted)){
+                    $item['status'] = 1;
+                } else if(!in_array($row['id'],$arrSurveysSubmitted)) {
+                    $item['status'] = 0;
+                }
                 $arrForm[$row['id']] = $item;
             }
             return $arrForm;
+        } catch(Exception $e){
+            return $e;
+        }
+    }
+    private static function getFormSurveySubmited($user){
+        try {
+            $db = DatabaseUtil::getConn();
+            $sql = "SELECT form_survey_id FROM user_feedback WHERE user_name = :userName";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':userName', $user, PDO::PARAM_STR);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $arr = array();
+            foreach ($stmt->fetchAll() as $row){
+                array_push($arr, $row['form_survey_id']);
+            }
+            return $arr;
         } catch(Exception $e){
             return $e;
         }

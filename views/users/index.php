@@ -23,7 +23,7 @@
                                 <th scope="col">Tiêu đề</th>
                                 <th scope="col">Bắt đầu</th>
                                 <th scope="col">Kết thúc</th>
-                                <th scope="col" style="width: 100px;">Tác vụ</th>
+                                <th scope="col" style="width: 100px;">Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,10 +35,17 @@
                                     <td><?= $form['timeStart']; ?></td>
                                     <td><?= $form['timeEnd']; ?></td>
                                     <td>
-                                        <a class="btn btn-sm btn-primary text-white" href="?tab=Surveys&id=<?= $form['id'];?>">
-                                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                                            Bắt đầu khảo sát
-                                        </a>
+                                        <?php if(isset($form['status']) && $form['status'] == 0){ ?>
+                                            <a class="btn btn-sm btn-primary text-white" href="<?= BASE_DOMAIN ?>/surveys.php?tab=Surveys&id=<?= $form['id'];?>">
+                                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                                Bắt đầu khảo sát
+                                            </a>
+                                        <?php } else if(isset($form['status']) && $form['status'] == 1) { ?>
+                                            <a class="text-white btn btn-sm btn-success">
+                                                <i class="fa fa-check" aria-hidden="true"></i>
+                                                Đã nhập khảo sát
+                                            </a>
+                                        <?php } ?>
                                     </td>
                                 </tr>
                             <?php $sn++; } } else { ?>

@@ -182,7 +182,7 @@ class QuestionController
             return $e;
         }
     }
-    public static function getAllDepartments(){
+    public static function getListDepartments(){
         try{
             $db = DatabaseUtil::getConn();
             $query = "SELECT * FROM departments";
@@ -201,22 +201,18 @@ class QuestionController
             return $e;
         }
     }
-    public static function getAllClass(){
+    public static function getListClass($id){
         try{
             $db = DatabaseUtil::getConn();
-            $query = "SELECT C.id as 'class_id', D.id as 'department_id', D.department_name, C.class_name FROM class C INNER JOIN departments D ON C.department_id = D.id";
+            $query = "SELECT * FROM class";
+            if($id != 0 || $id != '0'){
+                $query = "SELECT * FROM class WHERE department_id = ".$id;
+            }
             $stmt = $db->prepare($query);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $arrLop = array();
-            foreach ($stmt->fetchAll() as $row){
-                $arrLop[$row['department_id']]['departmentName'] = $row['department_name'];
-                $arrLop[$row['department_id']]['class'][] = array(
-                    'id'=>$row['class_id'],
-                    'className'=>$row['class_name']
-                );
-            }
-            return $arrLop;
+
+            return $stmt->fetchAll();
         } catch (Exception $e){
             return $e;
         }
@@ -326,27 +322,5 @@ class QuestionController
             return $e;
         }
     }
-    public static function checkFeedback(){
-        try{
-            $db = DatabaseUtil::getConn();
-            $query = "SELECT u.user_name, f.form_survey_id, f.created_at
-                    FROM users u
-                    LEFT JOIN user_feedback f ON u.user_name = f.user_name
-                    WHERE u.role_id > 1";
-            $stmt = $db->prepare($query);
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $arrFeedback = array();
-            foreach ($stmt->fetchAll() as $row){
-                $arrFeedback[] = array(
-                    'userName' => $row['user_name'],
-                    'formSurveyID' => $row['form_survey_id'],
-                    'feedbackedAt' => $row['created_at']
-                );
-            }
-            return $arrFeedback;
-        } catch (Exception $e){
-            return $e;
-        }
-    }    
+
 }

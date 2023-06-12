@@ -26,12 +26,17 @@ $tabs = array(
         'name'=>'Form khảo sát'
     ),
     array(
-        'title'=>"UserFeedbackManagement",
-        'icon'=>'<i class="fa fa-user-circle" aria-hidden="true"></i>',
-        'name'=>'Quản lý phản hồi người dùng'
+        'title'=>"Users",
+        'icon'=>'<i class="fa fa-users" aria-hidden="true"></i>',
+        'name'=>'Quản lý người dùng'
     )
 );
+
 $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $tabs[0]['title'];
+
+//TODO: get list department and class (done)
+$arrDepartment = QuestionController::getListDepartments();
+$arrClass = QuestionController::getListClass(0);
 
 //TODO: Create Topic (done)
 $arrTopics = QuestionController::getAllTopics();
@@ -137,8 +142,6 @@ if(isset($_GET['topicId'])){
     }
 
     //TODO: Create FormSurvey (done)
-    $arrDepartment = QuestionController::getAllDepartments();
-    $arrClass = QuestionController::getAllClass();
     //xử lí lưu form
     if(isset($_POST['titleForm']) && isset($_POST['departmentSurvey']) && isset($_POST['classSurvey'])
         && isset($_POST['startDate']) && isset($_POST['endDate'])){
@@ -203,9 +206,6 @@ if(isset($_GET['formId'])){
         }
     }
 }
-
-//Lấy phản hồi từ người dùng
-$arrFeedback = QuestionController::checkFeedback();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -287,8 +287,8 @@ $arrFeedback = QuestionController::checkFeedback();
             if($current_tab == "Statistics"){
                 include 'views/surveys/statisticsSurvey.php';
             }
-            if($current_tab == "UserFeedbackManagement"){
-                include 'views/surveys/userFeedback.php';
+            if($current_tab == "Users"){
+                include 'views/surveys/users.php';
             }
          ?>
     </div>
@@ -365,5 +365,35 @@ $arrFeedback = QuestionController::checkFeedback();
             $(".fourOption").removeAttr("hidden");
             $(".sixOption").removeAttr("hidden");
         }
+    });
+
+    $('.slt-department').on('change', function() {
+        var departmentId = this.value;
+        axios({
+            method: 'get',
+            url:'<?= BASE_DOMAIN; ?>/getClass.php?id='+departmentId,
+            header:{
+                'Content-Type':'application/json'
+            }
+        }).then(function (response){
+            const result = response.data;
+            let htmls = "";
+            if(result.length > 0){
+                for(let row in result){
+                    htmls += `<option value="${result[row].id}">${result[row].class_name}</option>`;
+                }
+                var sltClass = document.getElementById("classByDepartment");
+                sltClass.innerHTML = htmls;
+                if(sltClass.disabled){
+                    sltClass.disabled = false;
+                }
+            } else {
+                htmls = `<option value = "0">Không có lớp</option>`;
+                document.getElementById("classByDepartment").innerHTML = htmls;
+                document.getElementById("classByDepartment").disabled = true;
+            }
+        }).catch(function(error){
+            console.log(error)
+        })
     });
 </script>
